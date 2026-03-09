@@ -264,8 +264,8 @@ main li a {
 .grid-3 { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
 
 /* --- Language Toggle --- */
-[lang="de"],
-[lang="en"] {
+body [lang="de"],
+body [lang="en"] {
   display: none;
 }
 body.lang-de [lang="de"] { display: revert; }
