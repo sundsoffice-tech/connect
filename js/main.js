@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   function setLanguage(lang) {
+    const otherLang = lang === 'de' ? 'en' : 'de';
     document.body.classList.remove('lang-de', 'lang-en');
     document.body.classList.add(`lang-${lang}`);
     document.documentElement.setAttribute('lang', lang);
@@ -24,6 +25,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.lang-switch button').forEach(b => {
       const isActive = b.dataset.lang === lang;
       b.setAttribute('aria-pressed', isActive);
+    });
+
+    // Show active lang, hide other + aria-hidden for screen readers
+    document.querySelectorAll(`[lang="${lang}"]`).forEach(el => {
+      el.removeAttribute('aria-hidden');
+    });
+    document.querySelectorAll(`[lang="${otherLang}"]`).forEach(el => {
+      el.setAttribute('aria-hidden', 'true');
     });
 
     // Update page title based on language
@@ -122,33 +131,75 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // --- Contact Form ---
+  // --- Contact Form (Formspree) ---
   const form = document.querySelector('#contact-form');
   if (form) {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       const btn = form.querySelector('button[type="submit"]');
       const statusEl = document.getElementById('form-status');
+      const isDE = document.body.classList.contains('lang-de');
+
+      // Validate DSGVO checkbox
+      const consent = form.querySelector('#dsgvo-consent');
+      if (consent && !consent.checked) {
+        if (statusEl) {
+          statusEl.textContent = isDE
+            ? 'Bitte stimmen Sie der Datenschutzerklärung zu.'
+            : 'Please agree to the privacy policy.';
+          statusEl.className = 'form-status error';
+          statusEl.style.display = 'block';
+          statusEl.style.background = 'rgba(255,80,80,0.1)';
+          statusEl.style.borderColor = '#ff5050';
+          statusEl.style.color = '#ff5050';
+        }
+        return;
+      }
 
       btn.setAttribute('disabled', 'true');
 
-      if (statusEl) {
-        const isDE = document.body.classList.contains('lang-de');
-        statusEl.textContent = isDE
-          ? 'Vielen Dank! Ihre Nachricht wurde gesendet.'
-          : 'Thank you! Your message has been sent.';
-        statusEl.classList.add('success');
-        statusEl.setAttribute('role', 'status');
-      }
+      const data = new FormData(form);
 
-      setTimeout(() => {
-        btn.removeAttribute('disabled');
-        if (statusEl) {
-          statusEl.classList.remove('success');
-          statusEl.textContent = '';
+      fetch(form.action, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      }).then(response => {
+        if (response.ok) {
+          if (statusEl) {
+            statusEl.textContent = isDE
+              ? 'Vielen Dank! Ihre Nachricht wurde gesendet.'
+              : 'Thank you! Your message has been sent.';
+            statusEl.className = 'form-status success';
+            statusEl.style.display = 'block';
+            statusEl.style.background = '';
+            statusEl.style.borderColor = '';
+            statusEl.style.color = '';
+          }
+          form.reset();
+        } else {
+          throw new Error('Form submission failed');
         }
-        form.reset();
-      }, 4000);
+      }).catch(() => {
+        if (statusEl) {
+          statusEl.textContent = isDE
+            ? 'Fehler beim Senden. Bitte versuchen Sie es erneut.'
+            : 'Error sending message. Please try again.';
+          statusEl.className = 'form-status error';
+          statusEl.style.display = 'block';
+          statusEl.style.background = 'rgba(255,80,80,0.1)';
+          statusEl.style.borderColor = '#ff5050';
+          statusEl.style.color = '#ff5050';
+        }
+      }).finally(() => {
+        btn.removeAttribute('disabled');
+        setTimeout(() => {
+          if (statusEl) {
+            statusEl.style.display = 'none';
+            statusEl.textContent = '';
+          }
+        }, 5000);
+      });
     });
   }
 

@@ -264,17 +264,75 @@ main li a {
 .grid-3 { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
 
 /* --- Language Toggle --- */
-[lang-content="de"],
-[lang-content="en"] {
+[lang="de"],
+[lang="en"] {
   display: none;
 }
-body.lang-de [lang-content="de"] { display: revert; }
-body.lang-en [lang-content="en"] { display: revert; }
+body.lang-de [lang="de"] { display: revert; }
+body.lang-en [lang="en"] { display: revert; }
 
 body.lang-de .lang-de-inline { display: inline; }
 body.lang-de .lang-en-inline { display: none; }
 body.lang-en .lang-de-inline { display: none; }
 body.lang-en .lang-en-inline { display: inline; }
+
+/* DSGVO Checkbox */
+.form-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: var(--space-md);
+}
+.form-checkbox input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  margin-top: 0.2rem;
+  accent-color: var(--clr-teal);
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.form-checkbox label {
+  font-size: 0.85rem;
+  color: var(--clr-text-muted);
+  line-height: 1.5;
+  cursor: pointer;
+  text-transform: none;
+  letter-spacing: 0;
+  font-family: var(--font-body);
+}
+.form-checkbox label a {
+  color: var(--clr-teal);
+  text-decoration: underline;
+}
+
+/* Legal pages */
+.legal-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+.legal-content h2 {
+  font-size: 1.4rem;
+  margin-top: var(--space-lg);
+  margin-bottom: var(--space-sm);
+}
+.legal-content h3 {
+  font-size: 1.1rem;
+  margin-top: var(--space-md);
+  margin-bottom: var(--space-xs);
+}
+.legal-content p,
+.legal-content li {
+  color: var(--clr-text-muted);
+  font-size: 0.95rem;
+  margin-bottom: var(--space-xs);
+}
+.legal-content ul {
+  padding-left: 1.5rem;
+  margin-bottom: var(--space-sm);
+}
+.legal-content ul li {
+  margin-bottom: 0.3rem;
+}
 
 /* --- Navigation --- */
 .nav {
@@ -598,7 +656,7 @@ body.lang-en .lang-en-inline { display: inline; }
   align-items: center;
   padding-top: 100px;
   position: relative;
-  overflow: hidden;
+  overflow: clip;
 }
 
 .hero-content {
@@ -721,7 +779,7 @@ body.lang-en .lang-en-inline { display: inline; }
   background: var(--gradient-subtle);
   border-bottom: 1px solid var(--clr-border);
   position: relative;
-  overflow: hidden;
+  overflow: clip;
 }
 
 .project-card-header::after {
@@ -866,7 +924,7 @@ body.lang-en .lang-en-inline { display: inline; }
   border: 1px solid var(--clr-border);
   border-radius: var(--radius-lg);
   position: relative;
-  overflow: hidden;
+  overflow: clip;
 }
 
 .feature-visual-icon {
@@ -1118,7 +1176,7 @@ body.lang-en .lang-en-inline { display: inline; }
   padding: 10rem 0 4rem;
   text-align: center;
   position: relative;
-  overflow: hidden;
+  overflow: clip;
 }
 
 .page-header::before {

@@ -18,7 +18,9 @@
   <meta property="og:url" content="https://sundsconnect.de/contact.html">
   <meta property="og:title" content="Kontakt – S&S Connect">
   <meta property="og:description" content="Schreiben Sie uns – wir freuen uns auf Ihre Nachricht.">
-  <meta property="og:image" content="https://sundsconnect.de/assets/img/logo.png">
+  <meta property="og:image" content="https://sundsconnect.de/assets/img/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta property="og:site_name" content="S&S Connect">
 
   <meta name="twitter:card" content="summary">
@@ -55,14 +57,14 @@
 
   <div id="sr-announcer" aria-live="polite" aria-atomic="true" class="sr-only"></div>
   <a href="#main-content" class="skip-link">
-    <span lang-content="de">Zum Inhalt springen</span>
-    <span lang-content="en">Skip to content</span>
+    <span lang="de">Zum Inhalt springen</span>
+    <span lang="en">Skip to content</span>
   </a>
 
   <nav class="nav" role="navigation" aria-label="Hauptnavigation">
     <div class="container">
       <a href="index.html" class="nav-logo" aria-label="S&S Connect – Startseite">
-        <img src="assets/img/logo.png" alt="S&S Connect Logo" width="60" height="60">
+        <img src="assets/img/logo-120.png" alt="S&amp;S Connect Logo – Teal-farbenes Aufwärtspfeil-Symbol" width="60" height="60" loading="eager" fetchpriority="high">
         <span>S&S Connect</span>
       </a>
       <button class="nav-hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="nav-menu">
@@ -89,34 +91,34 @@
     <div class="page-header">
       <div class="container">
         <span class="label reveal">
-          <span lang-content="de">Kontakt</span>
-          <span lang-content="en">Contact</span>
+          <span lang="de">Kontakt</span>
+          <span lang="en">Contact</span>
         </span>
         <h1 class="reveal reveal-delay-1">
-          <span lang-content="de">Lassen Sie uns <span class="text-gradient">sprechen</span></span>
-          <span lang-content="en">Let's <span class="text-gradient">talk</span></span>
+          <span lang="de">Lassen Sie uns <span class="text-gradient">sprechen</span></span>
+          <span lang="en">Let's <span class="text-gradient">talk</span></span>
         </h1>
         <p class="reveal reveal-delay-2">
-          <span lang-content="de">Haben Sie eine Idee, ein Projekt oder eine Frage? Wir freuen uns auf Ihre Nachricht.</span>
-          <span lang-content="en">Have an idea, a project, or a question? We'd love to hear from you.</span>
+          <span lang="de">Haben Sie eine Idee, ein Projekt oder eine Frage? Wir freuen uns auf Ihre Nachricht.</span>
+          <span lang="en">Have an idea, a project, or a question? We'd love to hear from you.</span>
         </p>
       </div>
     </div>
 
     <section class="section" aria-labelledby="contact-form-heading">
       <h2 id="contact-form-heading" class="sr-only">
-        <span lang-content="de">Kontaktformular</span>
-        <span lang-content="en">Contact Form</span>
+        <span lang="de">Kontaktformular</span>
+        <span lang="en">Contact Form</span>
       </h2>
       <div class="container">
         <div class="contact-grid">
 
           <div class="reveal">
-            <form id="contact-form" novalidate>
+            <form id="contact-form" method="POST" action="https://formspree.io/f/YOUR_FORM_ID" novalidate>
               <div class="form-group">
                 <label for="name">
-                  <span lang-content="de">Name *</span>
-                  <span lang-content="en">Name *</span>
+                  <span lang="de">Name *</span>
+                  <span lang="en">Name *</span>
                 </label>
                 <input type="text" id="name" name="name" required autocomplete="name"
                   aria-required="true">
@@ -130,46 +132,54 @@
 
               <div class="form-group">
                 <label for="phone">
-                  <span lang-content="de">Telefon</span>
-                  <span lang-content="en">Phone</span>
+                  <span lang="de">Telefon</span>
+                  <span lang="en">Phone</span>
                 </label>
                 <input type="tel" id="phone" name="phone" autocomplete="tel">
               </div>
 
               <div class="form-group">
                 <label for="subject">
-                  <span lang-content="de">Betreff *</span>
-                  <span lang-content="en">Subject *</span>
+                  <span lang="de">Betreff *</span>
+                  <span lang="en">Subject *</span>
                 </label>
                 <select id="subject" name="subject" required aria-required="true">
                   <option value="" disabled selected>
-                    <span lang-content="de">Bitte wählen...</span>
-                    <span lang-content="en">Please select...</span>
+                    <span lang="de">Bitte wählen...</span>
+                    <span lang="en">Please select...</span>
                   </option>
-                  <option value="general" lang-content="de">Allgemeine Anfrage</option>
-                  <option value="general" lang-content="en">General Inquiry</option>
-                  <option value="vertrieb" lang-content="de">Vertrieb & Sales</option>
-                  <option value="vertrieb" lang-content="en">Sales & Distribution</option>
+                  <option value="general" lang="de">Allgemeine Anfrage</option>
+                  <option value="general" lang="en">General Inquiry</option>
+                  <option value="vertrieb" lang="de">Vertrieb & Sales</option>
+                  <option value="vertrieb" lang="en">Sales & Distribution</option>
                   <option value="automation">Automation</option>
-                  <option value="ai" lang-content="de">AI Infrastruktur</option>
-                  <option value="ai" lang-content="en">AI Infrastructure</option>
-                  <option value="project" lang-content="de">Projektanfrage</option>
-                  <option value="project" lang-content="en">Project Inquiry</option>
+                  <option value="ai" lang="de">AI Infrastruktur</option>
+                  <option value="ai" lang="en">AI Infrastructure</option>
+                  <option value="project" lang="de">Projektanfrage</option>
+                  <option value="project" lang="en">Project Inquiry</option>
                 </select>
               </div>
 
               <div class="form-group">
                 <label for="message">
-                  <span lang-content="de">Nachricht *</span>
-                  <span lang-content="en">Message *</span>
+                  <span lang="de">Nachricht *</span>
+                  <span lang="en">Message *</span>
                 </label>
                 <textarea id="message" name="message" required
                   aria-required="true" rows="6"></textarea>
               </div>
 
+              <div class="form-checkbox">
+                <input type="checkbox" id="dsgvo-consent" name="dsgvo-consent" required aria-required="true">
+                <label for="dsgvo-consent">
+                  <span lang="de">Ich habe die <a href="datenschutz.html" target="_blank">Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Daten zu. *</span>
+                  <span lang="en">I have read the <a href="datenschutz.html" target="_blank">privacy policy</a> and agree to the processing of my data. *</span>
+                </label>
+              </div>
+
               <button type="submit" class="btn btn-primary btn-arrow" style="width:100%; justify-content:center;">
-                <span lang-content="de">Nachricht senden</span>
-                <span lang-content="en">Send Message</span>
+                <span lang="de">Nachricht senden</span>
+                <span lang="en">Send Message</span>
               </button>
 
               <div id="form-status" class="form-status" role="status" aria-live="polite"></div>
@@ -184,13 +194,13 @@
                 </div>
                 <div class="contact-info-text">
                   <h3 style="font-size:0.95rem;">
-                    <span lang-content="de">Adresse</span>
-                    <span lang-content="en">Address</span>
+                    <span lang="de">Adresse</span>
+                    <span lang="en">Address</span>
                   </h3>
                   <address style="font-style:normal;">
                     <p>Nobelstraße 3-5<br>41189 Mönchengladbach<br>
-                      <span lang-content="de">Deutschland</span>
-                      <span lang-content="en">Germany</span>
+                      <span lang="de">Deutschland</span>
+                      <span lang="en">Germany</span>
                     </p>
                   </address>
                 </div>
@@ -202,8 +212,8 @@
                 </div>
                 <div class="contact-info-text">
                   <h3 style="font-size:0.95rem;">
-                    <span lang-content="de">Telefon</span>
-                    <span lang-content="en">Phone</span>
+                    <span lang="de">Telefon</span>
+                    <span lang="en">Phone</span>
                   </h3>
                   <p><a href="tel:+4917631570041">+49 176 31570041</a></p>
                 </div>
@@ -215,8 +225,8 @@
                 </div>
                 <div class="contact-info-text">
                   <h3 style="font-size:0.95rem;">
-                    <span lang-content="de">Unternehmen</span>
-                    <span lang-content="en">Company</span>
+                    <span lang="de">Unternehmen</span>
+                    <span lang="en">Company</span>
                   </h3>
                   <p>S&S Connect GbR<br>Schippers & Singh<br>USt-IdNr: DE456837969</p>
                 </div>
@@ -244,10 +254,10 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <a href="index.html" class="nav-logo footer-logo" aria-label="S&S Connect – Startseite">
-            <img src="assets/img/logo.png" alt="" width="48" height="48">
+            <img src="assets/img/logo-120.png" alt="" width="48" height="48" loading="lazy">
             <span>S&S Connect</span>
           </a>
-          <p><span lang-content="de">Schippers & Singh GbR – Vertrieb, Automation und KI-Infrastruktur aus Mönchengladbach.</span><span lang-content="en">Schippers & Singh GbR – Sales, Automation, and AI Infrastructure from Mönchengladbach.</span></p>
+          <p><span lang="de">Schippers & Singh GbR – Vertrieb, Automation und KI-Infrastruktur aus Mönchengladbach.</span><span lang="en">Schippers & Singh GbR – Sales, Automation, and AI Infrastructure from Mönchengladbach.</span></p>
         </div>
         <nav aria-label="Footer-Navigation">
           <div class="footer-heading">Navigation</div>
@@ -259,7 +269,7 @@
           </ul>
         </nav>
         <div>
-          <div class="footer-heading"><span lang-content="de">Kontakt</span><span lang-content="en">Contact</span></div>
+          <div class="footer-heading"><span lang="de">Kontakt</span><span lang="en">Contact</span></div>
           <address class="footer-links" style="font-style:normal;">
             <p>Nobelstraße 3-5</p>
             <p>41189 Mönchengladbach</p>
@@ -268,8 +278,8 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <span>&copy; 2026 S&S Connect GbR. <span lang-content="de">Alle Rechte vorbehalten.</span><span lang-content="en">All rights reserved.</span></span>
-        <span>USt-IdNr: DE456837969</span>
+        <span>&copy; 2026 S&S Connect GbR. <span lang="de">Alle Rechte vorbehalten.</span><span lang="en">All rights reserved.</span></span>
+        <span><a href="impressum.html">Impressum</a> · <a href="datenschutz.html"><span class="lang-de-inline">Datenschutz</span><span class="lang-en-inline">Privacy</span></a></span>
       </div>
     </div>
   </footer>
