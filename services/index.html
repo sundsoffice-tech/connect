@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; frame-src https://www.google.com; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://formspree.io">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>Leistungen – S&S Connect | Vertrieb, Automation, AI Infrastruktur</title>
   <meta name="title-de" content="Leistungen – S&S Connect | Vertrieb, Automation, AI Infrastruktur">
   <meta name="title-en" content="Services – S&S Connect | Sales, Automation, AI Infrastructure">
@@ -27,8 +29,6 @@
   <meta name="twitter:title" content="Leistungen – S&S Connect">
   <meta name="twitter:description" content="Vertrieb, Automation und AI Infrastruktur – maßgeschneiderte Lösungen für Ihr Business.">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="../css/style.css">
   <link rel="icon" href="../assets/img/logo.png" type="image/png">
 
@@ -238,6 +238,42 @@
       </div>
     </div>
   </footer>
+
+  <!-- Cookie Banner -->
+  <div id="cookie-banner" class="cookie-banner" role="dialog" aria-label="Cookie-Einstellungen" aria-hidden="true">
+    <div class="cookie-banner-inner">
+      <div class="cookie-banner-compact">
+        <p>
+          <span lang="de">Wir verwenden Cookies, um unsere Website zu analysieren und zu verbessern. Sie können selbst entscheiden, welche Cookies Sie zulassen möchten.</span>
+          <span lang="en">We use cookies to analyze and improve our website. You can decide which cookies you want to allow.</span>
+        </p>
+        <div class="cookie-banner-actions">
+          <button id="cookie-accept-all" class="btn btn-primary"><span lang="de">Alle akzeptieren</span><span lang="en">Accept All</span></button>
+          <button id="cookie-reject" class="btn btn-secondary"><span lang="de">Nur notwendige</span><span lang="en">Essential Only</span></button>
+          <button id="cookie-settings-btn" class="cookie-settings-link" aria-expanded="false"><span lang="de">Einstellungen</span><span lang="en">Settings</span></button>
+        </div>
+      </div>
+      <div class="cookie-banner-details" hidden>
+        <div class="cookie-category">
+          <div class="cookie-category-info">
+            <h4><span lang="de">Notwendig</span><span lang="en">Essential</span></h4>
+            <p><span lang="de">Erforderlich für die Grundfunktionen der Website (z.B. Spracheinstellung).</span><span lang="en">Required for basic website functionality (e.g. language preference).</span></p>
+          </div>
+          <label class="cookie-toggle"><input type="checkbox" checked disabled><span class="cookie-toggle-slider"></span></label>
+        </div>
+        <div class="cookie-category">
+          <div class="cookie-category-info">
+            <h4><span lang="de">Analyse / Statistik</span><span lang="en">Analytics / Statistics</span></h4>
+            <p><span lang="de">Helfen uns zu verstehen, wie Besucher unsere Website nutzen (Google Analytics 4).</span><span lang="en">Help us understand how visitors use our website (Google Analytics 4).</span></p>
+          </div>
+          <label class="cookie-toggle"><input type="checkbox" id="cookie-analytics-toggle"><span class="cookie-toggle-slider"></span></label>
+        </div>
+        <div class="cookie-details-actions">
+          <button id="cookie-save-settings" class="btn btn-primary"><span lang="de">Auswahl speichern</span><span lang="en">Save Selection</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="../js/main.js"></script>
 </body>

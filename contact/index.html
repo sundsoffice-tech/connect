@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; frame-src https://www.google.com; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://formspree.io">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>Kontakt – S&S Connect | Mönchengladbach</title>
   <meta name="title-de" content="Kontakt – S&S Connect | Mönchengladbach">
   <meta name="title-en" content="Contact – S&S Connect | Mönchengladbach">
@@ -27,8 +29,6 @@
   <meta name="twitter:title" content="Kontakt – S&S Connect">
   <meta name="twitter:description" content="Kontaktieren Sie S&S Connect in Mönchengladbach.">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="../css/style.css">
   <link rel="icon" href="../assets/img/logo.png" type="image/png">
 
@@ -143,20 +143,14 @@
                   <span lang="de">Betreff *</span>
                   <span lang="en">Subject *</span>
                 </label>
-                <select id="subject" name="subject" required aria-required="true">
-                  <option value="" disabled selected>
-                    <span lang="de">Bitte wählen...</span>
-                    <span lang="en">Please select...</span>
-                  </option>
-                  <option value="general" lang="de">Allgemeine Anfrage</option>
-                  <option value="general" lang="en">General Inquiry</option>
-                  <option value="vertrieb" lang="de">Vertrieb & Sales</option>
-                  <option value="vertrieb" lang="en">Sales & Distribution</option>
+                <select id="subject" name="subject" required aria-required="true"
+                  data-placeholder-de="Bitte wählen..." data-placeholder-en="Please select...">
+                  <option value="" disabled selected>Bitte wählen...</option>
+                  <option value="general" data-de="Allgemeine Anfrage" data-en="General Inquiry">Allgemeine Anfrage</option>
+                  <option value="vertrieb" data-de="Vertrieb &amp; Sales" data-en="Sales &amp; Distribution">Vertrieb &amp; Sales</option>
                   <option value="automation">Automation</option>
-                  <option value="ai" lang="de">AI Infrastruktur</option>
-                  <option value="ai" lang="en">AI Infrastructure</option>
-                  <option value="project" lang="de">Projektanfrage</option>
-                  <option value="project" lang="en">Project Inquiry</option>
+                  <option value="ai" data-de="AI Infrastruktur" data-en="AI Infrastructure">AI Infrastruktur</option>
+                  <option value="project" data-de="Projektanfrage" data-en="Project Inquiry">Projektanfrage</option>
                 </select>
               </div>
 
@@ -166,14 +160,14 @@
                   <span lang="en">Message *</span>
                 </label>
                 <textarea id="message" name="message" required
-                  aria-required="true" rows="6"></textarea>
+                  aria-required="true" rows="6" autocomplete="off"></textarea>
               </div>
 
               <div class="form-checkbox">
                 <input type="checkbox" id="dsgvo-consent" name="dsgvo-consent" required aria-required="true">
                 <label for="dsgvo-consent">
-                  <span lang="de">Ich habe die <a href="../datenschutz/" target="_blank">Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Daten zu. *</span>
-                  <span lang="en">I have read the <a href="../datenschutz/" target="_blank">privacy policy</a> and agree to the processing of my data. *</span>
+                  <span lang="de">Ich habe die <a href="../datenschutz/" target="_blank" rel="noopener noreferrer">Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Daten zu. *</span>
+                  <span lang="en">I have read the <a href="../datenschutz/" target="_blank" rel="noopener noreferrer">privacy policy</a> and agree to the processing of my data. *</span>
                 </label>
               </div>
 
@@ -238,7 +232,8 @@
                 title="Standort S&S Connect GbR, Nobelstraße 3-5, Mönchengladbach"
                 width="100%" height="100%" style="border:0; filter: invert(0.9) hue-rotate(180deg) brightness(0.8) contrast(1.1);"
                 loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"
+                referrerpolicy="strict-origin"
+                sandbox="allow-scripts allow-same-origin"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2505.5!2d6.4297!3d51.1613!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47b8b4!2sNobelstra%C3%9Fe+3-5%2C+41189+M%C3%B6nchengladbach!5e0!3m2!1sde!2sde!4v1">
               </iframe>
             </div>
@@ -283,6 +278,42 @@
       </div>
     </div>
   </footer>
+
+  <!-- Cookie Banner -->
+  <div id="cookie-banner" class="cookie-banner" role="dialog" aria-label="Cookie-Einstellungen" aria-hidden="true">
+    <div class="cookie-banner-inner">
+      <div class="cookie-banner-compact">
+        <p>
+          <span lang="de">Wir verwenden Cookies, um unsere Website zu analysieren und zu verbessern. Sie können selbst entscheiden, welche Cookies Sie zulassen möchten.</span>
+          <span lang="en">We use cookies to analyze and improve our website. You can decide which cookies you want to allow.</span>
+        </p>
+        <div class="cookie-banner-actions">
+          <button id="cookie-accept-all" class="btn btn-primary"><span lang="de">Alle akzeptieren</span><span lang="en">Accept All</span></button>
+          <button id="cookie-reject" class="btn btn-secondary"><span lang="de">Nur notwendige</span><span lang="en">Essential Only</span></button>
+          <button id="cookie-settings-btn" class="cookie-settings-link" aria-expanded="false"><span lang="de">Einstellungen</span><span lang="en">Settings</span></button>
+        </div>
+      </div>
+      <div class="cookie-banner-details" hidden>
+        <div class="cookie-category">
+          <div class="cookie-category-info">
+            <h4><span lang="de">Notwendig</span><span lang="en">Essential</span></h4>
+            <p><span lang="de">Erforderlich für die Grundfunktionen der Website (z.B. Spracheinstellung).</span><span lang="en">Required for basic website functionality (e.g. language preference).</span></p>
+          </div>
+          <label class="cookie-toggle"><input type="checkbox" checked disabled><span class="cookie-toggle-slider"></span></label>
+        </div>
+        <div class="cookie-category">
+          <div class="cookie-category-info">
+            <h4><span lang="de">Analyse / Statistik</span><span lang="en">Analytics / Statistics</span></h4>
+            <p><span lang="de">Helfen uns zu verstehen, wie Besucher unsere Website nutzen (Google Analytics 4).</span><span lang="en">Help us understand how visitors use our website (Google Analytics 4).</span></p>
+          </div>
+          <label class="cookie-toggle"><input type="checkbox" id="cookie-analytics-toggle"><span class="cookie-toggle-slider"></span></label>
+        </div>
+        <div class="cookie-details-actions">
+          <button id="cookie-save-settings" class="btn btn-primary"><span lang="de">Auswahl speichern</span><span lang="en">Save Selection</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="../js/main.js"></script>
 </body>

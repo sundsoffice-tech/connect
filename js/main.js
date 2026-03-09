@@ -42,6 +42,17 @@ document.addEventListener('DOMContentLoaded', () => {
       document.title = lang === 'de' ? titleDe.content : titleEn.content;
     }
 
+    // Update select options with translated text
+    document.querySelectorAll('select[data-placeholder-de]').forEach(select => {
+      const placeholder = select.querySelector('option[disabled]');
+      if (placeholder) {
+        placeholder.textContent = select.dataset[`placeholder${lang === 'de' ? 'De' : 'En'}`];
+      }
+      select.querySelectorAll('option[data-de]').forEach(opt => {
+        opt.textContent = opt.dataset[lang];
+      });
+    });
+
     // Announce language change to screen readers
     const announcer = document.getElementById('sr-announcer');
     if (announcer) {
@@ -249,6 +260,183 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     requestAnimationFrame(update);
+  }
+
+  // --- Hacca Chat Promo Popup ---
+  const haccaPopup = document.getElementById('hacca-popup');
+  if (haccaPopup) {
+    const HACCA_DISMISS_KEY = 'ss-hacca-popup-dismissed';
+    const dismissed = sessionStorage.getItem(HACCA_DISMISS_KEY);
+
+    if (!dismissed) {
+      // Show popup after a short delay
+      setTimeout(() => {
+        haccaPopup.setAttribute('aria-hidden', 'false');
+        haccaPopup.classList.add('visible');
+        document.body.classList.add('hacca-popup-open');
+
+        // Focus the close button for accessibility
+        const closeBtn = document.getElementById('hacca-popup-close');
+        if (closeBtn) closeBtn.focus();
+      }, 2000);
+    }
+
+    function closeHaccaPopup() {
+      haccaPopup.classList.remove('visible');
+      haccaPopup.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('hacca-popup-open');
+      sessionStorage.setItem(HACCA_DISMISS_KEY, 'true');
+    }
+
+    // Close button
+    const haccaClose = document.getElementById('hacca-popup-close');
+    if (haccaClose) {
+      haccaClose.addEventListener('click', closeHaccaPopup);
+    }
+
+    // "Later" button
+    const haccaLater = document.getElementById('hacca-popup-later');
+    if (haccaLater) {
+      haccaLater.addEventListener('click', closeHaccaPopup);
+    }
+
+    // Close on backdrop click
+    const haccaBackdrop = haccaPopup.querySelector('.hacca-popup-backdrop');
+    if (haccaBackdrop) {
+      haccaBackdrop.addEventListener('click', closeHaccaPopup);
+    }
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && haccaPopup.classList.contains('visible')) {
+        closeHaccaPopup();
+      }
+    });
+  }
+
+  // --- Cookie Consent & GA4 ---
+  const GA4_ID = 'G-DFP092FTMJ';
+  const CONSENT_KEY = 'ss-cookie-consent';
+
+  function getConsent() {
+    try {
+      return JSON.parse(localStorage.getItem(CONSENT_KEY));
+    } catch { return null; }
+  }
+
+  function saveConsent(analytics) {
+    localStorage.setItem(CONSENT_KEY, JSON.stringify({
+      analytics: analytics,
+      timestamp: new Date().toISOString()
+    }));
+  }
+
+  function loadGA4() {
+    if (document.getElementById('ga4-script')) return;
+    const s = document.createElement('script');
+    s.id = 'ga4-script';
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA4_ID;
+    document.head.appendChild(s);
+
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ window.dataLayer.push(arguments); }
+    window.gtag = gtag;
+    gtag('js', new Date());
+    gtag('config', GA4_ID, { anonymize_ip: true });
+  }
+
+  function deleteGACookies() {
+    var cookies = document.cookie.split(';');
+    for (var i = 0; i < cookies.length; i++) {
+      var name = cookies[i].split('=')[0].trim();
+      if (name === '_ga' || name.startsWith('_ga_')) {
+        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=' + window.location.hostname;
+        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=.' + window.location.hostname;
+        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
+      }
+    }
+  }
+
+  // Cookie banner logic
+  const banner = document.getElementById('cookie-banner');
+  if (banner) {
+    const compact = banner.querySelector('.cookie-banner-compact');
+    const details = banner.querySelector('.cookie-banner-details');
+    const analyticsToggle = document.getElementById('cookie-analytics-toggle');
+
+    const consent = getConsent();
+    if (consent) {
+      // Consent already given
+      if (consent.analytics) loadGA4();
+    } else {
+      // Show banner
+      banner.setAttribute('aria-hidden', 'false');
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          banner.classList.add('visible');
+        });
+      });
+    }
+
+    function hideBanner() {
+      banner.classList.remove('visible');
+      banner.setAttribute('aria-hidden', 'true');
+    }
+
+    // Accept all
+    var acceptBtn = document.getElementById('cookie-accept-all');
+    if (acceptBtn) {
+      acceptBtn.addEventListener('click', function() {
+        saveConsent(true);
+        loadGA4();
+        hideBanner();
+      });
+    }
+
+    // Reject (essential only)
+    var rejectBtn = document.getElementById('cookie-reject');
+    if (rejectBtn) {
+      rejectBtn.addEventListener('click', function() {
+        saveConsent(false);
+        hideBanner();
+      });
+    }
+
+    // Settings toggle
+    var settingsBtn = document.getElementById('cookie-settings-btn');
+    if (settingsBtn && details) {
+      settingsBtn.addEventListener('click', function() {
+        var isHidden = details.hasAttribute('hidden');
+        if (isHidden) {
+          details.removeAttribute('hidden');
+          settingsBtn.setAttribute('aria-expanded', 'true');
+        } else {
+          details.setAttribute('hidden', '');
+          settingsBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
+    // Save settings from detail view
+    var saveSettingsBtn = document.getElementById('cookie-save-settings');
+    if (saveSettingsBtn && analyticsToggle) {
+      saveSettingsBtn.addEventListener('click', function() {
+        var analyticsEnabled = analyticsToggle.checked;
+        var previousConsent = getConsent();
+        saveConsent(analyticsEnabled);
+
+        if (analyticsEnabled) {
+          loadGA4();
+        } else if (previousConsent && previousConsent.analytics) {
+          // Was enabled, now disabled → delete cookies and reload
+          deleteGACookies();
+          window.location.reload();
+          return;
+        }
+        hideBanner();
+      });
+    }
   }
 
 });

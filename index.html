@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; frame-src https://www.google.com; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://formspree.io">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>S&S Connect – Vertrieb, Automation & AI Infrastruktur | Mönchengladbach</title>
   <meta name="title-de" content="S&S Connect – Vertrieb, Automation & AI Infrastruktur | Mönchengladbach">
   <meta name="title-en" content="S&S Connect – Sales, Automation & AI Infrastructure | Mönchengladbach">
@@ -32,10 +34,6 @@
   <meta name="twitter:title" content="S&S Connect – Vertrieb, Automation & AI Infrastruktur">
   <meta name="twitter:description" content="Intelligente Systeme für echtes Wachstum. Vertrieb, Automation und KI-Infrastruktur aus Mönchengladbach.">
   <meta name="twitter:image" content="https://sundsconnect.de/assets/img/og-image.png">
-
-  <!-- Preconnect for performance -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" href="assets/img/logo.png" type="image/png">
@@ -187,15 +185,12 @@
             </div>
           </div>
           <div class="stat" role="listitem">
-            <div class="stat-value" data-count="500" data-suffix="K+" aria-label="500.000+ Zeilen Code">0K+</div>
-            <div class="stat-label">
-              <span lang="de">Zeilen Code</span>
-              <span lang="en">Lines of Code</span>
-            </div>
+            <div class="stat-value" data-count="14" data-suffix="M+ ops/s" aria-label="14M+ Ops pro Sekunde">0M+ ops/s</div>
+            <div class="stat-label">Core Throughput</div>
           </div>
           <div class="stat" role="listitem">
-            <div class="stat-value" data-count="881" data-suffix="K" aria-label="881.000 Benchmarks">0K</div>
-            <div class="stat-label">Benchmarks</div>
+            <div class="stat-value" data-count="100" data-suffix="%" aria-label="100% Contract Compliance">0%</div>
+            <div class="stat-label">Contract Compliance</div>
           </div>
           <div class="stat" role="listitem">
             <div class="stat-value" data-count="3" aria-label="3 Kernbereiche">0</div>
@@ -332,6 +327,159 @@
       </div>
     </div>
   </footer>
+
+  <!-- Cookie Banner -->
+  <div id="cookie-banner" class="cookie-banner" role="dialog" aria-label="Cookie-Einstellungen" aria-hidden="true">
+    <div class="cookie-banner-inner">
+      <div class="cookie-banner-compact">
+        <p>
+          <span lang="de">Wir verwenden Cookies, um unsere Website zu analysieren und zu verbessern. Sie können selbst entscheiden, welche Cookies Sie zulassen möchten.</span>
+          <span lang="en">We use cookies to analyze and improve our website. You can decide which cookies you want to allow.</span>
+        </p>
+        <div class="cookie-banner-actions">
+          <button id="cookie-accept-all" class="btn btn-primary">
+            <span lang="de">Alle akzeptieren</span>
+            <span lang="en">Accept All</span>
+          </button>
+          <button id="cookie-reject" class="btn btn-secondary">
+            <span lang="de">Nur notwendige</span>
+            <span lang="en">Essential Only</span>
+          </button>
+          <button id="cookie-settings-btn" class="cookie-settings-link" aria-expanded="false">
+            <span lang="de">Einstellungen</span>
+            <span lang="en">Settings</span>
+          </button>
+        </div>
+      </div>
+      <div class="cookie-banner-details" hidden>
+        <div class="cookie-category">
+          <div class="cookie-category-info">
+            <h4>
+              <span lang="de">Notwendig</span>
+              <span lang="en">Essential</span>
+            </h4>
+            <p>
+              <span lang="de">Erforderlich für die Grundfunktionen der Website (z.B. Spracheinstellung).</span>
+              <span lang="en">Required for basic website functionality (e.g. language preference).</span>
+            </p>
+          </div>
+          <label class="cookie-toggle">
+            <input type="checkbox" checked disabled>
+            <span class="cookie-toggle-slider"></span>
+          </label>
+        </div>
+        <div class="cookie-category">
+          <div class="cookie-category-info">
+            <h4>
+              <span lang="de">Analyse / Statistik</span>
+              <span lang="en">Analytics / Statistics</span>
+            </h4>
+            <p>
+              <span lang="de">Helfen uns zu verstehen, wie Besucher unsere Website nutzen (Google Analytics 4).</span>
+              <span lang="en">Help us understand how visitors use our website (Google Analytics 4).</span>
+            </p>
+          </div>
+          <label class="cookie-toggle">
+            <input type="checkbox" id="cookie-analytics-toggle">
+            <span class="cookie-toggle-slider"></span>
+          </label>
+        </div>
+        <div class="cookie-details-actions">
+          <button id="cookie-save-settings" class="btn btn-primary">
+            <span lang="de">Auswahl speichern</span>
+            <span lang="en">Save Selection</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hacca Chat Promo Popup -->
+  <div id="hacca-popup" class="hacca-popup" role="dialog" aria-modal="true" aria-labelledby="hacca-popup-title" aria-hidden="true">
+    <div class="hacca-popup-backdrop"></div>
+    <div class="hacca-popup-container">
+      <button class="hacca-popup-close" aria-label="Schließen" id="hacca-popup-close">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+
+      <div class="hacca-popup-glow" aria-hidden="true"></div>
+
+      <div class="hacca-popup-badge">
+        <span class="hacca-popup-badge-dot"></span>
+        <span lang="de">Neues Produkt</span>
+        <span lang="en">New Product</span>
+      </div>
+
+      <h2 id="hacca-popup-title" class="hacca-popup-title">
+        <span class="hacca-popup-logo">HACCA</span> Chat
+      </h2>
+
+      <p class="hacca-popup-subtitle">
+        <span lang="de">Unser neuester KI-Chat – gebaut auf der Basis unserer eigenen HACCA-Infrastruktur.</span>
+        <span lang="en">Our latest AI chat – built on the foundation of our own HACCA infrastructure.</span>
+      </p>
+
+      <div class="hacca-popup-features">
+        <div class="hacca-popup-feature">
+          <div class="hacca-popup-feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          </div>
+          <div>
+            <strong lang="de">Ultraschnell</strong>
+            <strong lang="en">Ultra Fast</strong>
+            <p lang="de">Antworten in Echtzeit – schneller als alles in der Kategorie.</p>
+            <p lang="en">Real-time responses – faster than anything in its category.</p>
+          </div>
+        </div>
+        <div class="hacca-popup-feature">
+          <div class="hacca-popup-feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+          </div>
+          <div>
+            <strong lang="de">Unschlagbar günstig</strong>
+            <strong lang="en">Unbeatable Pricing</strong>
+            <p lang="de">Günstiger als jede vergleichbare Lösung am Markt.</p>
+            <p lang="en">More affordable than any comparable solution on the market.</p>
+          </div>
+        </div>
+        <div class="hacca-popup-feature">
+          <div class="hacca-popup-feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          </div>
+          <div>
+            <strong lang="de">Super resilient</strong>
+            <strong lang="en">Super Resilient</strong>
+            <p lang="de">Maximale Verfügbarkeit und Stabilität – ein echtes Super Brain.</p>
+            <p lang="en">Maximum availability and stability – a true super brain.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="hacca-popup-promo">
+        <span class="hacca-popup-promo-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"></polyline><rect x="2" y="7" width="20" height="5"></rect><line x1="12" y1="22" x2="12" y2="7"></line><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path></svg>
+        </span>
+        <span lang="de">Jetzt anmelden &amp; Chance auf <strong>1 Monat gratis</strong> sichern! Kostenlose Version ebenfalls verfügbar.</span>
+        <span lang="en">Sign up now &amp; get a chance for <strong>1 free month</strong>! Free version also available.</span>
+      </div>
+
+      <div class="hacca-popup-actions">
+        <a href="https://hacca.ai" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-arrow hacca-popup-cta">
+          <span lang="de">Jetzt entdecken auf hacca.ai</span>
+          <span lang="en">Discover now on hacca.ai</span>
+        </a>
+        <button class="btn btn-secondary hacca-popup-dismiss" id="hacca-popup-later">
+          <span lang="de">Später ansehen</span>
+          <span lang="en">Maybe Later</span>
+        </button>
+      </div>
+
+      <p class="hacca-popup-footer-note">
+        <span lang="de">Ein Produkt auf Basis der S&S Connect Infrastruktur.</span>
+        <span lang="en">A product built on S&S Connect infrastructure.</span>
+      </p>
+    </div>
+  </div>
 
   <script src="js/main.js"></script>
 </body>
