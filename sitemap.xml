@@ -10,37 +10,37 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://sundsconnect.de/services.html</loc>
-    <xhtml:link rel="alternate" hreflang="de" href="https://sundsconnect.de/services.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://sundsconnect.de/services.html"/>
+    <loc>https://sundsconnect.de/services/</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://sundsconnect.de/services/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sundsconnect.de/services/"/>
     <lastmod>2026-03-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://sundsconnect.de/projects.html</loc>
-    <xhtml:link rel="alternate" hreflang="de" href="https://sundsconnect.de/projects.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://sundsconnect.de/projects.html"/>
+    <loc>https://sundsconnect.de/projects/</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://sundsconnect.de/projects/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sundsconnect.de/projects/"/>
     <lastmod>2026-03-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://sundsconnect.de/contact.html</loc>
-    <xhtml:link rel="alternate" hreflang="de" href="https://sundsconnect.de/contact.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://sundsconnect.de/contact.html"/>
+    <loc>https://sundsconnect.de/contact/</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://sundsconnect.de/contact/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sundsconnect.de/contact/"/>
     <lastmod>2026-03-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sundsconnect.de/impressum.html</loc>
+    <loc>https://sundsconnect.de/impressum/</loc>
     <lastmod>2026-03-09</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://sundsconnect.de/datenschutz.html</loc>
+    <loc>https://sundsconnect.de/datenschutz/</loc>
     <lastmod>2026-03-09</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
