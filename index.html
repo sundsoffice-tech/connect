@@ -3,28 +3,108 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>S&S Connect – Vertrieb | Automation | AI Infrastruktur</title>
-  <meta name="description" content="S&S Connect GbR – Ihr Partner für intelligenten Vertrieb, Prozessautomation und KI-Infrastruktur. Mönchengladbach.">
+  <title>S&S Connect – Vertrieb, Automation & AI Infrastruktur | Mönchengladbach</title>
+  <meta name="title-de" content="S&S Connect – Vertrieb, Automation & AI Infrastruktur | Mönchengladbach">
+  <meta name="title-en" content="S&S Connect – Sales, Automation & AI Infrastructure | Mönchengladbach">
+  <meta name="description" content="S&S Connect GbR verbindet Vertrieb, Prozessautomation und KI-Infrastruktur. Ihr Partner für intelligente Geschäftslösungen aus Mönchengladbach.">
+  <meta name="keywords" content="S&S Connect, Vertrieb, Automation, AI Infrastruktur, KI, LLM Orchestrierung, Mönchengladbach, HACCA RTI, Prozessautomation">
+  <meta name="author" content="S&S Connect GbR – Schippers & Singh">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://sundsconnect.de/">
+  <link rel="alternate" hreflang="de" href="https://sundsconnect.de/">
+  <link rel="alternate" hreflang="en" href="https://sundsconnect.de/">
+  <link rel="alternate" hreflang="x-default" href="https://sundsconnect.de/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://sundsconnect.de/">
+  <meta property="og:title" content="S&S Connect – Vertrieb, Automation & AI Infrastruktur">
+  <meta property="og:description" content="Ihr Partner für intelligenten Vertrieb, Prozessautomation und KI-Infrastruktur aus Mönchengladbach.">
+  <meta property="og:image" content="https://sundsconnect.de/assets/img/logo.png">
+  <meta property="og:locale" content="de_DE">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:site_name" content="S&S Connect">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="S&S Connect – Vertrieb, Automation & AI Infrastruktur">
+  <meta name="twitter:description" content="Intelligente Systeme für echtes Wachstum. Vertrieb, Automation und KI-Infrastruktur aus Mönchengladbach.">
+  <meta name="twitter:image" content="https://sundsconnect.de/assets/img/logo.png">
+
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" href="assets/img/logo.png" type="image/png">
+
+  <!-- Structured Data: Organization -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "S&S Connect GbR",
+    "legalName": "S&S Connect GbR – Schippers & Singh",
+    "url": "https://sundsconnect.de",
+    "logo": "https://sundsconnect.de/assets/img/logo.png",
+    "description": "S&S Connect verbindet Vertrieb, Automation und KI-Infrastruktur zu intelligenten Geschäftslösungen.",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Nobelstraße 3-5",
+      "addressLocality": "Mönchengladbach",
+      "postalCode": "41189",
+      "addressCountry": "DE"
+    },
+    "telephone": "+4917631570041",
+    "vatID": "DE456837969",
+    "foundingDate": "2023-12-06",
+    "areaServed": "DE",
+    "knowsAbout": ["Vertrieb", "Automation", "AI Infrastruktur", "LLM Orchestrierung", "E-Commerce"],
+    "sameAs": []
+  }
+  </script>
+
+  <!-- Structured Data: WebSite with search -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "S&S Connect",
+    "url": "https://sundsconnect.de",
+    "inLanguage": ["de", "en"],
+    "publisher": {
+      "@type": "Organization",
+      "name": "S&S Connect GbR"
+    }
+  }
+  </script>
 </head>
 <body class="lang-de">
 
+  <!-- A11y: Screen reader announcer for dynamic changes -->
+  <div id="sr-announcer" aria-live="polite" aria-atomic="true" class="sr-only"></div>
+
+  <!-- A11y: Skip navigation -->
+  <a href="#main-content" class="skip-link">
+    <span lang-content="de">Zum Inhalt springen</span>
+    <span lang-content="en">Skip to content</span>
+  </a>
+
   <!-- Navigation -->
-  <nav class="nav">
+  <nav class="nav" role="navigation" aria-label="Hauptnavigation">
     <div class="container">
-      <a href="index.html" class="nav-logo">
-        <img src="assets/img/logo.png" alt="S&S Connect Logo">
+      <a href="index.html" class="nav-logo" aria-label="S&S Connect – Startseite">
+        <img src="assets/img/logo.png" alt="S&S Connect Logo – Teal-farbenes Pfeil-Symbol" width="60" height="60">
         <span>S&S Connect</span>
       </a>
 
-      <button class="nav-hamburger" aria-label="Menu">
+      <button class="nav-hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="nav-menu">
         <span></span><span></span><span></span>
       </button>
 
-      <div class="nav-menu">
-        <ul class="nav-links">
-          <li><a href="index.html" class="active">Home</a></li>
+      <div class="nav-menu" id="nav-menu" aria-hidden="true">
+        <ul class="nav-links" role="list">
+          <li><a href="index.html" aria-current="page">Home</a></li>
           <li>
             <a href="services.html">
               <span class="lang-de-inline">Leistungen</span>
@@ -46,178 +126,173 @@
         </ul>
 
         <div class="nav-actions">
-          <div class="lang-switch">
-            <button data-lang="de">DE</button>
-            <button data-lang="en">EN</button>
+          <div class="lang-switch" role="group" aria-label="Sprachauswahl">
+            <button data-lang="de" aria-pressed="true" aria-label="Deutsch">DE</button>
+            <button data-lang="en" aria-pressed="false" aria-label="English">EN</button>
           </div>
         </div>
       </div>
     </div>
   </nav>
 
-  <!-- Hero -->
-  <section class="hero">
-    <div class="hero-glow"></div>
-    <div class="container">
-      <div class="hero-content">
-        <div class="hero-badge reveal">
-          <span class="dot"></span>
-          <span lang-content="de">Mönchengladbach, Deutschland</span>
-          <span lang-content="en">Mönchengladbach, Germany</span>
+  <!-- Main Content -->
+  <main id="main-content">
+
+    <!-- Hero -->
+    <section class="hero" aria-labelledby="hero-heading">
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-badge reveal" aria-hidden="true">
+            <span class="dot"></span>
+            <span lang-content="de">Mönchengladbach, Deutschland</span>
+            <span lang-content="en">Mönchengladbach, Germany</span>
+          </div>
+
+          <h1 id="hero-heading" class="reveal reveal-delay-1">
+            <span lang-content="de">Intelligente Systeme<br>für echtes Wachstum</span>
+            <span lang-content="en">Intelligent Systems<br>for Real Growth</span>
+          </h1>
+
+          <p class="hero-subtitle reveal reveal-delay-2">
+            <span lang-content="de">S&S Connect verbindet Vertrieb, Automation und KI-Infrastruktur zu einer Einheit – damit Ihr Unternehmen schneller, smarter und skalierbarer wird.</span>
+            <span lang-content="en">S&S Connect unifies sales, automation, and AI infrastructure into one force – making your business faster, smarter, and more scalable.</span>
+          </p>
+
+          <div class="hero-actions reveal reveal-delay-3">
+            <a href="services.html" class="btn btn-primary btn-arrow">
+              <span lang-content="de">Leistungen entdecken</span>
+              <span lang-content="en">Explore Services</span>
+            </a>
+            <a href="contact.html" class="btn btn-secondary">
+              <span lang-content="de">Kontakt aufnehmen</span>
+              <span lang-content="en">Get in Touch</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="section" aria-label="Kennzahlen">
+      <div class="container">
+        <div class="stats-bar reveal" role="list">
+          <div class="stat" role="listitem">
+            <div class="stat-value" data-count="3" data-suffix="+" aria-label="3+ aktive Projekte">0+</div>
+            <div class="stat-label">
+              <span lang-content="de">Aktive Projekte</span>
+              <span lang-content="en">Active Projects</span>
+            </div>
+          </div>
+          <div class="stat" role="listitem">
+            <div class="stat-value" data-count="53" data-suffix="K+" aria-label="53.000+ Zeilen Code">0K+</div>
+            <div class="stat-label">
+              <span lang-content="de">Zeilen Code</span>
+              <span lang-content="en">Lines of Code</span>
+            </div>
+          </div>
+          <div class="stat" role="listitem">
+            <div class="stat-value" data-count="881" data-suffix="K" aria-label="881.000 Benchmarks">0K</div>
+            <div class="stat-label">Benchmarks</div>
+          </div>
+          <div class="stat" role="listitem">
+            <div class="stat-value" data-count="3" aria-label="3 Kernbereiche">0</div>
+            <div class="stat-label">
+              <span lang-content="de">Kernbereiche</span>
+              <span lang-content="en">Core Areas</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Core Areas -->
+    <section class="section" aria-labelledby="services-heading">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="label">
+            <span lang-content="de">Was wir tun</span>
+            <span lang-content="en">What We Do</span>
+          </span>
+          <h2 id="services-heading">
+            <span lang-content="de">Drei Säulen.<br>Eine <span class="text-gradient">Vision.</span></span>
+            <span lang-content="en">Three Pillars.<br>One <span class="text-gradient">Vision.</span></span>
+          </h2>
+          <p>
+            <span lang-content="de">Wir bauen die Brücke zwischen Vertrieb, Automation und künstlicher Intelligenz.</span>
+            <span lang-content="en">We bridge the gap between sales, automation, and artificial intelligence.</span>
+          </p>
         </div>
 
-        <h1 class="reveal reveal-delay-1">
-          <span lang-content="de">Intelligente Systeme<br>für echtes Wachstum</span>
-          <span lang-content="en">Intelligent Systems<br>for Real Growth</span>
-        </h1>
+        <div class="grid grid-3">
+          <!-- Vertrieb -->
+          <article class="card reveal" aria-labelledby="card-vertrieb">
+            <div class="card-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+            </div>
+            <h3 id="card-vertrieb">Vertrieb</h3>
+            <p>
+              <span lang-content="de">Strategischer Aufbau von Vertriebskanälen und Distributionsnetzwerken. Wir optimieren Ihre Sales-Pipeline von A bis Z.</span>
+              <span lang-content="en">Strategic development of sales channels and distribution networks. We optimize your sales pipeline from end to end.</span>
+            </p>
+          </article>
 
-        <p class="hero-subtitle reveal reveal-delay-2">
-          <span lang-content="de">S&S Connect verbindet Vertrieb, Automation und KI-Infrastruktur zu einer Einheit – damit Ihr Unternehmen schneller, smarter und skalierbarer wird.</span>
-          <span lang-content="en">S&S Connect unifies sales, automation, and AI infrastructure into one force – making your business faster, smarter, and more scalable.</span>
-        </p>
+          <!-- Automation -->
+          <article class="card reveal" aria-labelledby="card-automation">
+            <div class="card-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            </div>
+            <h3 id="card-automation">Automation</h3>
+            <p>
+              <span lang-content="de">Prozesse automatisieren, Workflows beschleunigen, Ressourcen freisetzen. Von der Idee bis zur vollautomatisierten Pipeline.</span>
+              <span lang-content="en">Automate processes, accelerate workflows, free up resources. From idea to fully automated pipeline.</span>
+            </p>
+          </article>
 
-        <div class="hero-actions reveal reveal-delay-3">
-          <a href="services.html" class="btn btn-primary btn-arrow">
-            <span lang-content="de">Leistungen entdecken</span>
-            <span lang-content="en">Explore Services</span>
+          <!-- AI Infrastruktur -->
+          <article class="card reveal" aria-labelledby="card-ai">
+            <div class="card-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+            </div>
+            <h3 id="card-ai">AI Infrastruktur</h3>
+            <p>
+              <span lang-content="de">KI-Systeme, LLM-Orchestrierung und intelligente Automation. Wir bauen die Infrastruktur für die nächste Generation Ihres Business.</span>
+              <span lang-content="en">AI systems, LLM orchestration, and intelligent automation. We build the infrastructure for the next generation of your business.</span>
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section" aria-labelledby="cta-heading">
+      <div class="container">
+        <div class="reveal">
+          <h2 id="cta-heading">
+            <span lang-content="de">Bereit für den <span class="text-gradient">nächsten Schritt</span>?</span>
+            <span lang-content="en">Ready for the <span class="text-gradient">next step</span>?</span>
+          </h2>
+          <p>
+            <span lang-content="de">Lassen Sie uns gemeinsam herausfinden, wie S&S Connect Ihr Unternehmen transformieren kann.</span>
+            <span lang-content="en">Let's discover together how S&S Connect can transform your business.</span>
+          </p>
+          <a href="contact.html" class="btn btn-primary btn-arrow">
+            <span lang-content="de">Jetzt Kontakt aufnehmen</span>
+            <span lang-content="en">Get in Touch Now</span>
           </a>
-          <a href="contact.html" class="btn btn-secondary">
-            <span lang-content="de">Kontakt aufnehmen</span>
-            <span lang-content="en">Get in Touch</span>
-          </a>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Stats -->
-  <section class="section">
-    <div class="container">
-      <div class="stats-bar reveal">
-        <div class="stat">
-          <div class="stat-value" data-count="3" data-suffix="+">0+</div>
-          <div class="stat-label">
-            <span lang-content="de">Aktive Projekte</span>
-            <span lang-content="en">Active Projects</span>
-          </div>
-        </div>
-        <div class="stat">
-          <div class="stat-value" data-count="53" data-suffix="K+">0K+</div>
-          <div class="stat-label">
-            <span lang-content="de">Zeilen Code</span>
-            <span lang-content="en">Lines of Code</span>
-          </div>
-        </div>
-        <div class="stat">
-          <div class="stat-value" data-count="881" data-suffix="K">0K</div>
-          <div class="stat-label">Benchmarks</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value" data-count="3">0</div>
-          <div class="stat-label">
-            <span lang-content="de">Kernbereiche</span>
-            <span lang-content="en">Core Areas</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Core Areas -->
-  <section class="section">
-    <div class="container">
-      <div class="section-header reveal">
-        <span class="label">
-          <span lang-content="de">Was wir tun</span>
-          <span lang-content="en">What We Do</span>
-        </span>
-        <h2>
-          <span lang-content="de">Drei Säulen.<br>Eine <span class="text-gradient">Vision.</span></span>
-          <span lang-content="en">Three Pillars.<br>One <span class="text-gradient">Vision.</span></span>
-        </h2>
-        <p>
-          <span lang-content="de">Wir bauen die Brücke zwischen Vertrieb, Automation und künstlicher Intelligenz.</span>
-          <span lang-content="en">We bridge the gap between sales, automation, and artificial intelligence.</span>
-        </p>
-      </div>
-
-      <div class="grid grid-3">
-        <!-- Vertrieb -->
-        <div class="card reveal">
-          <div class="card-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
-            </svg>
-          </div>
-          <h3>Vertrieb</h3>
-          <p>
-            <span lang-content="de">Strategischer Aufbau von Vertriebskanälen und Distributionsnetzwerken. Wir optimieren Ihre Sales-Pipeline von A bis Z.</span>
-            <span lang-content="en">Strategic development of sales channels and distribution networks. We optimize your sales pipeline from end to end.</span>
-          </p>
-        </div>
-
-        <!-- Automation -->
-        <div class="card reveal">
-          <div class="card-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-              <line x1="8" y1="21" x2="16" y2="21"></line>
-              <line x1="12" y1="17" x2="12" y2="21"></line>
-            </svg>
-          </div>
-          <h3>Automation</h3>
-          <p>
-            <span lang-content="de">Prozesse automatisieren, Workflows beschleunigen, Ressourcen freisetzen. Von der Idee bis zur vollautomatisierten Pipeline.</span>
-            <span lang-content="en">Automate processes, accelerate workflows, free up resources. From idea to fully automated pipeline.</span>
-          </p>
-        </div>
-
-        <!-- AI Infrastruktur -->
-        <div class="card reveal">
-          <div class="card-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
-              <path d="M2 17l10 5 10-5"></path>
-              <path d="M2 12l10 5 10-5"></path>
-            </svg>
-          </div>
-          <h3>AI Infrastruktur</h3>
-          <p>
-            <span lang-content="de">KI-Systeme, LLM-Orchestrierung und intelligente Automation. Wir bauen die Infrastruktur für die nächste Generation Ihres Business.</span>
-            <span lang-content="en">AI systems, LLM orchestration, and intelligent automation. We build the infrastructure for the next generation of your business.</span>
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="cta-section">
-    <div class="container">
-      <div class="reveal">
-        <h2>
-          <span lang-content="de">Bereit für den <span class="text-gradient">nächsten Schritt</span>?</span>
-          <span lang-content="en">Ready for the <span class="text-gradient">next step</span>?</span>
-        </h2>
-        <p>
-          <span lang-content="de">Lassen Sie uns gemeinsam herausfinden, wie S&S Connect Ihr Unternehmen transformieren kann.</span>
-          <span lang-content="en">Let's discover together how S&S Connect can transform your business.</span>
-        </p>
-        <a href="contact.html" class="btn btn-primary btn-arrow">
-          <span lang-content="de">Jetzt Kontakt aufnehmen</span>
-          <span lang-content="en">Get in Touch Now</span>
-        </a>
-      </div>
-    </div>
-  </section>
+  </main>
 
   <!-- Footer -->
-  <footer class="footer">
+  <footer class="footer" role="contentinfo">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <a href="index.html" class="nav-logo">
-            <img src="assets/img/logo.png" alt="S&S Connect" style="height:32px">
+          <a href="index.html" class="nav-logo footer-logo" aria-label="S&S Connect – Startseite">
+            <img src="assets/img/logo.png" alt="" width="48" height="48">
             <span>S&S Connect</span>
           </a>
           <p>
@@ -226,26 +301,26 @@
           </p>
         </div>
 
-        <div>
+        <nav aria-label="Footer-Navigation">
           <div class="footer-heading">Navigation</div>
-          <ul class="footer-links">
+          <ul class="footer-links" role="list">
             <li><a href="index.html">Home</a></li>
             <li><a href="services.html"><span class="lang-de-inline">Leistungen</span><span class="lang-en-inline">Services</span></a></li>
             <li><a href="projects.html"><span class="lang-de-inline">Projekte</span><span class="lang-en-inline">Projects</span></a></li>
             <li><a href="contact.html"><span class="lang-de-inline">Kontakt</span><span class="lang-en-inline">Contact</span></a></li>
           </ul>
-        </div>
+        </nav>
 
         <div>
           <div class="footer-heading">
             <span lang-content="de">Kontakt</span>
             <span lang-content="en">Contact</span>
           </div>
-          <ul class="footer-links">
-            <li>Nobelstraße 3-5</li>
-            <li>41189 Mönchengladbach</li>
-            <li style="margin-top:0.5rem">+49 176 31570041</li>
-          </ul>
+          <address class="footer-links" style="font-style:normal;">
+            <p>Nobelstraße 3-5</p>
+            <p>41189 Mönchengladbach</p>
+            <p style="margin-top:0.5rem"><a href="tel:+4917631570041">+49 176 31570041</a></p>
+          </address>
         </div>
       </div>
 

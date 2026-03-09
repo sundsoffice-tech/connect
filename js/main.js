@@ -1,5 +1,6 @@
 /* ============================================
    S&S CONNECT - Main JavaScript
+   A11y-enhanced, SEO-aware
    ============================================ */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -17,11 +18,28 @@ document.addEventListener('DOMContentLoaded', () => {
   function setLanguage(lang) {
     document.body.classList.remove('lang-de', 'lang-en');
     document.body.classList.add(`lang-${lang}`);
+    document.documentElement.setAttribute('lang', lang);
     localStorage.setItem('ss-lang', lang);
 
     document.querySelectorAll('.lang-switch button').forEach(b => {
-      b.classList.toggle('active', b.dataset.lang === lang);
+      const isActive = b.dataset.lang === lang;
+      b.setAttribute('aria-pressed', isActive);
     });
+
+    // Update page title based on language
+    const titleDe = document.querySelector('meta[name="title-de"]');
+    const titleEn = document.querySelector('meta[name="title-en"]');
+    if (titleDe && titleEn) {
+      document.title = lang === 'de' ? titleDe.content : titleEn.content;
+    }
+
+    // Announce language change to screen readers
+    const announcer = document.getElementById('sr-announcer');
+    if (announcer) {
+      announcer.textContent = lang === 'de'
+        ? 'Sprache auf Deutsch geändert'
+        : 'Language changed to English';
+    }
   }
 
   // --- Navbar Scroll ---
@@ -45,24 +63,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (hamburger && navMenu) {
     hamburger.addEventListener('click', () => {
-      hamburger.classList.toggle('open');
-      navMenu.classList.toggle('open');
-      document.body.style.overflow = navMenu.classList.contains('open') ? 'hidden' : '';
+      const isOpen = hamburger.getAttribute('aria-expanded') === 'true';
+      hamburger.setAttribute('aria-expanded', !isOpen);
+      navMenu.setAttribute('aria-hidden', isOpen);
+      document.body.style.overflow = isOpen ? '' : 'hidden';
     });
 
+    // Close on link click
     navMenu.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', () => {
-        hamburger.classList.remove('open');
-        navMenu.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+        navMenu.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = '';
       });
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && hamburger.getAttribute('aria-expanded') === 'true') {
+        hamburger.setAttribute('aria-expanded', 'false');
+        navMenu.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        hamburger.focus();
+      }
     });
   }
 
   // --- Scroll Reveal ---
   const revealElements = document.querySelectorAll('.reveal');
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  if ('IntersectionObserver' in window) {
+  if (prefersReducedMotion) {
+    revealElements.forEach(el => el.classList.add('visible'));
+  } else if ('IntersectionObserver' in window) {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -80,12 +113,12 @@ document.addEventListener('DOMContentLoaded', () => {
     revealElements.forEach(el => el.classList.add('visible'));
   }
 
-  // --- Active Navigation Link ---
+  // --- Active Navigation Link (aria-current) ---
   const currentPage = window.location.pathname.split('/').pop() || 'index.html';
   document.querySelectorAll('.nav-links a').forEach(link => {
     const href = link.getAttribute('href');
     if (href === currentPage || (currentPage === '' && href === 'index.html')) {
-      link.classList.add('active');
+      link.setAttribute('aria-current', 'page');
     }
   });
 
@@ -95,24 +128,34 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       const btn = form.querySelector('button[type="submit"]');
-      const originalText = btn.textContent;
+      const statusEl = document.getElementById('form-status');
 
-      btn.textContent = document.body.classList.contains('lang-de')
-        ? 'Gesendet!' : 'Sent!';
-      btn.style.background = 'var(--clr-teal-dark)';
+      btn.setAttribute('disabled', 'true');
+
+      if (statusEl) {
+        const isDE = document.body.classList.contains('lang-de');
+        statusEl.textContent = isDE
+          ? 'Vielen Dank! Ihre Nachricht wurde gesendet.'
+          : 'Thank you! Your message has been sent.';
+        statusEl.classList.add('success');
+        statusEl.setAttribute('role', 'status');
+      }
 
       setTimeout(() => {
-        btn.textContent = originalText;
-        btn.style.background = '';
+        btn.removeAttribute('disabled');
+        if (statusEl) {
+          statusEl.classList.remove('success');
+          statusEl.textContent = '';
+        }
         form.reset();
-      }, 2500);
+      }, 4000);
     });
   }
 
   // --- Counter Animation ---
   const counters = document.querySelectorAll('[data-count]');
 
-  if (counters.length && 'IntersectionObserver' in window) {
+  if (counters.length && 'IntersectionObserver' in window && !prefersReducedMotion) {
     const countObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -123,6 +166,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { threshold: 0.5 });
 
     counters.forEach(el => countObserver.observe(el));
+  } else {
+    counters.forEach(el => {
+      const suffix = el.dataset.suffix || '';
+      const prefix = el.dataset.prefix || '';
+      el.textContent = prefix + el.dataset.count + suffix;
+    });
   }
 
   function animateCounter(el) {
