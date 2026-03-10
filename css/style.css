@@ -152,6 +152,9 @@ html {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -161,6 +164,7 @@ body {
   line-height: 1.7;
   overflow-x: hidden;
   min-height: 100vh;
+  min-height: 100dvh;
 }
 
 /* --- Skip Navigation (A11y) --- */
@@ -735,6 +739,7 @@ body.lang-en .lang-en-inline { display: inline; }
 
 /* --- Hero Section --- */
 .hero {
+  min-height: 100dvh;
   min-height: 100svh;
   display: flex;
   align-items: center;
@@ -1934,14 +1939,25 @@ body.lang-en .lang-en-inline { display: inline; }
 /* Popup mobile */
 @media (max-width: 480px) {
   .hacca-popup {
-    padding: 0.75rem;
+    padding: 0;
     align-items: flex-end;
   }
   .hacca-popup-container {
-    padding: 1.25rem;
-    border-radius: var(--radius-lg) var(--radius-lg) var(--radius-md) var(--radius-md);
-    max-height: 90vh;
+    padding: 1.25rem 1rem;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    max-height: 88vh;
+    max-height: 88dvh;
     overflow-y: auto;
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
+    -webkit-overflow-scrolling: touch;
+  }
+  .hacca-popup-title {
+    font-size: clamp(1.4rem, 7vw, 1.8rem);
+  }
+  .hacca-popup-subtitle {
+    font-size: 0.88rem;
   }
   .hacca-popup-feature {
     padding: 0.5rem 0.65rem;
@@ -1949,6 +1965,12 @@ body.lang-en .lang-en-inline { display: inline; }
   .hacca-popup-feature-icon {
     width: 32px;
     height: 32px;
+  }
+  .hacca-popup-features {
+    gap: 0.5rem;
+  }
+  .hacca-popup-glow {
+    display: none;
   }
 }
 
