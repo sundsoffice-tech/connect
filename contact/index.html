@@ -28,9 +28,14 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Kontakt – S&S Connect">
   <meta name="twitter:description" content="Kontaktieren Sie S&S Connect in Mönchengladbach.">
+  <meta name="twitter:image" content="https://sundsconnect.de/assets/img/og-image.png">
 
+  <!-- Font Preloading für Performance -->
+  <link rel="preload" href="../assets/img/logo-120.png" as="image" fetchpriority="high">
+  <link rel="preload" href="../assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../assets/fonts/syne-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="../css/style.css">
-  <link rel="icon" href="../assets/img/logo.png" type="image/png">
+  <link rel="icon" href="../assets/img/logo-120.png" type="image/png">
 
   <script type="application/ld+json">
   {
@@ -313,6 +318,6 @@
     </div>
   </div>
 
-  <script src="../js/main.js"></script>
+  <script src="../js/main.js" defer></script>
 </body>
 </html>

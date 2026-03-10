@@ -274,11 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
         haccaPopup.setAttribute('aria-hidden', 'false');
         haccaPopup.classList.add('visible');
         document.body.classList.add('hacca-popup-open');
-
-        // Focus the close button for accessibility
-        const closeBtn = document.getElementById('hacca-popup-close');
-        if (closeBtn) closeBtn.focus();
-      }, 2000);
+      }, 5000);
     }
 
     function closeHaccaPopup() {
