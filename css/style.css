@@ -2492,9 +2492,12 @@ body.hacca-popup-open {
   line-height: 1.6;
 }
 
-/* Webdesign Teaser (Homepage) */
+/* Webdesign Teaser Section (Homepage – eigene Section) */
+.webdesign-teaser-section {
+  padding: var(--space-lg) 0 var(--space-xl);
+}
+
 .webdesign-teaser {
-  margin-top: var(--space-xl);
   text-align: center;
 }
 
