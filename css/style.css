@@ -2134,7 +2134,7 @@ body.hacca-popup-open {
 
 .webdesign-section {
   position: relative;
-  padding: var(--space-3xl) 0;
+  padding: clamp(var(--space-xl), 8vw, var(--space-3xl)) 0;
   overflow: hidden;
 }
 
@@ -2150,7 +2150,7 @@ body.hacca-popup-open {
 
 .webdesign-header {
   text-align: center;
-  margin-bottom: var(--space-xl);
+  margin-bottom: clamp(var(--space-lg), 5vw, var(--space-xl));
 }
 
 .webdesign-header .feature-number {
@@ -2163,7 +2163,7 @@ body.hacca-popup-open {
 
 .webdesign-header h2 {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-size: clamp(1.6rem, 5vw, 3.2rem);
   font-weight: 800;
   line-height: 1.15;
   margin-bottom: var(--space-md);
@@ -2173,7 +2173,7 @@ body.hacca-popup-open {
   max-width: 640px;
   margin: 0 auto;
   color: var(--clr-text-muted);
-  font-size: 1.1rem;
+  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
   line-height: 1.7;
 }
 
@@ -2181,16 +2181,18 @@ body.hacca-popup-open {
 .webdesign-guarantee {
   display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
   background: linear-gradient(135deg, rgba(0, 212, 170, 0.08) 0%, rgba(0, 119, 182, 0.08) 100%);
   border: 1px solid rgba(0, 212, 170, 0.25);
   border-radius: 100px;
-  padding: 0.65rem 1.5rem;
+  padding: 0.55rem 1.25rem;
   margin-top: var(--space-md);
-  font-size: 0.9rem;
+  font-size: clamp(0.75rem, 2vw, 0.9rem);
   font-weight: 600;
   color: var(--clr-teal-light);
   animation: guaranteePulse 3s ease-in-out infinite;
+  max-width: 100%;
+  text-align: center;
 }
 
 @keyframes guaranteePulse {
@@ -2205,9 +2207,9 @@ body.hacca-popup-open {
 /* Pricing Cards Grid */
 .webdesign-pricing {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--space-lg);
-  margin-bottom: var(--space-xl);
+  margin-bottom: clamp(var(--space-lg), 5vw, var(--space-xl));
 }
 
 .pricing-card {
@@ -2217,7 +2219,7 @@ body.hacca-popup-open {
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--clr-border);
   border-radius: var(--radius-lg);
-  padding: var(--space-lg);
+  padding: clamp(1.25rem, 4vw, var(--space-lg));
   transition: all var(--transition-smooth);
   overflow: hidden;
 }
@@ -2269,7 +2271,7 @@ body.hacca-popup-open {
 
 .pricing-card h3 {
   font-family: var(--font-display);
-  font-size: 1.4rem;
+  font-size: clamp(1.15rem, 3vw, 1.4rem);
   font-weight: 700;
   margin-bottom: var(--space-xs);
   color: var(--clr-text);
@@ -2277,7 +2279,7 @@ body.hacca-popup-open {
 
 .pricing-card-desc {
   color: var(--clr-text-muted);
-  font-size: 0.9rem;
+  font-size: clamp(0.82rem, 2vw, 0.9rem);
   margin-bottom: var(--space-md);
   line-height: 1.6;
 }
@@ -2287,11 +2289,12 @@ body.hacca-popup-open {
   align-items: baseline;
   gap: 0.25rem;
   margin-bottom: 0.25rem;
+  flex-wrap: wrap;
 }
 
 .pricing-amount {
   font-family: var(--font-display);
-  font-size: 2.8rem;
+  font-size: clamp(2rem, 6vw, 2.8rem);
   font-weight: 800;
   background: var(--gradient-main);
   -webkit-background-clip: text;
@@ -2302,13 +2305,13 @@ body.hacca-popup-open {
 
 .pricing-currency {
   font-family: var(--font-display);
-  font-size: 1.4rem;
+  font-size: clamp(1rem, 3vw, 1.4rem);
   font-weight: 700;
   color: var(--clr-teal);
 }
 
 .pricing-period {
-  font-size: 0.85rem;
+  font-size: clamp(0.75rem, 2vw, 0.85rem);
   color: var(--clr-text-dim);
   margin-bottom: var(--space-md);
 }
@@ -2322,9 +2325,9 @@ body.hacca-popup-open {
 .pricing-features li {
   display: flex;
   align-items: flex-start;
-  gap: 0.75rem;
-  padding: 0.55rem 0;
-  font-size: 0.9rem;
+  gap: 0.6rem;
+  padding: 0.5rem 0;
+  font-size: clamp(0.8rem, 2vw, 0.9rem);
   color: var(--clr-text-muted);
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
@@ -2342,20 +2345,21 @@ body.hacca-popup-open {
 /* Trust Bar */
 .webdesign-trust {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: var(--space-md);
-  margin-bottom: var(--space-xl);
+  margin-bottom: clamp(var(--space-lg), 5vw, var(--space-xl));
 }
 
 .trust-item {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
   background: var(--clr-bg-card);
   border: 1px solid var(--clr-border);
   border-radius: var(--radius-md);
-  padding: 1.25rem 1.5rem;
+  padding: clamp(0.85rem, 2.5vw, 1.25rem) clamp(0.75rem, 2vw, 1.5rem);
   transition: all var(--transition-fast);
+  min-width: 0;
 }
 
 .trust-item:hover {
@@ -2367,24 +2371,28 @@ body.hacca-popup-open {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
+  width: clamp(36px, 8vw, 48px);
+  height: clamp(36px, 8vw, 48px);
   border-radius: 50%;
   background: rgba(0, 212, 170, 0.1);
   color: var(--clr-teal);
   flex-shrink: 0;
 }
 
+.trust-item-text {
+  min-width: 0;
+}
+
 .trust-item-text strong {
   display: block;
   font-family: var(--font-display);
-  font-size: 1.3rem;
+  font-size: clamp(1rem, 3vw, 1.3rem);
   font-weight: 800;
   color: var(--clr-text);
 }
 
 .trust-item-text span {
-  font-size: 0.8rem;
+  font-size: clamp(0.68rem, 1.5vw, 0.8rem);
   color: var(--clr-text-dim);
 }
 
@@ -2394,7 +2402,7 @@ body.hacca-popup-open {
   background: linear-gradient(135deg, rgba(0, 212, 170, 0.04) 0%, rgba(0, 119, 182, 0.04) 100%);
   border: 1px solid var(--clr-border);
   border-radius: var(--radius-lg);
-  padding: var(--space-lg);
+  padding: clamp(1.25rem, 4vw, var(--space-lg));
   text-align: center;
   overflow: hidden;
 }
@@ -2412,7 +2420,7 @@ body.hacca-popup-open {
 
 .webdesign-reference h3 {
   font-family: var(--font-display);
-  font-size: 1.1rem;
+  font-size: clamp(0.95rem, 2.5vw, 1.1rem);
   font-weight: 700;
   margin-bottom: var(--space-sm);
   color: var(--clr-text);
@@ -2420,7 +2428,7 @@ body.hacca-popup-open {
 
 .webdesign-reference p {
   color: var(--clr-text-muted);
-  font-size: 0.95rem;
+  font-size: clamp(0.82rem, 2vw, 0.95rem);
   max-width: 560px;
   margin: 0 auto var(--space-md);
 }
@@ -2431,7 +2439,7 @@ body.hacca-popup-open {
   gap: 0.5rem;
   color: var(--clr-teal);
   font-weight: 600;
-  font-size: 1rem;
+  font-size: clamp(0.85rem, 2vw, 1rem);
   text-decoration: none;
   padding: 0.5rem 1.25rem;
   border: 1px solid rgba(0, 212, 170, 0.3);
@@ -2448,67 +2456,134 @@ body.hacca-popup-open {
 /* Process Steps */
 .webdesign-process {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: var(--space-md);
-  margin-bottom: var(--space-xl);
+  margin-bottom: clamp(var(--space-lg), 5vw, var(--space-xl));
 }
 
 .process-step {
   position: relative;
   text-align: center;
-  padding: var(--space-lg) var(--space-md);
+  padding: clamp(1rem, 3vw, var(--space-lg)) clamp(0.5rem, 2vw, var(--space-md));
 }
 
 .process-step-num {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
+  width: clamp(38px, 8vw, 48px);
+  height: clamp(38px, 8vw, 48px);
   border-radius: 50%;
   background: var(--gradient-main);
   color: var(--clr-bg-deep);
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: 1.1rem;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
   margin-bottom: var(--space-sm);
 }
 
 .process-step h4 {
   font-family: var(--font-display);
-  font-size: 1rem;
+  font-size: clamp(0.85rem, 2vw, 1rem);
   font-weight: 700;
   margin-bottom: var(--space-xs);
   color: var(--clr-text);
 }
 
 .process-step p {
-  font-size: 0.85rem;
+  font-size: clamp(0.78rem, 1.8vw, 0.85rem);
   color: var(--clr-text-muted);
   line-height: 1.6;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .webdesign-pricing {
-    grid-template-columns: 1fr;
-  }
+/* Webdesign Teaser (Homepage) */
+.webdesign-teaser {
+  margin-top: var(--space-xl);
+  text-align: center;
+}
+
+.webdesign-teaser-inner {
+  background: linear-gradient(135deg, rgba(0,212,170,0.06) 0%, rgba(0,119,182,0.06) 100%);
+  border: 1px solid rgba(0,212,170,0.2);
+  border-radius: var(--radius-lg);
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.webdesign-teaser-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 3.5vw, 1.6rem);
+  font-weight: 800;
+  margin-bottom: 0.75rem;
+}
+
+.webdesign-teaser-desc {
+  color: var(--clr-text-muted);
+  font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+  max-width: 520px;
+  margin: 0 auto 1.25rem;
+  line-height: 1.6;
+}
+
+/* --- Webdesign Responsive --- */
+@media (max-width: 900px) {
   .webdesign-trust {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
   .webdesign-process {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .webdesign-pricing {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
   }
 }
 
 @media (max-width: 480px) {
+  .webdesign-section {
+    padding: var(--space-xl) 0;
+  }
   .webdesign-trust {
     grid-template-columns: 1fr;
+    gap: 0.75rem;
   }
+  .trust-item {
+    padding: 0.85rem 1rem;
+  }
+  .trust-item-icon {
+    width: 36px;
+    height: 36px;
+  }
+  .trust-item-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+  .webdesign-process {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+  .process-step {
+    padding: 0.75rem 0.5rem;
+  }
+  .webdesign-guarantee {
+    padding: 0.5rem 1rem;
+    gap: 0.4rem;
+    border-radius: var(--radius-md);
+  }
+  .pricing-card {
+    padding: 1.25rem;
+  }
+  .webdesign-reference {
+    padding: 1.25rem;
+  }
+}
+
+@media (max-width: 360px) {
   .webdesign-process {
     grid-template-columns: 1fr;
   }
-  .pricing-amount {
-    font-size: 2.2rem;
+  .webdesign-guarantee {
+    font-size: 0.72rem;
   }
 }
