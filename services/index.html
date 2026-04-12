@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; frame-src https://www.google.com; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://formspree.io">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>Leistungen – S&S Connect | Vertrieb, Automation, AI Infrastruktur</title>
@@ -34,6 +34,8 @@
   <link rel="preload" href="../assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../assets/fonts/syne-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/gsap.min.js" defer></script>
+  <script src="../js/ScrollTrigger.min.js" defer></script>
   <link rel="icon" href="../assets/img/logo-120.png" type="image/png">
 
   <script type="application/ld+json">
@@ -53,6 +55,7 @@
 </head>
 <body class="lang-de">
 
+  <div class="scroll-progress" aria-hidden="true"></div>
   <div id="sr-announcer" aria-live="polite" aria-atomic="true" class="sr-only"></div>
   <a href="#main-content" class="skip-link">
     <span lang="de">Zum Inhalt springen</span>
@@ -299,8 +302,8 @@
               </li>
             </ul>
             <a href="../contact/" class="btn btn-secondary" style="width:100%; justify-content:center;">
-              <span lang="de">Erstgespräch buchen</span>
-              <span lang="en">Book Consultation</span>
+              <span lang="de">Kostenlose Analyse anfragen</span>
+              <span lang="en">Request Free Analysis</span>
             </a>
           </div>
 
@@ -595,8 +598,8 @@
             <span lang="en">Every project starts with a conversation. Tell us about your vision.</span>
           </p>
           <a href="../contact/" class="btn btn-primary btn-arrow">
-            <span lang="de">Kostenloses Erstgespräch buchen</span>
-            <span lang="en">Book a Free Consultation</span>
+            <span lang="de">Jetzt Wachstumsanalyse starten</span>
+            <span lang="en">Start Growth Analysis Now</span>
           </a>
         </div>
       </div>
@@ -677,8 +680,8 @@
   <!-- Sticky Mobile CTA -->
   <div class="sticky-cta" id="sticky-cta">
     <a href="../contact/" class="btn btn-primary btn-arrow">
-      <span lang="de">Kostenloses Erstgespräch</span>
-      <span lang="en">Free Consultation</span>
+      <span lang="de">Kostenlos beraten lassen</span>
+      <span lang="en">Get Free Advice</span>
     </a>
   </div>
 

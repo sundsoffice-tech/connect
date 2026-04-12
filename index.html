@@ -2,8 +2,8 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; frame-src https://www.google.com; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://formspree.io">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; frame-src 'self' https://www.google.com; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://formspree.io">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>S&S Connect – Vertrieb, Automation & AI Infrastruktur | Mönchengladbach</title>
   <meta name="title-de" content="S&S Connect – Vertrieb, Automation & AI Infrastruktur | Mönchengladbach">
@@ -40,6 +40,8 @@
   <link rel="preload" href="assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/syne-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/style.css">
+  <script src="js/gsap.min.js" defer></script>
+  <script src="js/ScrollTrigger.min.js" defer></script>
   <link rel="icon" href="assets/img/logo-120.png" type="image/png">
 
   <!-- Structured Data: Organization -->
@@ -84,6 +86,9 @@
   </script>
 </head>
 <body class="lang-de">
+
+  <!-- Scroll Progress Bar -->
+  <div class="scroll-progress" aria-hidden="true"></div>
 
   <!-- A11y: Screen reader announcer for dynamic changes -->
   <div id="sr-announcer" aria-live="polite" aria-atomic="true" class="sr-only"></div>
@@ -140,6 +145,9 @@
 
     <!-- Hero -->
     <section class="hero" aria-labelledby="hero-heading">
+      <div class="hero-canvas" aria-hidden="true">
+        <iframe src="./3d-hero/index.html" loading="lazy" style="border:0;width:100%;height:100%;position:absolute;inset:0" title=""></iframe>
+      </div>
       <div class="hero-glow" aria-hidden="true"></div>
       <div class="container">
         <div class="hero-content">
@@ -150,8 +158,8 @@
           </div>
 
           <h1 id="hero-heading" class="reveal reveal-delay-1">
-            <span lang="de">Intelligente Systeme<br>für echtes Wachstum</span>
-            <span lang="en">Intelligent Systems<br>for Real Growth</span>
+            <span lang="de">Intelligente Systeme<br>für <span class="hero-words" aria-live="off"><span class="hero-words__item active">echtes Wachstum</span><span class="hero-words__item">mehr Umsatz</span><span class="hero-words__item">neue Kunden</span><span class="hero-words__item">Ihre Zukunft</span></span></span>
+            <span lang="en">Intelligent Systems<br>for <span class="hero-words" aria-live="off"><span class="hero-words__item active">Real Growth</span><span class="hero-words__item">More Revenue</span><span class="hero-words__item">New Clients</span><span class="hero-words__item">Your Future</span></span></span>
           </h1>
 
           <p class="hero-subtitle reveal reveal-delay-2">
@@ -160,25 +168,33 @@
           </p>
 
           <div class="hero-actions reveal reveal-delay-3">
-            <a href="./services/" class="btn btn-primary btn-arrow">
-              <span lang="de">Leistungen entdecken</span>
-              <span lang="en">Explore Services</span>
+            <a href="./contact/" class="btn btn-primary btn-arrow">
+              <span lang="de">Kostenlose Analyse anfragen</span>
+              <span lang="en">Request Free Analysis</span>
             </a>
-            <a href="./contact/" class="btn btn-secondary">
-              <span lang="de">Projekt besprechen</span>
-              <span lang="en">Discuss Your Project</span>
+            <a href="./services/" class="btn btn-secondary">
+              <span lang="de">Unsere Lösungen</span>
+              <span lang="en">View Solutions</span>
             </a>
           </div>
 
-          <div class="trust-logo-bar reveal reveal-delay-3">
-            <span class="trust-logo-bar-label">
+          <div class="trust-bar reveal reveal-delay-3">
+            <span class="trust-bar__label">
               <span lang="de">Vertrauen von</span>
               <span lang="en">Trusted by</span>
             </span>
-            <span class="trust-logo-item"><span class="trust-logo-dot"></span>RA Kranz</span>
-            <span class="trust-logo-item"><span class="trust-logo-dot"></span>Sunds Messebau</span>
-            <span class="trust-logo-item"><span class="trust-logo-dot"></span>Lebensblick</span>
-            <span class="trust-logo-item"><span class="trust-logo-dot"></span>Pure Bud</span>
+            <div class="trust-bar__marquee">
+              <div class="trust-bar__track">
+                <span>RA Kranz</span>
+                <span>Sunds Messebau</span>
+                <span>Lebensblick</span>
+                <span>Pure Bud</span>
+                <span aria-hidden="true">RA Kranz</span>
+                <span aria-hidden="true">Sunds Messebau</span>
+                <span aria-hidden="true">Lebensblick</span>
+                <span aria-hidden="true">Pure Bud</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -196,8 +212,11 @@
             </div>
           </div>
           <div class="stat" role="listitem">
-            <div class="stat-value" data-count="14" data-suffix="M+ ops/s" aria-label="14M+ Ops pro Sekunde">14M+ ops/s</div>
-            <div class="stat-label">Core Throughput</div>
+            <div class="stat-value" data-count="100" data-suffix="+" aria-label="100+ zufriedene Kunden">100+</div>
+            <div class="stat-label">
+              <span lang="de">Zufriedene Kunden</span>
+              <span lang="en">Happy Clients</span>
+            </div>
           </div>
           <div class="stat" role="listitem">
             <div class="stat-value" data-count="100" data-suffix="%" aria-label="100% Contract Compliance">100%</div>
@@ -232,9 +251,9 @@
           </p>
         </div>
 
-        <div class="grid grid-3">
+        <div class="bento">
           <!-- Vertrieb -->
-          <article class="card reveal" aria-labelledby="card-vertrieb">
+          <article class="card card--xl reveal" aria-labelledby="card-vertrieb">
             <div class="card-icon" aria-hidden="true">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
             </div>
@@ -320,6 +339,11 @@
             <div class="reference-body">
               <div class="reference-name" id="ref-rakranz">RA Kranz – Familienrecht</div>
               <a href="https://www.rakranz.com/familienrecht" class="reference-domain" target="_blank" rel="noopener noreferrer">rakranz.com</a>
+              <div class="reference-result">
+                <span class="reference-result__icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></span>
+                <span lang="de">Mandantenbetreuung automatisiert</span>
+                <span lang="en">Client support automated</span>
+              </div>
               <p class="reference-desc">
                 <span lang="de">Kanzlei für Familienrecht mit Fokus auf Trennungs- und Scheidungsverfahren. Durch digitale Automationslösungen wurden interne Abläufe effizienter gestaltet und die Mandantenbetreuung optimiert.</span>
                 <span lang="en">Family law firm specializing in separation and divorce proceedings. Digital automation solutions streamlined internal workflows and enhanced client support.</span>
@@ -348,6 +372,11 @@
             <div class="reference-body">
               <div class="reference-name" id="ref-sunds-messebau">Sunds Messebau</div>
               <a href="https://sunds-messebau.de" class="reference-domain" target="_blank" rel="noopener noreferrer">sunds-messebau.de</a>
+              <div class="reference-result">
+                <span class="reference-result__icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></span>
+                <span lang="de">Digitale Prozesse eingeführt</span>
+                <span lang="en">Digital processes implemented</span>
+              </div>
               <p class="reference-desc">
                 <span lang="de">Spezialist für hochwertigen Messebau und individuelle Standlösungen. Mit maßgeschneiderten Automationsprozessen und digitalen Tools wurden Planung und Kundenmanagement spürbar beschleunigt.</span>
                 <span lang="en">Specialist for premium trade fair construction and custom exhibition stand solutions. Tailored automation processes and digital tools significantly accelerated planning and client management.</span>
@@ -376,6 +405,11 @@
             <div class="reference-body">
               <div class="reference-name" id="ref-lebensblick-zahn">Lebensblick – Zahnzusatzversicherung</div>
               <a href="https://zahnzusatz.lebens-blick.de" class="reference-domain" target="_blank" rel="noopener noreferrer">zahnzusatz.lebens-blick.de</a>
+              <div class="reference-result">
+                <span class="reference-result__icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></span>
+                <span lang="de">Online-Präsenz aufgebaut</span>
+                <span lang="en">Online presence established</span>
+              </div>
               <p class="reference-desc">
                 <span lang="de">Onepage-Landingpage für Zahnzusatzversicherungen. Kompakte, conversion-optimierte Seite mit klarer Nutzerführung – von uns konzipiert, designed und entwickelt.</span>
                 <span lang="en">One-page landing page for dental insurance. Compact, conversion-optimized page with clear user guidance – conceived, designed and developed by us.</span>
@@ -400,6 +434,28 @@
       </div>
     </section>
 
+    <!-- HACCA RTI Inline Teaser -->
+    <section class="section hacca-inline" aria-labelledby="hacca-heading">
+      <div class="container">
+        <div class="hacca-inline__card reveal">
+          <div class="hacca-inline__badge">
+            <span class="dot"></span>
+            <span lang="de">Unser Produkt</span>
+            <span lang="en">Our Product</span>
+          </div>
+          <h2 id="hacca-heading" class="hacca-inline__title">HACCA RTI</h2>
+          <p class="hacca-inline__desc">
+            <span lang="de">LLM-Orchestrierung für Enterprise-AI. Schneller, günstiger und kontrollierbarer als LangChain.</span>
+            <span lang="en">LLM orchestration for enterprise AI. Faster, cheaper, and more controllable than LangChain.</span>
+          </p>
+          <a href="https://hacca.ai" class="btn btn-secondary btn-arrow" target="_blank" rel="noopener">
+            <span lang="de">Plattform entdecken</span>
+            <span lang="en">Explore Platform</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
     <!-- CTA -->
     <section class="cta-section" aria-labelledby="cta-heading">
       <div class="container">
@@ -413,8 +469,8 @@
             <span lang="en">Let's discover together how S&S Connect can transform your business.</span>
           </p>
           <a href="./contact/" class="btn btn-primary btn-arrow">
-            <span lang="de">Kostenloses Erstgespräch buchen</span>
-            <span lang="en">Book a Free Consultation</span>
+            <span lang="de">Jetzt Wachstumsanalyse starten</span>
+            <span lang="en">Start Growth Analysis Now</span>
           </a>
         </div>
       </div>
@@ -533,98 +589,11 @@
     </div>
   </div>
 
-  <!-- Hacca Chat Promo Popup -->
-  <div id="hacca-popup" class="hacca-popup" role="dialog" aria-modal="true" aria-labelledby="hacca-popup-title" aria-hidden="true">
-    <div class="hacca-popup-backdrop"></div>
-    <div class="hacca-popup-container">
-      <button class="hacca-popup-close" aria-label="Schließen" id="hacca-popup-close">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-      </button>
-
-      <div class="hacca-popup-glow" aria-hidden="true"></div>
-
-      <div class="hacca-popup-badge">
-        <span class="hacca-popup-badge-dot"></span>
-        <span lang="de">Neues Produkt</span>
-        <span lang="en">New Product</span>
-      </div>
-
-      <h2 id="hacca-popup-title" class="hacca-popup-title">
-        <span class="hacca-popup-logo">HACCA</span> Chat
-      </h2>
-
-      <p class="hacca-popup-subtitle">
-        <span lang="de">Unser neuester KI-Chat – gebaut auf der Basis unserer eigenen HACCA-Infrastruktur.</span>
-        <span lang="en">Our latest AI chat – built on the foundation of our own HACCA infrastructure.</span>
-      </p>
-
-      <div class="hacca-popup-features">
-        <div class="hacca-popup-feature">
-          <div class="hacca-popup-feature-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-          </div>
-          <div>
-            <strong lang="de">Ultraschnell</strong>
-            <strong lang="en">Ultra Fast</strong>
-            <p lang="de">Antworten in Echtzeit – schneller als alles in der Kategorie.</p>
-            <p lang="en">Real-time responses – faster than anything in its category.</p>
-          </div>
-        </div>
-        <div class="hacca-popup-feature">
-          <div class="hacca-popup-feature-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
-          </div>
-          <div>
-            <strong lang="de">Unschlagbar günstig</strong>
-            <strong lang="en">Unbeatable Pricing</strong>
-            <p lang="de">Günstiger als jede vergleichbare Lösung am Markt.</p>
-            <p lang="en">More affordable than any comparable solution on the market.</p>
-          </div>
-        </div>
-        <div class="hacca-popup-feature">
-          <div class="hacca-popup-feature-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-          </div>
-          <div>
-            <strong lang="de">Super resilient</strong>
-            <strong lang="en">Super Resilient</strong>
-            <p lang="de">Maximale Verfügbarkeit und Stabilität – ein echtes Super Brain.</p>
-            <p lang="en">Maximum availability and stability – a true super brain.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="hacca-popup-promo">
-        <span class="hacca-popup-promo-icon">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"></polyline><rect x="2" y="7" width="20" height="5"></rect><line x1="12" y1="22" x2="12" y2="7"></line><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path></svg>
-        </span>
-        <span lang="de">Jetzt anmelden &amp; Chance auf <strong>1 Monat gratis</strong> sichern! Kostenlose Version ebenfalls verfügbar.</span>
-        <span lang="en">Sign up now &amp; get a chance for <strong>1 free month</strong>! Free version also available.</span>
-      </div>
-
-      <div class="hacca-popup-actions">
-        <a href="https://hacca.ai" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-arrow hacca-popup-cta">
-          <span lang="de">Jetzt entdecken auf hacca.ai</span>
-          <span lang="en">Discover now on hacca.ai</span>
-        </a>
-        <button class="btn btn-secondary hacca-popup-dismiss" id="hacca-popup-later">
-          <span lang="de">Später ansehen</span>
-          <span lang="en">Maybe Later</span>
-        </button>
-      </div>
-
-      <p class="hacca-popup-footer-note">
-        <span lang="de">Ein Produkt auf Basis der S&S Connect Infrastruktur.</span>
-        <span lang="en">A product built on S&S Connect infrastructure.</span>
-      </p>
-    </div>
-  </div>
-
   <!-- Sticky Mobile CTA -->
   <div class="sticky-cta" id="sticky-cta">
     <a href="./contact/" class="btn btn-primary btn-arrow">
-      <span lang="de">Kostenloses Erstgespräch</span>
-      <span lang="en">Free Consultation</span>
+      <span lang="de">Kostenlos beraten lassen</span>
+      <span lang="en">Get Free Advice</span>
     </a>
   </div>
 
