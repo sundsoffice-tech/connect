@@ -5,6 +5,9 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+  // Hoisted: wird von initHeroWords() benötigt, das via setLanguage() früh aufgerufen wird
+  let heroWordIntervals = [];
+
   // --- Language Switcher ---
   const savedLang = localStorage.getItem('ss-lang') || 'de';
   setLanguage(savedLang);
@@ -347,8 +350,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --- Hero Word Rotation ---
-  let heroWordIntervals = [];
-
   function initHeroWords() {
     // Clear previous intervals (important for language switch re-init)
     heroWordIntervals.forEach(id => clearInterval(id));
