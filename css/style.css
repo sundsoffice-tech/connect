@@ -1453,7 +1453,7 @@ body.lang-en .lang-en-inline { display: inline; }
   font-size: 0.9rem;
   color: var(--clr-text-dim);
   white-space: nowrap;
-  opacity: 0.5;
+  opacity: 0.65;
 }
 
 @keyframes marquee-scroll {
@@ -1572,8 +1572,6 @@ body.lang-en .lang-en-inline { display: inline; }
   opacity: 0;
   transition: opacity 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   isolation: isolate;
-  -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
-  mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
 }
 .hero-canvas.loaded {
   opacity: 1;
