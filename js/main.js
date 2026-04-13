@@ -5,8 +5,9 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  // Hoisted: wird von initHeroWords() benötigt, das via setLanguage() früh aufgerufen wird
+  // Hoisted: werden von initHeroWords() benötigt, das via setLanguage() früh aufgerufen wird
   let heroWordIntervals = [];
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // --- Language Switcher ---
   const savedLang = localStorage.getItem('ss-lang') || 'de';
@@ -116,8 +117,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --- GSAP ScrollTrigger Reveals ---
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
   if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
 
@@ -396,8 +395,6 @@ document.addEventListener('DOMContentLoaded', () => {
       initHeroWords();
     }
   });
-
-  initHeroWords();
 
   // --- Card Cursor Spotlight ---
   function initCardSpotlight() {
