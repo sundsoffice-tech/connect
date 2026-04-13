@@ -35,13 +35,23 @@
   <meta name="twitter:description" content="Intelligente Systeme für echtes Wachstum. Vertrieb, Automation und KI-Infrastruktur aus Mönchengladbach.">
   <meta name="twitter:image" content="https://sundsconnect.de/assets/img/og-image.png">
 
-  <!-- Font Preloading für Performance -->
+  <!-- Preconnect + DNS Prefetch -->
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+  <link rel="preconnect" href="https://formspree.io" crossorigin>
+
+  <!-- Font/Asset Preloading für Performance -->
   <link rel="preload" href="assets/img/logo-cropped.png" as="image" fetchpriority="high">
   <link rel="preload" href="assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/syne-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/style.css">
-  <script src="js/gsap.min.js" defer></script>
-  <script src="js/ScrollTrigger.min.js" defer></script>
+  <script>
+    if (window.innerWidth > 768) {
+      var s1 = document.createElement('script'); s1.src = 'js/gsap.min.js';
+      var s2 = document.createElement('script'); s2.src = 'js/ScrollTrigger.min.js';
+      s1.onload = function() { document.head.appendChild(s2); };
+      document.head.appendChild(s1);
+    }
+  </script>
   <link rel="icon" href="assets/img/favicon-48.png" type="image/png" sizes="48x48">
   <link rel="icon" href="assets/img/favicon-32.png" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="assets/img/favicon-180.png">
@@ -54,7 +64,7 @@
     "name": "S&S Connect GbR",
     "legalName": "S&S Connect GbR – Schippers & Singh",
     "url": "https://sundsconnect.de",
-    "logo": "https://sundsconnect.de/assets/img/logo.png",
+    "logo": "https://sundsconnect.de/assets/img/favicon-512.png",
     "description": "S&S Connect verbindet Vertrieb, Automation und KI-Infrastruktur zu intelligenten Geschäftslösungen.",
     "address": {
       "@type": "PostalAddress",
@@ -148,7 +158,7 @@
     <!-- Hero -->
     <section class="hero" aria-labelledby="hero-heading">
       <div class="hero-canvas" aria-hidden="true">
-        <iframe src="./3d-hero/index.html" loading="eager" style="border:0;width:100%;height:100%;position:absolute;inset:0" title="3D-Hintergrundanimation"></iframe>
+        <iframe data-src="./3d-hero/index.html" loading="eager" style="border:0;width:100%;height:100%;position:absolute;inset:0" title="3D-Hintergrundanimation"></iframe>
       </div>
       <div class="hero-glow" aria-hidden="true"></div>
       <div class="container">

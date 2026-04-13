@@ -341,10 +341,17 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Scroll Progress Bar ---
   const progressBar = document.querySelector('.scroll-progress');
   if (progressBar) {
+    let scrollTicking = false;
     window.addEventListener('scroll', () => {
-      const pct = document.documentElement.scrollTop /
-                  (document.documentElement.scrollHeight - window.innerHeight) * 100;
-      progressBar.style.width = pct + '%';
+      if (!scrollTicking) {
+        scrollTicking = true;
+        requestAnimationFrame(() => {
+          const pct = document.documentElement.scrollTop /
+                      (document.documentElement.scrollHeight - window.innerHeight) * 100;
+          progressBar.style.width = pct + '%';
+          scrollTicking = false;
+        });
+      }
     }, { passive: true });
   }
 
@@ -443,8 +450,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const testCanvas = document.createElement('canvas');
     const hasWebGL = !!(testCanvas.getContext('webgl2') || testCanvas.getContext('webgl'));
 
-    if (hasWebGL && window.innerWidth > 480) {
+    if (hasWebGL && window.innerWidth > 768) {
       const iframe = heroCanvas.querySelector('iframe');
+      if (iframe && iframe.dataset.src) iframe.src = iframe.dataset.src;
       if (iframe) iframe.onload = () => heroCanvas.classList.add('loaded');
       setTimeout(() => heroCanvas.classList.add('loaded'), 4000);
 
