@@ -28,8 +28,8 @@ jobs:
       - name: Prepare deployment
         run: |
           mkdir _site
-          cp -r assets css js index.html robots.txt sitemap.xml _site/ 2>/dev/null || true
-          for dir in services projects contact impressum datenschutz; do
+          cp -r assets css js index.html robots.txt sitemap.xml CNAME _site/ 2>/dev/null || true
+          for dir in services projects contact impressum datenschutz 3d-hero; do
             if [ -d "$dir" ]; then
               cp -r "$dir" _site/
             fi

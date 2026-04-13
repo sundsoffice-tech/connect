@@ -449,6 +449,28 @@ document.addEventListener('DOMContentLoaded', () => {
       const iframe = heroCanvas.querySelector('iframe');
       if (iframe) iframe.onload = () => heroCanvas.classList.add('loaded');
       setTimeout(() => heroCanvas.classList.add('loaded'), 4000);
+
+      // Forward mouse position to 3D hero iframe via postMessage
+      if (iframe) {
+        let lastMouse = { x: 0.5, y: 0.5 };
+        let sendScheduled = false;
+        document.addEventListener('mousemove', (e) => {
+          lastMouse.x = e.clientX / window.innerWidth;
+          lastMouse.y = e.clientY / window.innerHeight;
+          if (!sendScheduled) {
+            sendScheduled = true;
+            requestAnimationFrame(() => {
+              if (iframe.contentWindow) {
+                iframe.contentWindow.postMessage(
+                  { type: 'mousemove', x: lastMouse.x, y: lastMouse.y },
+                  location.origin
+                );
+              }
+              sendScheduled = false;
+            });
+          }
+        });
+      }
     } else {
       heroCanvas.style.display = 'none';
     }
