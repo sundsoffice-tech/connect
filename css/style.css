@@ -1216,6 +1216,11 @@ body.lang-en .lang-en-inline { display: inline; }
   position: relative;
   z-index: 1;
 }
+@media (max-width: 768px) {
+  .footer {
+    padding-bottom: calc(var(--space-lg) + 60px);
+  }
+}
 
 .footer-grid {
   display: grid;
