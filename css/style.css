@@ -310,7 +310,7 @@ main li a {
 }
 
 .section {
-  padding: clamp(3rem, 6vw, 5.5rem) 0;
+  padding: clamp(2rem, 6vw, 5.5rem) 0;
   position: relative;
 }
 
@@ -1608,6 +1608,9 @@ body.lang-en .lang-en-inline { display: inline; }
   opacity: 0.25;
 }
 .hero + .section::before { display: none; }
+@media (max-width: 480px) {
+  .section + .section::before { display: none; }
+}
 
 /* --- Page Header (for inner pages) --- */
 .page-header {
@@ -1888,30 +1891,33 @@ body.lang-en .lang-en-inline { display: inline; }
 /* --- Small Phone (max 480px) --- */
 @media (max-width: 480px) {
   .hero {
-    padding-bottom: var(--space-md);
+    padding-bottom: var(--space-sm);
   }
   .hero-subtitle {
-    margin-bottom: var(--space-md);
-  }
-  .hero h1 {
     margin-bottom: var(--space-sm);
   }
+  .hero h1 {
+    margin-bottom: var(--space-xs);
+  }
+  .trust-bar {
+    margin-top: var(--space-sm);
+  }
   .section-header {
-    margin-bottom: var(--space-md);
+    margin-bottom: var(--space-sm);
   }
   .stats-bar {
-    margin: var(--space-md) 0;
-    padding: var(--space-sm) 0;
+    margin: var(--space-sm) 0;
+    padding: var(--space-xs) 0;
   }
   .cta-section {
-    padding: var(--space-lg) 0;
+    padding: var(--space-md) 0;
   }
   .footer-grid {
-    gap: var(--space-md);
-    margin-bottom: var(--space-md);
+    gap: var(--space-sm);
+    margin-bottom: var(--space-sm);
   }
   .references-grid {
-    margin-top: var(--space-md);
+    margin-top: var(--space-sm);
   }
   .page-header {
     padding: 5rem 0 1.5rem;
