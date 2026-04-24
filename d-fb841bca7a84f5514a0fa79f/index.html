@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="theme-color" content="#0d9488">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>Discovery · Cebula Bedachungen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Geist:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#faf8f4;
+    --paper:#ffffff;
+    --text:#1a1a1a;
+    --text-muted:#6b6b6b;
+    --text-light:#9a9a9a;
+    --accent:#0d9488;
+    --accent-dark:#0f766e;
+    --accent-soft:#ccfbf1;
+    --border:#e8e2d4;
+    --border-strong:#d4cdbc;
+    --highlight:#fef9e7;
+    --danger:#b91c1c;
+    --font-serif:'Fraunces',Georgia,serif;
+    --font-sans:'Geist','-apple-system',BlinkMacSystemFont,sans-serif;
+    --font-mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--font-sans);
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.55;
+    font-size:15px;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ── Lock-Screen ─────────────── */
+  .lock-overlay{
+    position:fixed;inset:0;z-index:100;
+    background:linear-gradient(135deg,#0f766e 0%,#134e4a 100%);
+    display:flex;align-items:center;justify-content:center;padding:24px;
+  }
+  .lock-card{
+    background:#fff;border-radius:12px;padding:36px 32px;
+    width:100%;max-width:380px;
+    box-shadow:0 20px 60px rgba(0,0,0,.25);
+  }
+  .lock-title{
+    font-family:var(--font-serif);font-size:26px;font-weight:500;
+    letter-spacing:-.015em;color:var(--text);margin-bottom:6px;
+  }
+  .lock-sub{
+    font-family:var(--font-serif);font-style:italic;font-size:14px;
+    color:var(--text-muted);margin-bottom:24px;
+  }
+  .lock-card input{
+    width:100%;padding:14px 14px;font-size:16px;
+    border:1.5px solid var(--border-strong);border-radius:8px;
+    font-family:var(--font-mono);letter-spacing:.5px;outline:none;
+    transition:border .15s;
+  }
+  .lock-card input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .lock-card button{
+    width:100%;margin-top:14px;padding:14px;
+    background:var(--accent);color:#fff;border:none;border-radius:8px;
+    font-family:var(--font-sans);font-size:15px;font-weight:600;
+    cursor:pointer;transition:background .15s;letter-spacing:.3px;
+  }
+  .lock-card button:hover{background:var(--accent-dark)}
+  .lock-error{
+    margin-top:12px;font-family:var(--font-mono);font-size:11px;
+    color:var(--danger);letter-spacing:.5px;display:none;
+  }
+  .lock-error.show{display:block}
+  .lock-eyebrow{
+    font-family:var(--font-mono);font-size:10px;letter-spacing:2px;
+    color:var(--accent);text-transform:uppercase;margin-bottom:12px;
+  }
+
+  /* ── Topbar ───────────────────────── */
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:rgba(250,248,244,0.92);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+    padding:10px 16px;
+  }
+  .topbar-inner{
+    max-width:820px;margin:0 auto;
+    display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  }
+  .progress-wrap{flex:1;display:flex;align-items:center;gap:8px;min-width:140px}
+  .progress-label{
+    font-family:var(--font-mono);
+    font-size:10px;color:var(--text-muted);
+    letter-spacing:.5px;white-space:nowrap;
+  }
+  .progress-bar{
+    flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;background:var(--accent);
+    transition:width .3s ease;border-radius:3px;
+  }
+  .save-state{
+    font-family:var(--font-mono);font-size:10px;
+    color:var(--accent);white-space:nowrap;
+    letter-spacing:.3px;
+  }
+  .save-state.stale{color:var(--danger)}
+  .actions{display:flex;gap:4px;flex-wrap:wrap}
+  .btn{
+    font-family:var(--font-sans);font-size:12px;font-weight:500;
+    padding:8px 12px;border:1px solid var(--border-strong);
+    background:var(--paper);color:var(--text);border-radius:6px;
+    cursor:pointer;transition:all .15s;letter-spacing:.2px;
+    display:inline-flex;align-items:center;gap:6px;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .btn:hover{border-color:var(--text);background:var(--highlight)}
+  .btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .btn.primary:hover{background:var(--accent-dark);border-color:var(--accent-dark)}
+  .btn.danger:hover{border-color:var(--danger);color:var(--danger)}
+
+  /* ── Container ─────────────────── */
+  .container{max-width:820px;margin:0 auto;padding:40px 24px 160px}
+
+  /* ── Header ────────────────────── */
+  header.doc-header{
+    padding:32px 0 40px;border-bottom:1px solid var(--border);
+    margin-bottom:40px;
+  }
+  .eyebrow{
+    font-family:var(--font-mono);font-size:11px;
+    color:var(--accent);letter-spacing:2px;text-transform:uppercase;
+    margin-bottom:16px;
+  }
+  h1.doc-title{
+    font-family:var(--font-serif);font-weight:500;
+    font-size:42px;line-height:1.1;letter-spacing:-.02em;
+    color:var(--text);margin-bottom:8px;
+    font-variation-settings:"opsz" 144;
+  }
+  .doc-subtitle{
+    font-family:var(--font-serif);font-weight:400;font-style:italic;
+    font-size:22px;color:var(--text-muted);letter-spacing:-.01em;
+    margin-bottom:28px;
+  }
+  .meta-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:14px 28px;padding-top:20px;border-top:1px dashed var(--border);
+  }
+  .meta-item{font-size:13px}
+  .meta-item dt{
+    font-family:var(--font-mono);font-size:10px;
+    color:var(--text-light);letter-spacing:1.2px;
+    text-transform:uppercase;margin-bottom:3px;
+  }
+  .meta-item dd{color:var(--text);font-weight:500}
+
+  /* ── Section ───────────────────── */
+  section{margin-bottom:48px;scroll-margin-top:90px}
+  .section-head{
+    display:flex;align-items:baseline;gap:20px;
+    padding-bottom:12px;border-bottom:2px solid var(--text);
+    margin-bottom:24px;
+  }
+  .section-num{
+    font-family:var(--font-serif);font-weight:600;
+    font-size:52px;line-height:1;color:var(--accent);
+    letter-spacing:-.04em;font-variation-settings:"opsz" 144;
+    min-width:70px;
+  }
+  .section-title{
+    font-family:var(--font-serif);font-weight:500;
+    font-size:26px;line-height:1.15;letter-spacing:-.015em;
+    color:var(--text);font-variation-settings:"opsz" 72;
+  }
+  .section-hint{
+    font-family:var(--font-serif);font-style:italic;
+    font-size:14px;color:var(--text-muted);
+    margin-top:4px;font-weight:400;
+  }
+
+  /* ── Question Block ────────────── */
+  .q{margin-bottom:20px;padding:14px 0;border-bottom:1px dashed var(--border)}
+  .q:last-child{border-bottom:none}
+  .q-label{
+    font-size:13px;font-weight:500;color:var(--text);
+    margin-bottom:8px;display:flex;align-items:baseline;gap:8px;
+  }
+  .q-num{
+    font-family:var(--font-mono);font-size:11px;color:var(--text-light);
+    font-weight:400;letter-spacing:.5px;flex-shrink:0;
+  }
+  .q-hint{
+    font-family:var(--font-serif);font-style:italic;font-size:13px;
+    font-weight:400;color:var(--text-muted);margin-top:2px;display:block;
+  }
+
+  /* ── Inputs ──────────────────── */
+  input[type=text],input[type=number],input[type=password],textarea,select{
+    font-family:var(--font-sans);font-size:16px;
+    width:100%;padding:10px 12px;border:1px solid var(--border-strong);
+    background:var(--paper);color:var(--text);border-radius:4px;
+    transition:all .15s;outline:none;resize:vertical;
+  }
+  input[type=text]:focus,input[type=number]:focus,textarea:focus,select:focus{
+    border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);
+  }
+  textarea{min-height:70px;line-height:1.5;font-family:var(--font-sans)}
+  .input-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+  .input-inline{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .input-inline label{font-size:12px;color:var(--text-muted)}
+  .input-inline input{max-width:160px}
+  .unit{font-family:var(--font-mono);font-size:11px;color:var(--text-light);margin-left:4px}
+
+  /* ── Checkbox List ────────────── */
+  .check-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:6px;margin-top:6px}
+  .check{display:flex;align-items:flex-start;gap:9px;padding:10px 12px;
+    border:1px solid var(--border);border-radius:4px;cursor:pointer;
+    transition:all .15s;background:var(--paper);
+    -webkit-tap-highlight-color:transparent;
+  }
+  .check:active{transform:scale(0.98)}
+  .check:hover{border-color:var(--border-strong)}
+  .check input{position:absolute;opacity:0;pointer-events:none}
+  .check-visual{
+    width:18px;height:18px;flex-shrink:0;margin-top:1px;
+    border:1.5px solid var(--border-strong);border-radius:3px;
+    position:relative;background:var(--paper);transition:all .15s;
+  }
+  .check input:checked ~ .check-visual{
+    background:var(--accent);border-color:var(--accent);
+  }
+  .check input:checked ~ .check-visual::after{
+    content:"";position:absolute;left:5px;top:1px;
+    width:4px;height:9px;border:solid #fff;border-width:0 2px 2px 0;
+    transform:rotate(45deg);
+  }
+  .check-label{font-size:14px;color:var(--text);line-height:1.4}
+  .check:has(input:checked){background:var(--accent-soft);border-color:var(--accent)}
+
+  /* ── Rating Scale ─────────── */
+  .rating{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+  .rating-dots{display:flex;gap:6px}
+  .rating-dot{
+    width:36px;height:36px;border:1.5px solid var(--border-strong);
+    border-radius:50%;cursor:pointer;background:var(--paper);
+    font-family:var(--font-mono);font-size:13px;font-weight:500;
+    display:flex;align-items:center;justify-content:center;
+    transition:all .15s;color:var(--text-muted);
+    -webkit-tap-highlight-color:transparent;
+  }
+  .rating-dot:hover,.rating-dot:active{border-color:var(--accent);color:var(--accent)}
+  .rating-dot.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .rating-labels{font-family:var(--font-mono);font-size:11px;color:var(--text-light);letter-spacing:.3px}
+
+  /* ── Highlight critical ───── */
+  .critical{
+    padding:10px 14px;background:var(--highlight);
+    border-left:3px solid #d4a017;border-radius:3px;
+    font-family:var(--font-serif);font-style:italic;
+    font-size:13px;color:#6b4e00;margin:6px 0 10px;
+  }
+  .critical strong{font-weight:600;font-style:normal;letter-spacing:.3px}
+
+  /* ── Floating Save Button (Mobile Panic Button) ── */
+  .float-save{
+    position:fixed;bottom:20px;right:20px;z-index:40;
+    background:var(--accent);color:#fff;border:none;border-radius:50%;
+    width:56px;height:56px;font-size:22px;cursor:pointer;
+    box-shadow:0 6px 20px rgba(13,148,136,.4);
+    display:flex;align-items:center;justify-content:center;
+    -webkit-tap-highlight-color:transparent;
+    transition:transform .15s;
+  }
+  .float-save:active{transform:scale(0.94)}
+  .float-save-label{
+    position:absolute;bottom:68px;right:0;
+    background:var(--text);color:#fff;padding:6px 10px;
+    border-radius:6px;font-size:11px;font-family:var(--font-mono);
+    white-space:nowrap;opacity:0;pointer-events:none;
+    transition:opacity .2s;
+  }
+  .float-save:hover .float-save-label{opacity:1}
+
+  /* ── Mobile ───────────── */
+  @media (max-width:640px){
+    .container{padding:24px 14px 120px}
+    h1.doc-title{font-size:30px}
+    .doc-subtitle{font-size:17px}
+    .section-head{flex-direction:column;gap:4px;align-items:flex-start}
+    .section-num{font-size:34px;min-width:auto}
+    .section-title{font-size:20px}
+    .actions .btn-label{display:none}
+    .btn{padding:8px 10px}
+    .topbar{padding:8px 10px}
+    .check-list{grid-template-columns:1fr 1fr}
+    header.doc-header{padding:20px 0 24px;margin-bottom:28px}
+    .meta-grid{grid-template-columns:1fr 1fr;gap:10px 16px}
+  }
+  @media (max-width:380px){
+    .check-list{grid-template-columns:1fr}
+  }
+
+  /* ── Print ───────────── */
+  @media print{
+    @page{margin:1.5cm;size:A4}
+    body{background:#fff;font-size:10pt}
+    .lock-overlay,.topbar,.actions,.no-print,.float-save{display:none !important}
+    .container{max-width:100%;padding:0}
+    section{page-break-inside:avoid;margin-bottom:24px}
+    .section-num{color:#000;font-size:32px}
+    .section-head{border-bottom:2px solid #000}
+    input,textarea{border:none;border-bottom:1px solid #999;border-radius:0;background:transparent}
+    textarea{min-height:40px}
+    .check-visual{border:1px solid #000}
+    .check input:checked ~ .check-visual{background:#000}
+    .rating-dot.active{background:#000;color:#fff;border-color:#000}
+    .q{padding:6px 0;border-bottom:1px dotted #ccc}
+    .critical{background:#f0f0f0;border-left:3px solid #000}
+    h1.doc-title{color:#000}
+    .eyebrow{color:#000}
+  }
+
+  /* ── Utilities ─────── */
+  .divider{margin:18px 0;height:1px;background:var(--border)}
+  .muted{color:var(--text-muted);font-size:12px;margin-top:6px;font-style:italic;font-family:var(--font-serif)}
+  .hidden-app{display:none}
+</style>
+</head>
+<body>
+
+<!-- ═══ Lock-Screen ═══ -->
+<div id="lockOverlay" class="lock-overlay">
+  <div class="lock-card">
+    <div class="lock-eyebrow">S&amp;S CONNECT · DISCOVERY</div>
+    <div class="lock-title">Gesichert</div>
+    <div class="lock-sub">Bitte Zugangscode eingeben.</div>
+    <form id="lockForm">
+      <input type="password" id="lockPwd" placeholder="Zugangscode" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
+      <button type="submit">Entsperren</button>
+      <div class="lock-error" id="lockError">Falscher Code.</div>
+    </form>
+  </div>
+</div>
+
+<!-- ═══ App ═══ -->
+<div id="app" class="hidden-app">
+
+<!-- ═══ Topbar ═══ -->
+<div class="topbar no-print">
+  <div class="topbar-inner">
+    <div class="progress-wrap">
+      <span class="progress-label">FORTSCHRITT</span>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <span class="progress-label" id="progressText">0 / 0</span>
+    </div>
+    <span class="save-state" id="saveState">–</span>
+    <div class="actions">
+      <button class="btn primary" onclick="exportJSON()" title="JSON-Backup herunterladen (wiedereinlesbar)">
+        <span>⤓</span><span class="btn-label">JSON</span>
+      </button>
+      <button class="btn" onclick="exportTXT()" title="Notizen als Text">
+        <span>↓</span><span class="btn-label">TXT</span>
+      </button>
+      <button class="btn" onclick="document.getElementById('importFile').click()" title="JSON-Backup wieder einlesen">
+        <span>↥</span><span class="btn-label">Import</span>
+      </button>
+      <input type="file" id="importFile" accept="application/json" style="display:none" onchange="importJSON(event)">
+      <button class="btn" onclick="window.print()" title="Drucken">
+        <span>⎙</span>
+      </button>
+      <button class="btn danger" onclick="resetAll()" title="Alles löschen (für nächsten Kunden)">
+        <span>⟲</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ═══ Header ═══ -->
+  <header class="doc-header">
+    <div class="eyebrow">Discovery · Potenzialanalyse</div>
+    <h1 class="doc-title">Cebula Bedachungen</h1>
+    <div class="doc-subtitle">Erstgespräch &amp; Prozess­analyse</div>
+    <dl class="meta-grid">
+      <div class="meta-item"><dt>Datum</dt><dd>Freitag, 24.04.2026</dd></div>
+      <div class="meta-item"><dt>Uhrzeit</dt><dd>10:00 Uhr · 60 Min.</dd></div>
+      <div class="meta-item"><dt>Ort</dt><dd>Konstantinstr. 325, Giesenkirchen</dd></div>
+      <div class="meta-item"><dt>Team S&amp;S</dt><dd>Schippers &amp; Singh</dd></div>
+      <div class="meta-item"><dt>Referenz</dt><dd style="font-family:var(--font-mono);font-size:12px">SSC-20260424-1000</dd></div>
+      <div class="meta-item"><dt>Fokus</dt><dd>Protokolle · Mail · Angebote</dd></div>
+    </dl>
+  </header>
+
+  <!-- ═══ 01 UNTERNEHMEN ═══ -->
+  <section id="s1">
+    <div class="section-head">
+      <div class="section-num">01</div>
+      <div>
+        <div class="section-title">Unternehmen &amp; Kontext</div>
+        <div class="section-hint">Warmup — beobachten, wer spricht, wer entscheidet.</div>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label"><span class="q-num">1.1</span>Gesprächspartner (Name · Rolle)</div>
+      <input type="text" data-save placeholder="z.B. Robert Cebula, Inhaber">
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">1.2</span>Weitere Anwesende</div>
+      <input type="text" data-save placeholder="wer ist noch dabei?">
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">1.3</span>Mitarbeiter gesamt &nbsp;·&nbsp; davon Büro &nbsp;·&nbsp; davon Baustelle</div>
+      <div class="input-row">
+        <input type="number" data-save placeholder="gesamt">
+        <input type="number" data-save placeholder="Büro">
+        <input type="number" data-save placeholder="Baustelle">
+      </div>
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">1.4</span>Anzahl Kolonnen / Teams</div>
+      <input type="number" data-save placeholder="z.B. 3">
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">1.5</span>Einzugsgebiet &amp; Radius</div>
+      <input type="text" data-save placeholder="z.B. Niederrhein, 50 km um MG">
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">1.6</span>Kundenstruktur (grobe %-Verteilung)</div>
+      <div class="check-list">
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Privatkunden</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Gewerbe / Industrie</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Öffentl. Auftraggeber</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Versicherung / Sturmschäden</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Architekten / GU</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Hausverwaltungen</span></label>
+      </div>
+      <input type="text" data-save placeholder="%-Anteile / Anmerkungen" style="margin-top:8px">
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">1.7</span>Gewerke-Schwerpunkte</div>
+      <div class="check-list">
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Steildach / Neubau</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Sanierung / Umdeckung</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Flachdach / Abdichtung</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">PV / Solar</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Dämmung</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Gerüstbau</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Wartung / Service</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Sturmschaden-Notdienst</span></label>
+      </div>
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">1.8</span>Jahre am Markt / Firmenhistorie (kurz)</div>
+      <input type="text" data-save placeholder="Gegründet, Übergabe, Meilensteine...">
+    </div>
+  </section>
+
+  <!-- ═══ 02 ZAHLEN ═══ -->
+  <section id="s2">
+    <div class="section-head">
+      <div class="section-num">02</div>
+      <div>
+        <div class="section-title">Zahlen für die Preiskalkulation</div>
+        <div class="section-hint">Kritisch — ohne diese Zahlen kein seriöses Angebot.</div>
+      </div>
+    </div>
+
+    <div class="critical">
+      <strong>HINWEIS FÜRS GESPRÄCH:</strong> Nicht wie ein Verhör abfragen. Einbetten: „Damit wir später ein sinnvolles Angebot machen können — so als grobe Größenordnung: wie viele …"
+    </div>
+
+    <div class="q">
+      <div class="q-label"><span class="q-num">2.1</span>Anfragen pro Monat <span class="unit">(alle Kanäle)</span></div>
+      <div class="input-inline">
+        <input type="number" data-save id="n_anfragen" placeholder="Anzahl">
+      </div>
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">2.2</span>Angebote pro Monat</div>
+      <input type="number" data-save id="n_angebote" placeholder="Anzahl">
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">2.3</span>Abschlussquote <span class="q-hint">Angebot → Auftrag</span></div>
+      <div class="input-inline">
+        <input type="number" data-save id="n_quote" placeholder="z.B. 35"><label>%</label>
+      </div>
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">2.4</span>Ø Auftragswert <span class="q-hint">Range, z.B. 3k–40k €</span></div>
+      <input type="text" data-save placeholder="z.B. Privat 5k € / Gewerbe 25k €">
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">2.5</span>Baustellen gleichzeitig aktiv</div>
+      <input type="number" data-save placeholder="parallel">
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">2.6</span>Protokolle pro Woche <span class="q-hint">über alle Baustellen/Kolonnen summiert</span></div>
+      <input type="number" data-save id="n_protokolle" placeholder="pro Woche">
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">2.7</span>Mails pro Tag <span class="q-hint">Eingang · Ausgang</span></div>
+      <div class="input-row">
+        <input type="number" data-save placeholder="Eingang/Tag">
+        <input type="number" data-save placeholder="Ausgang/Tag">
+      </div>
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">2.8</span>Software-Stack heute <span class="q-hint">alles was digital im Einsatz ist</span></div>
+      <div class="check-list">
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Sander &amp; Doll</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Labelwin</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">pds</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Streit V.1</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Moser</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">DATEV</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Lexware / lexoffice</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Microsoft 365</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Google Workspace</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">WhatsApp Business</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Excel</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Nichts / Papier</span></label>
+      </div>
+      <input type="text" data-save placeholder="Weitere Tools / Anmerkungen" style="margin-top:8px">
+    </div>
+  </section>
+
+  <!-- ═══ 03 BAUSTELLENPROTOKOLLE ═══ -->
+  <section id="s3">
+    <div class="section-head">
+      <div class="section-num">03</div>
+      <div>
+        <div class="section-title">Baustellenprotokolle</div>
+        <div class="section-hint">Prozess #1 — hier steckt meist der größte Zeit-Leak.</div>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label"><span class="q-num">3.1</span>Wer erstellt das Protokoll?</div>
+      <input type="text" data-save placeholder="Rolle: Polier / Geselle / Chef …">
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">3.2</span>Wo &amp; wann wird es erstellt?</div>
+      <div class="check-list">
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Auf der Baustelle, sofort</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Abends zuhause</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Nächster Tag im Büro</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Wöchentlich gesammelt</span></label>
+      </div>
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">3.3</span>Auf welchem Medium?</div>
+      <div class="check-list">
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Papier / Stundenzettel</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Handy-Notiz / WhatsApp</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Tablet-App</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Excel / Word</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Handwerker-Software</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Sprachnotiz</span></label>
+      </div>
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">3.4</span>Welche Inhalte MUSS das Protokoll haben?</div>
+      <div class="check-list">
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Arbeitszeiten / Stunden MA</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Verbautes Material</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Wetter</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Fotos</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Kunden-Unterschrift</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Besonderheiten / Nachträge</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Arbeitssicherheit / Unfälle</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Fortschritt / Fertigstellung %</span></label>
+      </div>
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">3.5</span>Zeitaufwand aktuell</div>
+      <div class="input-row">
+        <div><label class="q-hint">pro Protokoll (Min.)</label><input type="number" data-save placeholder="Min."></div>
+        <div><label class="q-hint">gesamt pro Woche (Std.)</label><input type="number" data-save placeholder="Std."></div>
+        <div><label class="q-hint">wer tippt nach?</label><input type="text" data-save placeholder="Rolle"></div>
+      </div>
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">3.6</span>Wer bekommt das Protokoll?</div>
+      <div class="check-list">
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Kunde direkt</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Büro / Innendienst</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Architekt / Planer</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Buchhaltung (für Abrechnung)</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Versicherung</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Nur interne Ablage</span></label>
+      </div>
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">3.7</span>Pain-Points <span class="q-hint">wo verliert man Infos, wo gibt's Streit?</span></div>
+      <textarea data-save placeholder="Verlorene Zettel, Lesbarkeit, Streit um Stunden, Nachträge nicht dokumentiert, Fotos nicht zuordenbar ..."></textarea>
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">3.8</span>Schon Software probiert?</div>
+      <input type="text" data-save placeholder="welche / warum nicht geklappt?">
+    </div>
+  </section>
+
+  <!-- ═══ 04 EMAIL ═══ -->
+  <section id="s4">
+    <div class="section-head">
+      <div class="section-num">04</div>
+      <div>
+        <div class="section-title">E-Mail-Kommunikation</div>
+        <div class="section-hint">Prozess #2 — Chef-Bottleneck Nr. 1.</div>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label"><span class="q-num">4.1</span>Wer beantwortet Mails?</div>
+      <input type="text" data-save placeholder="Chef / Büro / Meister / gemischt">
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">4.2</span>Zeit pro Tag für Mails</div>
+      <div class="input-inline"><input type="number" data-save placeholder="Minuten"><label>Min./Tag</label></div>
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">4.3</span>Wiederkehrende Mail-Typen <span class="q-hint">Haken bei „ja, kommt oft"</span></div>
+      <div class="check-list">
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Terminanfragen / -verschiebung</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Angebotsanfragen (Erstkontakt)</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Rückfragen laufender Auftrag</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">„Wann kommt ihr endlich?"</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Reklamation / Garantie</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Rechnungsnachfrage / Mahnung</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Lieferanten / Material</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Bewerbungen</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Versicherungs-Korrespondenz</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Spam / Werbung</span></label>
+      </div>
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">4.4</span>Schon Mail-Vorlagen vorhanden?</div>
+      <input type="text" data-save placeholder="ja/nein · werden genutzt?">
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">4.5</span>Welche Frage kommt IMMER wieder? <span class="q-hint">O-Ton wenn möglich</span></div>
+      <textarea data-save placeholder="Die 1-3 nervigsten Standardfragen"></textarea>
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">4.6</span>Reaktionszeit aktuell vs. gewünscht</div>
+      <div class="input-row">
+        <input type="text" data-save placeholder="aktuell: z.B. 2-3 Tage">
+        <input type="text" data-save placeholder="gewünscht: z.B. Stunden">
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 05 ANGEBOTE ═══ -->
+  <section id="s5">
+    <div class="section-head">
+      <div class="section-num">05</div>
+      <div>
+        <div class="section-title">Angebotserstellung</div>
+        <div class="section-hint">Prozess #3 — hier entscheidet Geschwindigkeit über den Auftrag.</div>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label"><span class="q-num">5.1</span>Weg von Anfrage bis Angebot <span class="q-hint">Schritte durchgehen lassen</span></div>
+      <textarea data-save placeholder="z.B. Anfrage Mail → Rückruf → Ortstermin → Aufmaß → Kalkulation Excel → Angebot Word → PDF → Mail"></textarea>
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">5.2</span>Wer macht den Ortstermin?</div>
+      <input type="text" data-save placeholder="Chef / Meister / Aufmaß-MA">
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">5.3</span>Womit wird kalkuliert?</div>
+      <div class="check-list">
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Handwerker-Software</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Excel</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Kopf / Erfahrung</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Zettel / Papier</span></label>
+      </div>
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">5.4</span>Dauer Anfrage → Versand <span class="q-hint">im Schnitt</span></div>
+      <div class="input-inline"><input type="number" data-save placeholder="Tage"><label>Tage</label></div>
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">5.5</span>Standard-Leistungen mit Pauschalpreis <span class="q-hint">potenzielle Quick-Wins!</span></div>
+      <div class="check-list">
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Dachrinnen-Reinigung</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Dachziegel-Austausch einzeln</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Dachinspektion / TÜV</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Moosentfernung</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Solar-Modul-Reinigung</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Notdienst-Sätze</span></label>
+      </div>
+      <input type="text" data-save placeholder="Weitere Pauschal-Leistungen" style="margin-top:8px">
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">5.6</span>Bottleneck bei Angebotserstellung</div>
+      <textarea data-save placeholder="Wer/was blockt? Warum nicht delegierbar?"></textarea>
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">5.7</span>Wie oft müssen Angebote nachgebessert werden?</div>
+      <input type="text" data-save placeholder="Häufigkeit · typischer Grund">
+    </div>
+  </section>
+
+  <!-- ═══ 06 ROLLEN ═══ -->
+  <section id="s6">
+    <div class="section-head">
+      <div class="section-num">06</div>
+      <div>
+        <div class="section-title">Entscheider &amp; Rollen</div>
+        <div class="section-hint">Wer sagt ja, wer blockiert, wer wird's nutzen.</div>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label"><span class="q-num">6.1</span>Budget-/Investitionsentscheider</div>
+      <input type="text" data-save placeholder="Name · Rolle">
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">6.2</span>Täglicher Nutzer (operativ)</div>
+      <input type="text" data-save placeholder="wer arbeitet am Ende damit?">
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">6.3</span>„Digital-Champion" im Team <span class="q-hint">wer ist offen für Neues?</span></div>
+      <input type="text" data-save>
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">6.4</span>Skeptiker / mögliche Blocker</div>
+      <input type="text" data-save placeholder="Wer könnte bremsen? Warum?">
+    </div>
+  </section>
+
+  <!-- ═══ 07 PAIN ═══ -->
+  <section id="s7">
+    <div class="section-head">
+      <div class="section-num">07</div>
+      <div>
+        <div class="section-title">Schmerz &amp; Priorität</div>
+        <div class="section-hint">Offen fragen, still zuhören, nicht unterbrechen.</div>
+      </div>
+    </div>
+
+    <div class="critical">
+      <strong>GOLDFRAGE:</strong> „Wenn morgen EIN Problem weg wäre — welches wäre das?" — dann Klappe halten.
+    </div>
+
+    <div class="q">
+      <div class="q-label"><span class="q-num">7.1</span>Was nervt am meisten? <span class="q-hint">O-Ton, nicht paraphrasieren</span></div>
+      <textarea data-save></textarea>
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">7.2</span>Das eine Problem, das weg soll</div>
+      <textarea data-save></textarea>
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">7.3</span>Schon probierte Lösungen <span class="q-hint">und warum nicht geklappt</span></div>
+      <textarea data-save></textarea>
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">7.4</span>Konkrete Ängste bei Umstellung</div>
+      <textarea data-save placeholder="„MA machen nicht mit", „zu teuer", „habe keine Zeit", „Daten in Cloud" ..."></textarea>
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">7.5</span>Was soll auf KEINEN Fall passieren?</div>
+      <input type="text" data-save>
+    </div>
+  </section>
+
+  <!-- ═══ 08 BUDGET ═══ -->
+  <section id="s8">
+    <div class="section-head">
+      <div class="section-num">08</div>
+      <div>
+        <div class="section-title">Budget &amp; Timing</div>
+        <div class="section-hint">Vorsichtig rantasten, nie als Erstes fragen.</div>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label"><span class="q-num">8.1</span>Offenheit für Modell</div>
+      <div class="check-list">
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Monatliche SaaS-Miete</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Einmal-Invest + Wartung</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Projekt-Pauschale</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Erfolgs-/nutzungsabhängig</span></label>
+      </div>
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">8.2</span>Grobe Budget-Range <span class="q-hint">indikativ, kein Festpreis</span></div>
+      <input type="text" data-save placeholder="z.B. 500-1.000 € /Monat">
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">8.3</span>Gewünschter Startzeitpunkt</div>
+      <input type="text" data-save placeholder="sofort / Q3 / nach Saison ...">
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">8.4</span>Warum gerade JETZT? <span class="q-hint">Trigger-Event erfragen</span></div>
+      <textarea data-save placeholder="Wachstum, Übergabe, MA-Abgang, Kundendruck ..."></textarea>
+    </div>
+  </section>
+
+  <!-- ═══ 09 NEXT STEPS ═══ -->
+  <section id="s9">
+    <div class="section-head">
+      <div class="section-num">09</div>
+      <div>
+        <div class="section-title">Nächste Schritte &amp; Unterlagen</div>
+        <div class="section-hint">Wenn möglich direkt heute einsammeln.</div>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label"><span class="q-num">9.1</span>Unterlagen erhalten (heute/Folgetermin)</div>
+      <div class="check-list">
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Muster-Baustellenprotokoll</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">5–10 typische Mails (anonym.)</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Muster-Angebot</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Liste Standard-Leistungen</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Screenshot bestehende Software</span></label>
+        <label class="check"><input type="checkbox" data-save><span class="check-visual"></span><span class="check-label">Org-Chart / Rollen-Übersicht</span></label>
+      </div>
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">9.2</span>Folgetermin vereinbart?</div>
+      <input type="text" data-save placeholder="Datum · Format · Teilnehmer">
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">9.3</span>Ansprechpartner für Rückfragen</div>
+      <input type="text" data-save placeholder="Name · Mail · Mobil">
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">9.4</span>Zugesagt bis wann vorzulegen (von uns)</div>
+      <input type="text" data-save placeholder="was · bis wann">
+    </div>
+  </section>
+
+  <!-- ═══ 10 DEBRIEF ═══ -->
+  <section id="s10">
+    <div class="section-head">
+      <div class="section-num">10</div>
+      <div>
+        <div class="section-title">Debrief</div>
+        <div class="section-hint">Direkt nach dem Termin, im Auto, bevor es verblasst.</div>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label"><span class="q-num">10.1</span>Stimmung des Kunden</div>
+      <div class="rating">
+        <div class="rating-dots" data-rating="stimmung">
+          <div class="rating-dot" data-val="1">1</div>
+          <div class="rating-dot" data-val="2">2</div>
+          <div class="rating-dot" data-val="3">3</div>
+          <div class="rating-dot" data-val="4">4</div>
+          <div class="rating-dot" data-val="5">5</div>
+        </div>
+        <span class="rating-labels">1 = zurückhaltend &nbsp;·&nbsp; 5 = begeistert</span>
+      </div>
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">10.2</span>Wahrscheinlichkeit Abschluss (Bauchgefühl)</div>
+      <div class="rating">
+        <div class="rating-dots" data-rating="closeprob">
+          <div class="rating-dot" data-val="1">1</div>
+          <div class="rating-dot" data-val="2">2</div>
+          <div class="rating-dot" data-val="3">3</div>
+          <div class="rating-dot" data-val="4">4</div>
+          <div class="rating-dot" data-val="5">5</div>
+        </div>
+        <span class="rating-labels">1 = tot &nbsp;·&nbsp; 5 = heiß</span>
+      </div>
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">10.3</span>Quick-Win identifiziert?</div>
+      <textarea data-save placeholder="Der eine Prozess, wo Automation in 2-4 Wochen messbar Zeit spart"></textarea>
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">10.4</span>Showstopper / rote Fahnen</div>
+      <textarea data-save placeholder="Budget, Team-Widerstand, Tech-Schulden, fehlende Bereitschaft"></textarea>
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">10.5</span>Empfehlung / Lösungsskizze</div>
+      <textarea data-save placeholder="Welches Paket, welcher Einstieg, welche Phasen"></textarea>
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">10.6</span>Gefühlter Projektwert (€)</div>
+      <input type="text" data-save placeholder="Einmal · monatlich">
+    </div>
+    <div class="q">
+      <div class="q-label"><span class="q-num">10.7</span>Freie Notiz</div>
+      <textarea data-save placeholder="Alles, was sonst nirgends Platz hat"></textarea>
+    </div>
+  </section>
+
+  <div style="text-align:center;color:var(--text-light);font-family:var(--font-serif);font-style:italic;font-size:13px;margin-top:60px;padding-top:24px;border-top:1px solid var(--border)">
+    — Ende der Checkliste —<br>
+    <span style="font-family:var(--font-mono);font-style:normal;font-size:10px;letter-spacing:1px;color:var(--text-light)">S&amp;S CONNECT · DISCOVERY v1.1</span>
+  </div>
+</div>
+
+<button class="float-save no-print" onclick="exportJSON()" title="Backup jetzt herunterladen">
+  <span>⤓</span>
+  <span class="float-save-label">JSON-Backup</span>
+</button>
+
+</div><!-- /#app -->
+
+<script>
+// ═══ Passwort-Gate ═══════════════════════════════════════════
+// Hash von "SScCebula0424!" (SHA-256)
+const PWD_HASH = "025743bf5d7f0cd3a90d3487157f31870f7ae005064883b7807260ed2b553e1a";
+
+async function sha256(msg){
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,"0")).join("");
+}
+
+async function tryUnlock(pwd){
+  const hash = await sha256(pwd);
+  return hash === PWD_HASH;
+}
+
+function unlock(){
+  sessionStorage.setItem("ssc_unlocked","1");
+  document.getElementById("lockOverlay").style.display = "none";
+  document.getElementById("app").classList.remove("hidden-app");
+  initApp();
+}
+
+document.getElementById("lockForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const input = document.getElementById("lockPwd");
+  const err = document.getElementById("lockError");
+  err.classList.remove("show");
+  const ok = await tryUnlock(input.value);
+  if(ok){ unlock(); }
+  else { err.classList.add("show"); input.value=""; input.focus(); }
+});
+
+// Auto-unlock wenn Session bereits entsperrt
+if(sessionStorage.getItem("ssc_unlocked") === "1"){
+  unlock();
+} else {
+  setTimeout(() => document.getElementById("lockPwd").focus(), 100);
+}
+
+// ═══ App-Logik (nach Unlock) ═════════════════════════════════
+const STORAGE_PREFIX = 'ssc-disc-cebula-';
+const LAST_SAVE_KEY  = STORAGE_PREFIX + '__lastsave';
+let saveTimer;
+let dirty = false;
+
+function initApp(){
+  // eindeutige Keys zuweisen
+  document.querySelectorAll('[data-save]').forEach((el, i) => {
+    el.dataset.saveKey = `f${i}`;
+  });
+
+  loadAll();
+
+  // Text/Number/Textarea: debounced save
+  document.querySelectorAll('input[type=text], input[type=number], textarea').forEach(el => {
+    el.addEventListener('input', () => {
+      dirty = true;
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(() => saveField(el), 350);
+    });
+    // zusätzlich bei blur sofort sichern (Tab-Wechsel/Fokus-Verlust)
+    el.addEventListener('blur', () => saveField(el));
+  });
+  // Checkbox: sofort
+  document.querySelectorAll('input[type=checkbox]').forEach(el => {
+    el.addEventListener('change', () => saveField(el));
+  });
+  // Ratings: sofort
+  document.querySelectorAll('.rating-dots').forEach(group => {
+    group.querySelectorAll('.rating-dot').forEach(dot => {
+      dot.addEventListener('click', () => {
+        group.querySelectorAll('.rating-dot').forEach(d => d.classList.remove('active'));
+        dot.classList.add('active');
+        try{
+          localStorage.setItem(STORAGE_PREFIX + 'rating-' + group.dataset.rating, dot.dataset.val);
+          touchSave();
+        }catch(e){ saveError(e); }
+      });
+    });
+  });
+
+  // Periodisches Auto-JSON-Backup in localStorage (alle 30s, falls dirty)
+  setInterval(() => {
+    if(dirty){ snapshotBackup(); dirty = false; }
+  }, 30000);
+
+  // Warnung vor Schließen wenn gerade getippt wurde
+  window.addEventListener('beforeunload', (e) => {
+    // localStorage ist schon persistent — Warnung nur wenn debounce noch läuft
+    if(saveTimer){
+      e.preventDefault();
+      e.returnValue = '';
+    }
+  });
+
+  // Sichtbarkeits-Change: bei Tab-Wechsel Snapshot
+  document.addEventListener('visibilitychange', () => {
+    if(document.hidden) snapshotBackup();
+  });
+
+  updateSaveIndicator();
+  setInterval(updateSaveIndicator, 10000);
+}
+
+function loadAll(){
+  document.querySelectorAll('[data-save]').forEach(el => {
+    try{
+      const v = localStorage.getItem(STORAGE_PREFIX + el.dataset.saveKey);
+      if(v !== null){
+        if(el.type === 'checkbox') el.checked = (v === 'true');
+        else el.value = v;
+      }
+    }catch(e){}
+  });
+  document.querySelectorAll('[data-rating]').forEach(group => {
+    try{
+      const v = localStorage.getItem(STORAGE_PREFIX + 'rating-' + group.dataset.rating);
+      if(v){
+        group.querySelectorAll('.rating-dot').forEach(dot => {
+          dot.classList.toggle('active', dot.dataset.val === v);
+        });
+      }
+    }catch(e){}
+  });
+  updateProgress();
+}
+
+function saveField(el){
+  const key = STORAGE_PREFIX + el.dataset.saveKey;
+  const val = el.type === 'checkbox' ? String(el.checked) : el.value;
+  try{
+    localStorage.setItem(key, val);
+    touchSave();
+  }catch(e){ saveError(e); }
+  updateProgress();
+  clearTimeout(saveTimer);
+  saveTimer = null;
+}
+
+function touchSave(){
+  const now = Date.now();
+  try{ localStorage.setItem(LAST_SAVE_KEY, String(now)); }catch(e){}
+  updateSaveIndicator();
+}
+
+function saveError(e){
+  console.error('Speicher-Fehler', e);
+  const el = document.getElementById('saveState');
+  el.textContent = '⚠ Fehler — JSON downloaden!';
+  el.classList.add('stale');
+}
+
+function updateSaveIndicator(){
+  const el = document.getElementById('saveState');
+  const last = parseInt(localStorage.getItem(LAST_SAVE_KEY) || '0', 10);
+  if(!last){ el.textContent = '–'; return; }
+  const diff = Math.floor((Date.now() - last) / 1000);
+  let txt;
+  if(diff < 5) txt = '✓ gespeichert';
+  else if(diff < 60) txt = `✓ vor ${diff}s`;
+  else if(diff < 3600) txt = `✓ vor ${Math.floor(diff/60)}min`;
+  else txt = `✓ vor ${Math.floor(diff/3600)}h`;
+  el.textContent = txt;
+  el.classList.remove('stale');
+}
+
+function updateProgress(){
+  const all = document.querySelectorAll('[data-save]');
+  let filled = 0;
+  all.forEach(el => {
+    if(el.type === 'checkbox' && el.checked) filled++;
+    else if(el.type !== 'checkbox' && el.value && el.value.trim()) filled++;
+  });
+  const pct = all.length ? (filled / all.length * 100) : 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressText').textContent = `${filled} / ${all.length}`;
+}
+
+// ═══ Snapshot-Backup in separatem localStorage-Key ══════════
+function snapshotBackup(){
+  const snap = collectData();
+  try{
+    localStorage.setItem(STORAGE_PREFIX + '__backup', JSON.stringify({
+      ts: Date.now(), data: snap
+    }));
+  }catch(e){}
+}
+
+function collectData(){
+  const data = {_meta: {ts: new Date().toISOString(), version: '1.1'}, fields: {}, ratings: {}, labels: {}};
+  document.querySelectorAll('[data-save]').forEach(el => {
+    const key = el.dataset.saveKey;
+    if(!key) return;
+    const label = el.closest('.q')?.querySelector('.q-label')?.innerText.replace(/\s+/g,' ').trim() || '';
+    if(el.type === 'checkbox'){
+      if(el.checked){
+        const cbLabel = el.closest('.check')?.querySelector('.check-label')?.textContent || '';
+        data.fields[key] = {checked: true, label: cbLabel, q: label};
+      }
+    } else {
+      if(el.value && el.value.trim()){
+        data.fields[key] = {value: el.value, placeholder: el.placeholder, q: label};
+      }
+    }
+  });
+  document.querySelectorAll('[data-rating]').forEach(group => {
+    const active = group.querySelector('.rating-dot.active');
+    if(active) data.ratings[group.dataset.rating] = active.dataset.val;
+  });
+  return data;
+}
+
+// ═══ JSON-Export / -Import ═══════════════════════════════════
+function exportJSON(){
+  const data = collectData();
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  const ts = new Date().toISOString().replace(/[:.]/g,'-').slice(0,19);
+  a.download = `Cebula-Discovery-${ts}.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  touchSave();
+}
+
+function importJSON(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    try{
+      const data = JSON.parse(ev.target.result);
+      if(!confirm('Backup einspielen? Aktuelle Daten werden überschrieben.')) return;
+      // Fields
+      if(data.fields){
+        document.querySelectorAll('[data-save]').forEach(el => {
+          const key = el.dataset.saveKey;
+          const entry = data.fields[key];
+          if(!entry){
+            if(el.type === 'checkbox') el.checked = false;
+            else el.value = '';
+          } else if(el.type === 'checkbox'){
+            el.checked = !!entry.checked;
+          } else {
+            el.value = entry.value || '';
+          }
+          saveField(el);
+        });
+      }
+      // Ratings
+      document.querySelectorAll('[data-rating]').forEach(group => {
+        const v = data.ratings?.[group.dataset.rating];
+        group.querySelectorAll('.rating-dot').forEach(dot => {
+          dot.classList.toggle('active', dot.dataset.val === v);
+        });
+        if(v) localStorage.setItem(STORAGE_PREFIX + 'rating-' + group.dataset.rating, v);
+        else localStorage.removeItem(STORAGE_PREFIX + 'rating-' + group.dataset.rating);
+      });
+      alert('Backup eingelesen.');
+    }catch(err){
+      alert('Fehler beim Einlesen: ' + err.message);
+    }
+    e.target.value = '';
+  };
+  reader.readAsText(file);
+}
+
+// ═══ TXT-Export (menschenlesbar) ═════════════════════════════
+function exportTXT(){
+  const sections = document.querySelectorAll('section');
+  let out = 'DISCOVERY – CEBULA BEDACHUNGEN – 24.04.2026\n';
+  out += '='.repeat(50) + '\n';
+  out += 'Exportiert: ' + new Date().toLocaleString('de-DE') + '\n\n';
+  sections.forEach(sec => {
+    const num = sec.querySelector('.section-num').textContent;
+    const title = sec.querySelector('.section-title').textContent;
+    out += `\n${num} ${title.toUpperCase()}\n${'-'.repeat(48)}\n`;
+    sec.querySelectorAll('.q').forEach(q => {
+      const label = q.querySelector('.q-label')?.innerText.replace(/\s+/g,' ').trim() || '';
+      out += `\n${label}\n`;
+      q.querySelectorAll('input[type=text], input[type=number], textarea').forEach(inp => {
+        if(inp.value.trim()) out += `  → ${inp.value.trim()}\n`;
+      });
+      const checked = [];
+      q.querySelectorAll('input[type=checkbox]').forEach(c => {
+        if(c.checked){
+          const lbl = c.closest('.check')?.querySelector('.check-label')?.textContent || '';
+          if(lbl) checked.push(lbl);
+        }
+      });
+      if(checked.length) out += `  ☑ ${checked.join(', ')}\n`;
+      const r = q.querySelector('.rating-dots .rating-dot.active');
+      if(r) out += `  ★ ${r.dataset.val} / 5\n`;
+    });
+  });
+  const blob = new Blob([out], {type:'text/plain;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  const ts = new Date().toISOString().replace(/[:.]/g,'-').slice(0,19);
+  a.download = `Cebula-Discovery-${ts}.txt`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+// ═══ Reset ═══════════════════════════════════════════════════
+function resetAll(){
+  if(!confirm('Wirklich ALLE Eingaben löschen?\n(Tipp: vorher JSON-Backup herunterladen!)')) return;
+  if(!confirm('Letzte Sicherheitsabfrage — wirklich löschen?')) return;
+  Object.keys(localStorage).forEach(key => {
+    if(key.startsWith(STORAGE_PREFIX)) localStorage.removeItem(key);
+  });
+  location.reload();
+}
+</script>
+</body>
+</html>
