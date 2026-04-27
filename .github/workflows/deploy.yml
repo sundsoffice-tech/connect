@@ -27,13 +27,32 @@ jobs:
         uses: actions/configure-pages@v5
       - name: Prepare deployment
         run: |
-          mkdir _site
-          cp -r assets css js index.html robots.txt sitemap.xml CNAME _site/ 2>/dev/null || true
-          for dir in services projects contact impressum datenschutz 3d-hero; do
-            if [ -d "$dir" ]; then
-              cp -r "$dir" _site/
-            fi
+          set -euo pipefail
+          mkdir -p _site
+
+          # Pflicht-Files am Root (jeweils einzeln, damit ein fehlendes File nicht den ganzen Step kippt)
+          for f in index.html robots.txt sitemap.xml CNAME; do
+            [ -f "$f" ] && cp "$f" _site/
           done
+
+          # Pflicht-Verzeichnisse am Root
+          for d in assets css js; do
+            [ -d "$d" ] && cp -r "$d" _site/
+          done
+
+          # Statische Unterseiten
+          for d in services projects contact impressum datenschutz 3d-hero; do
+            [ -d "$d" ] && cp -r "$d" _site/
+          done
+
+          # Discovery-Formulare (Obscure-Paths d-*) — automatisch alle mitnehmen
+          shopt -s nullglob
+          for d in d-*/; do
+            cp -r "$d" _site/
+          done
+          shopt -u nullglob
+
+          echo "Inhalt von _site/:" && ls -la _site/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
