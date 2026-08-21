@@ -35,7 +35,13 @@ Content-Type: application/json
   "plz":       "",                              Website hat kein PLZ-Feld
   "nachricht": "…",                             ≤ 4000, siehe § 3
   "seite":     "/contact/",                     ≤ 300, Pfad der Seite
-  "botcheck":  ""                               Honigtopf, MUSS leer bleiben
+  "botcheck":  "",                              Honigtopf, MUSS leer bleiben
+  "herkunft_web": {                             zehnter Schlüssel (seit 22.08., additiv, optional, null erlaubt)
+    "referrer": "https://www.google.com/",      Browser-Referrer beim ERSTEN Seitenaufruf der Sitzung
+    "utm_source": "google", "utm_medium": "cpc", "utm_campaign": "…", "utm_term": null, "utm_content": null,
+    "erste_seite": "/index.html",               Pfad der ersten Seite der Sitzung
+    "landete_auf": "/index.html?utm_source=…"   Pfad + Query der ersten Seite
+  }                                             alle Strings ≤ 200, keine Drittanbieter-IDs, kein Cookie
 }
 → 200 {"ok": true, "vorgang": "a1b2c3d4e5"}     gespeichert (Mail folgt)
 → 200 {"ok": true}                              Honigtopf gefüllt: NICHTS gespeichert
@@ -44,9 +50,14 @@ Content-Type: application/json
 → 413 Nutzlast > 16 KB · 429 mehr als 5 Anfragen/IP/Stunde · 500 technischer Fehler
 ```
 
-**Zusagenliste (KONVENTION § 8.4):** Die Website sendet genau diese neun Schlüssel und
+**Zusagenliste (KONVENTION § 8.4):** Die Website sendet genau diese **zehn** Schlüssel und
 keinen weiteren (`buildLeadPayload` in `js/main.js`; geprüft mit Node gegen die sortierte
-Schlüsselliste).
+Schlüsselliste). `herkunft_web` wird beim ersten Seitenaufruf der Sitzung in
+`sessionStorage` gemerkt (endet mit dem Tab; privater Modus → `null`) und beim Absenden
+mitgeschickt — so bleibt erhalten, dass ein Besucher über eine Kampagne auf die Startseite
+kam und erst später das Formular nutzte. Der Endpunkt ignoriert den Schlüssel, bis er ihn
+speichert (gemessen: keine Whitelist, nur `roh.get`); Zusage leadmaschine-53 vom 21.08.:
+`/v1/leads` reicht ihn durch, anfragen und Cockpit zeigen ihn in der Akte.
 
 ## 3 · Abbildung Website → Endpunkt
 

@@ -265,6 +265,28 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 
+
+  // Herkunft des Besuchs (fuer den Lead-Endpunkt, Schluessel herkunft_web): nur was der
+  // Browser ohnehin mitschickt (Referrer) oder in der URL steht (utm_*). Kein Cookie,
+  // keine Drittanbieter-IDs; sessionStorage endet mit dem Tab.
+  function merkeHerkunft() {
+    try {
+      if (sessionStorage.getItem('herkunft_web')) return;
+      const q = new URLSearchParams(window.location.search);
+      const cut = (v) => (v ? String(v).slice(0, 200) : null);
+      sessionStorage.setItem('herkunft_web', JSON.stringify({
+        referrer: cut(document.referrer) || null,
+        utm_source: cut(q.get('utm_source')), utm_medium: cut(q.get('utm_medium')), utm_campaign: cut(q.get('utm_campaign')),
+        utm_term: cut(q.get('utm_term')), utm_content: cut(q.get('utm_content')),
+        erste_seite: cut(window.location.pathname), landete_auf: cut(window.location.pathname + window.location.search)
+      }));
+    } catch (e) { /* privater Modus o.ae.: dann ohne Herkunft */ }
+  }
+  function leseHerkunft() {
+    try { const h = sessionStorage.getItem('herkunft_web'); return h ? JSON.parse(h) : null; } catch (e) { return null; }
+  }
+  merkeHerkunft();
+
   // --- Lead-Endpunkt (sunds-hub) — zweiter, unabhaengiger Zustellweg ---
   // Vertrag: SCHNITTSTELLE-LEADS.md (Repo) = /opt/sunds-hub/schnittstellen/connect-website-leads.md
   // Sendet ZUSAETZLICH zu Formspree, nie statt. Wirft nie; Erfolg = einer von beiden hat angenommen.
@@ -285,7 +307,8 @@ document.addEventListener('DOMContentLoaded', () => {
       plz: '',
       nachricht: (kopf + '\n\n' + zusatz).slice(0, 4000),
       seite: window.location.pathname.slice(0, 300),
-      botcheck: get('_gotcha')
+      botcheck: get('_gotcha'),
+      herkunft_web: leseHerkunft()
     };
   }
 
