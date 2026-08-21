@@ -118,6 +118,8 @@ Implementierung: `js/main.js` (`buildLeadPayload`, `relayLeadToHub`); wirft nie
 | 7 | Live nach Deploy `ed82c19`: CSP enthält leads.sundsconnect.de, main.js enthält relayLeadToHub, Browser-Absenden (1280 px hell, 390 px dunkel lokal; 1280 px live) zeigt „Vielen Dank", beide POSTs gehen raus. Live-Lauf bekam vom Endpunkt 429 (Ratenlimit 5/IP/h durch die Tests ausgeschöpft) — Formspree nahm an, Besucher sah Erfolg: genau der Parallel-Weg ✓ |
 | 8 | Wächter-Ziel „Connect-Website sundsconnect.de" eingetragen (18 Ziele) — Grün beim nächsten 15-min-Lauf |
 | + | Keep-Alive-Gegenprobe: 403 → 200 auf derselben Verbindung ✓ |
+| 5b | Leitstand (21:35): Lead `4f040afedd` → **angebotsanfrage / handeln**, Dringlichkeit 3; Antwortentwurf Nr. 47 an die **Reply-To**-Adresse erzeugt (Nur-DB-Modus, nichts gesendet) ✓. Offen beim Leitstand: Connect-Signatur (Impressumsdaten geliefert, Absendername = Fabrices Entscheidung) |
+| 5c | Sammler (21:35): Test deckte **Doppel-Push** auf — derselbe Lead kam als Formular (#122) und als Leitstand-Mail (#123). Behoben in `anfragen`: Mails vom Endpunkt-Absender gelten als Echo-Dublette des jüngsten Formular-Leads derselben Firma (±6 h) ✓ |
 
 ## 7 · Betrieb
 
