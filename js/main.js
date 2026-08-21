@@ -285,7 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
       plz: '',
       nachricht: (kopf + '\n\n' + zusatz).slice(0, 4000),
       seite: window.location.pathname.slice(0, 300),
-      botcheck: get('botcheck')
+      botcheck: get('_gotcha')
     };
   }
 
