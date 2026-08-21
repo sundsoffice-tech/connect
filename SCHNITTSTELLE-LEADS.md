@@ -58,7 +58,7 @@ Schlüsselliste).
 | `message` | `nachricht` (Kopf) | |
 | `subject` (general/vertrieb/automation/ai/project) | `nachricht` (Block „— Angaben aus dem Formular —", Zeile `Betreff: <Label>`) | deutsches Label |
 | `dsgvo-consent` | — | wird clientseitig geprüft, nicht übertragen (Formspree bekommt es weiter) |
-| `botcheck` (unsichtbares Feld) | `botcheck` | Honigtopf |
+| `_gotcha` (unsichtbares Feld, Formspree-Konvention) | `botcheck` | Honigtopf — Formspree verwirft gefüllte Einsendungen selbst (204), der Endpunkt antwortet 200 ohne `vorgang` |
 | `window.location.pathname` | `seite` | |
 
 Implementierung: `js/main.js` (`buildLeadPayload`, `relayLeadToHub`); wirft nie
@@ -105,6 +105,20 @@ Implementierung: `js/main.js` (`buildLeadPayload`, `relayLeadToHub`); wirft nie
    Formular-Absenden im Browser zeigt Erfolg (beide Themes, schmal und breit).
 8. Außenwächter-Ziel „Connect-Website sundsconnect.de" grün.
 
+## 6a · Abnahme-Protokoll 21.08.2026 (gemessen)
+
+| # | Ergebnis |
+|---|---|
+| 1 | `/gesund` → kunden enthält `connect` ✓ |
+| 2 | OPTIONS mit Origin sundsconnect.de → 204, `Access-Control-Allow-Origin: https://sundsconnect.de` ✓ |
+| 3 | Honigtopf → `200 {"ok": true}` ohne vorgang, Journal „Bot abgewiesen" ✓ |
+| 4 | Origin example.org → 403 ✓ |
+| 5 | Test-Lead `e72ed375c9` 21:18:40 gespeichert + SMTP zugestellt; im Leitstand angekommen (Postfach 66 Firma connect, SPF pass, Reply-To korrekt), Triage **betrugsverdacht** — zu Recht, der Text enthielt „bitte ignorieren/löschen". Zweiter Lead `4f040afedd` mit realistischem Text → anfragen-Dienst holt ihn, Cockpit-Kachel Connect zeigt ihn, ntfy an Fabrice ✓ |
+| 6 | ohne Telefon + E-Mail → 400 mit Besuchertext ✓ |
+| 7 | Live nach Deploy `ed82c19`: CSP enthält leads.sundsconnect.de, main.js enthält relayLeadToHub, Browser-Absenden (1280 px hell, 390 px dunkel lokal; 1280 px live) zeigt „Vielen Dank", beide POSTs gehen raus. Live-Lauf bekam vom Endpunkt 429 (Ratenlimit 5/IP/h durch die Tests ausgeschöpft) — Formspree nahm an, Besucher sah Erfolg: genau der Parallel-Weg ✓ |
+| 8 | Wächter-Ziel „Connect-Website sundsconnect.de" eingetragen (18 Ziele) — Grün beim nächsten 15-min-Lauf |
+| + | Keep-Alive-Gegenprobe: 403 → 200 auf derselben Verbindung ✓ |
+
 ## 7 · Betrieb
 
 - Offene (nicht zugestellte) Leads: `GET /gesund` → `"offen"`. Dauerhaft > 0 → Mailweg kaputt.
@@ -118,3 +132,5 @@ Implementierung: `js/main.js` (`buildLeadPayload`, `relayLeadToHub`); wirft nie
   `sundsconnect.de` → TLS-Handshake scheitert (gemessen 21.08.: Code 000).
 - HTTP → HTTPS nicht erzwungen (`https_enforced: false` in den Pages-Einstellungen;
   `http://sundsconnect.de/` antwortet 200). Beides Repo-Einstellung, Operator-Handlung.
+- Cookie-Banner deckt auf 390 px etwa zwei Drittel des Viewports (gesehen 21.08., Screenshot).
+- Behoben 21.08. (`ed82c19`): GSAP lief live nie (Inline-Loader von der CSP blockiert).
