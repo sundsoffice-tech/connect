@@ -264,7 +264,43 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // --- Contact Form (Formspree) ---
+
+  // --- Lead-Endpunkt (sunds-hub) — zweiter, unabhaengiger Zustellweg ---
+  // Vertrag: SCHNITTSTELLE-LEADS.md (Repo) = /opt/sunds-hub/schnittstellen/connect-website-leads.md
+  // Sendet ZUSAETZLICH zu Formspree, nie statt. Wirft nie; Erfolg = einer von beiden hat angenommen.
+  const LEAD_ENDPUNKT = 'https://leads.sundsconnect.de/lead';
+  const SUBJECT_LABELS = { general: 'Allgemeine Anfrage', vertrieb: 'Vertrieb & Sales', automation: 'Automation', ai: 'AI Infrastruktur', project: 'Projektanfrage' };
+
+  function buildLeadPayload(fd) {
+    const get = (k) => String(fd.get(k) || '').trim();
+    const subject = get('subject');
+    const kopf = get('message');
+    const zusatz = ['— Angaben aus dem Formular —', 'Betreff: ' + (SUBJECT_LABELS[subject] || subject || '-')].join('\n');
+    return {
+      kunde: 'connect',
+      name: get('name').slice(0, 120),
+      telefon: get('phone').slice(0, 60),
+      email: get('email').slice(0, 180),
+      firma: '',
+      plz: '',
+      nachricht: (kopf + '\n\n' + zusatz).slice(0, 4000),
+      seite: window.location.pathname.slice(0, 300),
+      botcheck: get('botcheck')
+    };
+  }
+
+  function relayLeadToHub(fd) {
+    try {
+      return fetch(LEAD_ENDPUNKT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(buildLeadPayload(fd)),
+        keepalive: true
+      }).then((r) => r.ok).catch(() => false);
+    } catch (e) { return Promise.resolve(false); }
+  }
+
+  // --- Contact Form (Formspree + Lead-Endpunkt parallel) ---
   const form = document.querySelector('#contact-form');
   if (form) {
     form.addEventListener('submit', (e) => {
@@ -293,12 +329,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const data = new FormData(form);
 
-      fetch(form.action, {
+      const formspree = fetch(form.action, {
         method: 'POST',
         body: data,
         headers: { 'Accept': 'application/json' }
-      }).then(response => {
-        if (response.ok) {
+      }).then((r) => r.ok).catch(() => false);
+      const hub = relayLeadToHub(data);
+
+      Promise.all([formspree, hub]).then(([okFormspree, okHub]) => {
+        if (okFormspree || okHub) {
           if (statusEl) {
             statusEl.textContent = isDE
               ? 'Vielen Dank! Ihre Nachricht wurde gesendet.'

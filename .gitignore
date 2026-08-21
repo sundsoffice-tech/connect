@@ -24,3 +24,5 @@ Desktop.ini
 # Build artifacts
 _site/
 node_modules/
+__pycache__/
+*.pyc
