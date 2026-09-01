@@ -31,7 +31,7 @@ jobs:
           mkdir -p _site
 
           # Pflicht-Files am Root (jeweils einzeln, damit ein fehlendes File nicht den ganzen Step kippt)
-          for f in index.html robots.txt sitemap.xml CNAME; do
+          for f in index.html 404.html robots.txt sitemap.xml CNAME; do
             [ -f "$f" ] && cp "$f" _site/
           done
 
