@@ -1,53 +1,52 @@
 # Hosting der Connect-Website auf sunds-hub
 
-Stand 01.09.2026. Entscheidung Fabrice: "ja oder ueber server hosten", nachdem GitHub Pages
-seit 21.08.2026 kein Zertifikat mehr ausstellt (Zustand "new", www mit TLS-Fehler, Apex-
-Zertifikat laeuft 06.10.2026 ab; alle API-Wege am 01.09. ausgeschoepft, Messwerte in
-`ops/github-support-zertifikat.md`).
+**Live seit 01.09.2026, 16:03 Uhr (Apex) und 16:11 Uhr (www).** Entscheidung Fabrice: "ja oder
+ueber server hosten", nachdem GitHub Pages seit 21.08.2026 kein Zertifikat mehr ausstellte (Zustand
+"new", www mit TLS-Fehler; alle API-Wege am 01.09. ausgeschoepft, Messwerte in
+`ops/github-support-zertifikat.md`, das Ticket ist damit hinfaellig).
 
 ## Wie es gebaut ist (Galabau-Muster, /opt/sunds-hub/KONVENTION.md)
 
 | | |
 |---|---|
-| Server | sunds-hub, 169.58.211.51 (IPv6 2a02:c207:3020:4163::1), Caddy terminiert TLS |
+| Server | sunds-hub, 169.58.211.51, Caddy terminiert TLS (Let's Encrypt, erneuert selbst) |
+| DNS (Strato) | `sundsconnect.de` A 169.58.211.51; `www` CNAME `sundsconnect.de.`; MX/TXT unveraendert; kein AAAA (Strato bietet fuer diese Domain kein IPv6-Feld) |
 | Projektordner | `/opt/sunds-connect-website/` mit `repo.git` (bare), `checkout/`, `site/` (Webroot), `bauen.sh`, `caddy-block.txt`, `umschalt.log` |
-| Deploy | `ops/deploy.sh` = `git push origin main` + `git push hub main`; der post-receive-Hook checkt aus und ruft `bauen.sh` (gleiche Kopierliste wie `.github/workflows/deploy.yml`, also ohne ops/, ohne SCHNITTSTELLE-LEADS.md) |
-| Gesund | `https://sundsconnect.de/gesund` -> `gesund.json` (Commit, Zeit), schreibt `bauen.sh` |
-| Caddy | Block in `caddy-block.txt`; www -> 301 auf Apex; Sicherheitsheader; CSP bleibt als Meta in den Seiten |
-| Umschaltung | `/opt/sunds-hub/connect-umstellen.sh` (`--pruefen`, `--umstellen`, `--automatisch`, `--trocken`); Timer `sunds-connect-umschalt` prueft alle 5 Minuten die DNS und schaltet Caddy scharf, sobald Apex und www auf 169.58.211.51 zeigen, dann beendet er sich selbst |
-| Register | `/opt/sunds-hub/projekte.json` -> `connect-website` (das Umschaltskript aktualisiert den Eintrag) |
-| Waechter | `/opt/sunds-waechter/ziele.json` prueft https://sundsconnect.de/, /contact/ und www; www steht bis zur Umstellung auf "wartet_auf_entscheidung" |
+| Deploy | `ops/deploy.sh` = `git push origin main` + `git push hub main`; der post-receive-Hook checkt aus und ruft `bauen.sh` (gleiche Kopierliste wie `.github/workflows/deploy.yml`, also ohne ops/, ohne SCHNITTSTELLE-LEADS.md). Gemessen 01.09.: Push bis `/gesund` mit neuem Commit unter 10 s |
+| Gesund | `https://sundsconnect.de/gesund` -> `gesund.json` (Commit, Zeit) |
+| Caddy | Block in der Caddyfile (Vorlage `caddy-block.txt`); www -> 301 auf Apex; HSTS, nosniff, X-Frame-Options SAMEORIGIN (3D-Hero-iframe); CSP bleibt als Meta in den Seiten |
+| Umschaltung | `/opt/sunds-hub/connect-umstellen.sh` hat am 01.09. umgestellt (`NUR_APEX=1`, weil Strato schneller war als der Timer); Timer `sunds-connect-umschalt` ist beendet und deaktiviert |
+| GitHub | Repo `sundsoffice-tech/connect` bleibt Quelle; Pages ohne Custom Domain als Zweitausgabe unter https://sundsoffice-tech.github.io/connect/ ; `CNAME` aus Repo und Workflow entfernt |
+| Register | `/opt/sunds-hub/projekte.json` -> `connect-website` (Server, Deploy, /gesund eingetragen) |
+| Waechter | `/opt/sunds-waechter/ziele.json`: "S&S-Connect-Website (sunds-hub)", www ohne `wartet_auf_entscheidung`, Kontaktformular |
 
-## Was Fabrice bei Strato setzen muss (der einzige Schritt von Hand)
+## Formulare nach dem Umzug (gemessen 01.09.2026, 16:13)
 
-Siehe `/opt/sunds-hub/ANLEITUNG-STRATO-DNS.md`, Abschnitt Connect-Website. Kurz:
+- Kontaktformular auf der Live-Seite mit gefuelltem Honigtopf abgeschickt (nichts gespeichert,
+  nichts gemailt): `leads.sundsconnect.de/lead` 200, `formspree.io/f/xqeyelgr` 200, Erfolgsmeldung,
+  Knopf wieder frei, `herkunft_web` im sessionStorage.
+- CORS des Lead-Endpunkts erlaubt `https://sundsconnect.de` und `https://www.sundsconnect.de`
+  (kunden.json, unveraendert).
+- Selbstauskunftsseiten `d-*/` liefern 200; `d-c8df...` sendet an Formspree (eigene CSP in der Seite).
 
-```
-sundsconnect.de       A     169.58.211.51            (statt 185.199.108.153)
-sundsconnect.de       AAAA  2a02:c207:3020:4163::1   (neu, wie galabaupremio.de)
-www.sundsconnect.de   A     169.58.211.51            (statt CNAME sundsoffice-tech.github.io)
-www.sundsconnect.de   AAAA  2a02:c207:3020:4163::1   (neu)
-MX und TXT unveraendert lassen.
-```
+## Zwei Fallen beim Scharfschalten (BEFUNDE.md Punkt 28)
 
-Danach passiert alles automatisch: Timer erkennt die DNS, haengt den Caddy-Block an, Caddy
-holt die Zertifikate, `/gesund` antwortet, Register wird fortgeschrieben. Waehrend der DNS-
-Verbreitung liefert GitHub Pages den identischen Stand weiter aus (kein Ausfall).
+1. `caddy validate` als root legt die Logdatei des neuen Blocks root:root 600 an; Caddy (Benutzer
+   `caddy`) kann sie nicht oeffnen, Reload scheitert. Fix im Skript: `chown caddy:caddy` nach validate.
+2. `cp -p` vom 600er Backup zurueck macht `/etc/caddy/Caddyfile` fuer Caddy unlesbar. Fix: Modus vorher
+   merken, nach dem Kopieren wiederherstellen. Beide Muster liegen auch in `hub-umstellen.sh`.
 
-## Danach (Mensch, einmalig)
+## Werkzeuge
 
-- Wenn `dig +short A sundsconnect.de @8.8.8.8` und `@1.1.1.1` beide 169.58.211.51 zeigen:
-  Custom Domain im GitHub-Repo `connect` entfernen
-  (`gh api -X PUT repos/sundsoffice-tech/connect/pages -F cname=null`) und die Datei `CNAME`
-  aus dem Repo nehmen. GitHub Pages bleibt als Zweitausgabe unter
-  sundsoffice-tech.github.io/connect/ bestehen.
-- Waechter-Ziel "S&S-Connect-Website (GitHub Pages)" umbenennen, `wartet_auf_entscheidung`
-  bei www entfernen.
+- `ops/schirmfoto.mjs`: Headless-Screenshot per CDP (`--scrollen`, `--js`).
+- `ops/fernchrome.mjs`: sichtbares Chrome per CDP steuern, wenn die Claude-Erweiterung nicht gekoppelt
+  ist (Kontowechsel). Mensch tippt Zugangsdaten selbst. Nach Gebrauch `stop` und das Wegwerf-Profil in
+  `%TEMP%\fernchrome-profil` entfernen (enthaelt Sitzungscookies).
 
 ## Pruefen
 
 ```
-ssh sunds-hub "sudo /opt/sunds-hub/connect-umstellen.sh --pruefen"
-ssh sunds-hub "tail -5 /opt/sunds-connect-website/umschalt.log; cat /opt/sunds-connect-website/site/gesund.json"
-curl -s --resolve sundsconnect.de:443:169.58.211.51 https://sundsconnect.de/gesund
+curl -s https://sundsconnect.de/gesund
+curl -sI https://www.sundsconnect.de/ | head -3          # 301 -> https://sundsconnect.de/
+ssh sunds-hub "tail -5 /opt/sunds-connect-website/umschalt.log; sudo journalctl -u caddy -n 20 --no-pager -o cat | grep -i sundsconnect"
 ```
