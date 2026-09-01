@@ -31,7 +31,8 @@ jobs:
           mkdir -p _site
 
           # Pflicht-Files am Root (jeweils einzeln, damit ein fehlendes File nicht den ganzen Step kippt)
-          for f in index.html 404.html robots.txt sitemap.xml CNAME; do
+          # CNAME entfaellt seit 01.09.2026: Domain laeuft auf sunds-hub, Pages ist Zweitausgabe unter sundsoffice-tech.github.io/connect/
+          for f in index.html 404.html robots.txt sitemap.xml; do
             [ -f "$f" ] && cp "$f" _site/
           done
 
