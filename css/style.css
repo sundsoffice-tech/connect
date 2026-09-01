@@ -156,6 +156,9 @@
 
 input, select, textarea {
   font-size: max(16px, 1rem);
+  /* Nur Formularelemente dunkel (Auswahllisten), nicht html: ein iframe mit anderem
+     Farbschema wird sonst deckend weiss gerendert (gemessen 01.09.2026 am 3D-Hero). */
+  color-scheme: dark;
 }
 
 html {
@@ -2053,9 +2056,6 @@ body.lang-en .lang-en-inline { display: inline; }
   transform: translateY(100%);
   transition: transform var(--transition-smooth), bottom 0.3s ease;
 }
-.sticky-cta.visible ~ .cookie-banner.visible {
-  bottom: 56px;
-}
 
 .cookie-banner.visible {
   transform: translateY(0);
@@ -2817,3 +2817,113 @@ body.lang-en .lang-en-inline { display: inline; }
 
 /* Honigtopf im Kontaktformular: fuer Menschen unsichtbar, fuer Bots ein Feld */
 .form-honeypot{position:absolute;left:-9999px;top:-9999px;height:0;width:0;overflow:hidden;}
+
+/* ============================================
+   Korrekturen und Ergaenzungen 01.09.2026
+   (Befunde aus Screenshots 1280/390 px, Konsole, Messung)
+   ============================================ */
+
+/* Bento mit vier Karten: 1 hohe + 2 kleine + 1 breite */
+.bento {
+  grid-template-columns: 1.15fr 1fr 1fr;
+  grid-template-rows: auto auto;
+}
+.card--wide {
+  grid-column: 2 / -1;
+}
+.card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: var(--space-sm);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--clr-teal);
+  text-decoration: none;
+  position: relative;
+  z-index: 1;
+}
+.card-link:hover { color: var(--clr-teal-light); }
+.card-link svg { transition: transform var(--transition-fast); }
+.card-link:hover svg { transform: translateX(3px); }
+@media (max-width: 900px) {
+  .bento { grid-template-columns: 1fr; }
+  .card--wide { grid-column: auto; }
+}
+
+/* CTA-Glow lief bei 390 px 105 px ueber den rechten Rand hinaus (Seite 495 px breit) */
+.cta-section { overflow: clip; }
+.cta-section::before { width: min(600px, 100%); }
+
+/* Cookie-Banner auf dem Handy: flex-basis 400px wirkte in Spaltenrichtung als HOEHE */
+@media (max-width: 600px) {
+  .cookie-banner-compact p { flex: 0 1 auto; }
+}
+/* Banner unsichtbar = nicht fokussierbar; solange er offen ist, bleibt der Sticky-CTA weg */
+.cookie-banner { visibility: hidden; transition: transform var(--transition-smooth), visibility 0s linear var(--transition-smooth); }
+.cookie-banner.visible { visibility: visible; transition: transform var(--transition-smooth), visibility 0s; }
+@media (max-width: 768px) {
+  body:has(.cookie-banner.visible) .sticky-cta { transform: translateY(100%); }
+}
+
+/* Trust-Item: Text statt Zahl braucht eine kleinere Schrift (Blitzschnell lief aus der Karte) */
+.trust-item-text strong.is-text {
+  font-size: clamp(0.95rem, 2.2vw, 1.1rem);
+  line-height: 1.2;
+}
+
+/* Preiskarte: "Individuell" ist kein Betrag und lief aus der Karte */
+.pricing-amount--text {
+  font-size: clamp(1.5rem, 3.2vw, 2.1rem);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+/* Nummer "04/05" im Webdesign-Kopf war durch die transparente Textfuellung fast unsichtbar */
+.webdesign-header .feature-number {
+  -webkit-text-fill-color: currentColor;
+  background: none;
+  opacity: 1;
+}
+
+/* Zweite Garantie-Pille: zentriert, nicht volle Breite linksbuendig */
+.webdesign-guarantee--center {
+  display: flex;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto var(--space-lg);
+  justify-content: center;
+}
+
+/* Formular: Fehlerzustand als Klasse statt Inline-Styles, ungueltige Felder markiert */
+.form-status.error {
+  display: block;
+  background: rgba(255, 80, 80, 0.1);
+  border: 1px solid #ff5050;
+  color: #ff7a7a;
+}
+.form-group input[aria-invalid="true"],
+.form-group textarea[aria-invalid="true"],
+.form-group select[aria-invalid="true"] {
+  border-color: #ff5050;
+  box-shadow: 0 0 0 3px rgba(255, 80, 80, 0.15);
+}
+
+/* Ads-Sektion */
+.feature-note {
+  font-size: 0.85rem;
+  color: var(--clr-text-dim);
+  line-height: 1.6;
+  margin: var(--space-md) 0;
+  padding-left: 0.9rem;
+  border-left: 2px solid rgba(0, 212, 170, 0.35);
+}
+.feature-content .btn { margin-top: var(--space-xs); }
+.feature-visual--ads { padding: clamp(0.5rem, 2vw, 1rem); }
+.ads-visual {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 12px 30px rgba(0, 0, 0, 0.35));
+}

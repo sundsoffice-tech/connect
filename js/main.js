@@ -120,16 +120,22 @@ document.addEventListener('DOMContentLoaded', () => {
   if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
 
-    if (!prefersReducedMotion) {
-      // Hero-Elemente: Staggered fade-up mit premium Easing
-      gsap.from('.hero-content .reveal', {
-        y: 50,
-        opacity: 0,
-        duration: 1,
-        stagger: 0.15,
-        ease: 'power4.out',
-        delay: 0.3
-      });
+    // Im Hintergrund-Tab laeuft der GSAP-Ticker nicht (gemessen 01.09.2026: 4 Frames in 5 s),
+    // die Startseite bliebe bis zum Tabwechsel leer. Dann ohne Einblend-Animation zeigen.
+    const tabVerdeckt = document.visibilityState === 'hidden';
+
+    if (!prefersReducedMotion && !tabVerdeckt) {
+      // Hero-Elemente: Staggered fade-up mit premium Easing (nur auf der Startseite vorhanden)
+      if (document.querySelector('.hero-content .reveal')) {
+        gsap.from('.hero-content .reveal', {
+          y: 50,
+          opacity: 0,
+          duration: 1,
+          stagger: 0.15,
+          ease: 'power4.out',
+          delay: 0.3
+        });
+      }
 
       // Section-Headers: Slide + leichte Skalierung
       gsap.utils.toArray('.section-header').forEach(header => {
@@ -255,16 +261,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- Active Navigation Link (aria-current) ---
-  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-  document.querySelectorAll('.nav-links a').forEach(link => {
-    const href = link.getAttribute('href');
-    if (href === currentPage || (currentPage === '' && href === 'index.html')) {
-      link.setAttribute('aria-current', 'page');
-    }
-  });
-
-
+  // aria-current="page" steht statisch im HTML jeder Seite; der fruehere Abgleich ueber
+  // pathname.split('/').pop() traf bei Verzeichnis-URLs (/services/) nie und ist entfernt.
 
   // Herkunft des Besuchs (fuer den Lead-Endpunkt, Schluessel herkunft_web): nur was der
   // Browser ohnehin mitschickt (Referrer) oder in der URL steht (utm_*). Kein Cookie,
@@ -291,7 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Vertrag: SCHNITTSTELLE-LEADS.md (Repo) = /opt/sunds-hub/schnittstellen/connect-website-leads.md
   // Sendet ZUSAETZLICH zu Formspree, nie statt. Wirft nie; Erfolg = einer von beiden hat angenommen.
   const LEAD_ENDPUNKT = 'https://leads.sundsconnect.de/lead';
-  const SUBJECT_LABELS = { general: 'Allgemeine Anfrage', vertrieb: 'Vertrieb & Sales', automation: 'Automation', ai: 'AI Infrastruktur', project: 'Projektanfrage' };
+  const SUBJECT_LABELS = { general: 'Allgemeine Anfrage', vertrieb: 'Vertrieb & Sales', automation: 'Automation', ai: 'AI Infrastruktur', ads: 'Google Ads & AI Ads', webdesign: 'Webdesign', project: 'Projektanfrage' };
 
   function buildLeadPayload(fd) {
     const get = (k) => String(fd.get(k) || '').trim();
@@ -331,20 +329,44 @@ document.addEventListener('DOMContentLoaded', () => {
       const btn = form.querySelector('button[type="submit"]');
       const statusEl = document.getElementById('form-status');
       const isDE = document.body.classList.contains('lang-de');
+      let statusTimer = null;
 
-      // Validate DSGVO checkbox
-      const consent = form.querySelector('#dsgvo-consent');
-      if (consent && !consent.checked) {
-        if (statusEl) {
-          statusEl.textContent = isDE
-            ? 'Bitte stimmen Sie der Datenschutzerklärung zu.'
-            : 'Please agree to the privacy policy.';
-          statusEl.className = 'form-status error';
-          statusEl.style.display = 'block';
-          statusEl.style.background = 'rgba(255,80,80,0.1)';
-          statusEl.style.borderColor = '#ff5050';
-          statusEl.style.color = '#ff5050';
+      function zeigeStatus(text, art) {
+        if (!statusEl) return;
+        clearTimeout(statusTimer);
+        statusEl.textContent = text;
+        statusEl.className = 'form-status ' + art;
+        statusEl.style.display = 'block';
+        statusTimer = setTimeout(() => {
+          statusEl.style.display = 'none';
+          statusEl.className = 'form-status';
+          statusEl.textContent = '';
+        }, art === 'error' ? 8000 : 5000);
+      }
+
+      // Pflichtfelder pruefen. Das Formular traegt novalidate, damit die Meldung in der
+      // gewaehlten Sprache erscheint; bis 01.09.2026 wurde dadurch GAR NICHTS geprueft und
+      // ein leeres Formular ging an Formspree und den Lead-Endpunkt.
+      const pflicht = Array.from(form.querySelectorAll('[required]'));
+      pflicht.forEach((el) => el.removeAttribute('aria-invalid'));
+      const fehlend = pflicht.filter((el) => {
+        if (el.type === 'checkbox') return !el.checked;
+        if (el.type === 'email') return !el.value.trim() || !el.checkValidity();
+        return !el.value.trim();
+      });
+      if (fehlend.length) {
+        fehlend.forEach((el) => el.setAttribute('aria-invalid', 'true'));
+        const erstes = fehlend[0];
+        if (erstes.type === 'checkbox') {
+          zeigeStatus(isDE ? 'Bitte stimmen Sie der Datenschutzerklärung zu.' : 'Please agree to the privacy policy.', 'error');
+        } else if (erstes.type === 'email' && erstes.value.trim()) {
+          zeigeStatus(isDE ? 'Bitte geben Sie eine gültige E-Mail-Adresse an.' : 'Please enter a valid email address.', 'error');
+        } else {
+          zeigeStatus(isDE
+            ? 'Bitte füllen Sie alle Pflichtfelder aus: Name, E-Mail, Betreff, Nachricht.'
+            : 'Please fill in all required fields: name, email, subject, message.', 'error');
         }
+        erstes.focus();
         return;
       }
 
@@ -361,39 +383,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
       Promise.all([formspree, hub]).then(([okFormspree, okHub]) => {
         if (okFormspree || okHub) {
-          if (statusEl) {
-            statusEl.textContent = isDE
-              ? 'Vielen Dank! Ihre Nachricht wurde gesendet.'
-              : 'Thank you! Your message has been sent.';
-            statusEl.className = 'form-status success';
-            statusEl.style.display = 'block';
-            statusEl.style.background = '';
-            statusEl.style.borderColor = '';
-            statusEl.style.color = '';
-          }
+          zeigeStatus(isDE ? 'Vielen Dank! Ihre Nachricht wurde gesendet.' : 'Thank you! Your message has been sent.', 'success');
           form.reset();
         } else {
           throw new Error('Form submission failed');
         }
       }).catch(() => {
-        if (statusEl) {
-          statusEl.textContent = isDE
-            ? 'Fehler beim Senden. Bitte versuchen Sie es erneut.'
-            : 'Error sending message. Please try again.';
-          statusEl.className = 'form-status error';
-          statusEl.style.display = 'block';
-          statusEl.style.background = 'rgba(255,80,80,0.1)';
-          statusEl.style.borderColor = '#ff5050';
-          statusEl.style.color = '#ff5050';
-        }
+        zeigeStatus(isDE ? 'Fehler beim Senden. Bitte versuchen Sie es erneut.' : 'Error sending message. Please try again.', 'error');
       }).finally(() => {
         btn.removeAttribute('disabled');
-        setTimeout(() => {
-          if (statusEl) {
-            statusEl.style.display = 'none';
-            statusEl.textContent = '';
-          }
-        }, 5000);
       });
     });
   }
