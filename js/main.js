@@ -126,26 +126,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!prefersReducedMotion && !tabVerdeckt) {
       // Hero-Elemente: Staggered fade-up mit premium Easing (nur auf der Startseite vorhanden)
+      // Alle Reveals als fromTo mit expliziten Endwerten: ein from()-Tween liest seinen
+      // Endwert beim ScrollTrigger-Refresh neu ein und kann dabei 0 erwischen.
       if (document.querySelector('.hero-content .reveal')) {
-        gsap.from('.hero-content .reveal', {
-          y: 50,
-          opacity: 0,
+        gsap.fromTo('.hero-content .reveal', { y: 50, opacity: 0 }, {
+          y: 0,
+          opacity: 1,
           duration: 1,
           stagger: 0.15,
           ease: 'power4.out',
-          delay: 0.3
+          delay: 0.3,
+          clearProps: 'transform'
         });
       }
 
       // Section-Headers: Slide + leichte Skalierung
       gsap.utils.toArray('.section-header').forEach(header => {
-        gsap.from(header, {
-          y: 60,
-          opacity: 0,
-          scale: 0.97,
+        gsap.fromTo(header, { y: 60, opacity: 0, scale: 0.97 }, {
+          y: 0,
+          opacity: 1,
+          scale: 1,
           duration: 0.9,
           ease: 'power3.out',
-          scrollTrigger: { trigger: header, start: 'top 85%' }
+          clearProps: 'transform',
+          scrollTrigger: { trigger: header, start: 'top 85%', once: true }
         });
       });
 
@@ -153,13 +157,14 @@ document.addEventListener('DOMContentLoaded', () => {
       gsap.utils.toArray('.grid, .bento, .references-grid').forEach(grid => {
         const items = grid.querySelectorAll('.card, .reference-card');
         if (!items.length) return;
-        gsap.from(items, {
-          y: 60,
-          opacity: 0,
+        gsap.fromTo(items, { y: 60, opacity: 0 }, {
+          y: 0,
+          opacity: 1,
           duration: 0.8,
           stagger: 0.1,
           ease: 'power3.out',
-          scrollTrigger: { trigger: grid, start: 'top 82%' }
+          clearProps: 'transform',
+          scrollTrigger: { trigger: grid, start: 'top 82%', once: true }
         });
       });
 
@@ -192,37 +197,40 @@ document.addEventListener('DOMContentLoaded', () => {
       // Webdesign-Teaser: Scale-In
       const teaser = document.querySelector('.webdesign-teaser');
       if (teaser) {
-        gsap.from(teaser, {
-          scale: 0.92,
-          opacity: 0,
+        gsap.fromTo(teaser, { scale: 0.92, opacity: 0 }, {
+          scale: 1,
+          opacity: 1,
           duration: 1,
           ease: 'power3.out',
-          scrollTrigger: { trigger: teaser, start: 'top 85%' }
+          clearProps: 'transform',
+          scrollTrigger: { trigger: teaser, start: 'top 85%', once: true }
         });
       }
 
       // CTA-Section: Slide von unten
       const ctaSection = document.querySelector('.cta-section');
       if (ctaSection) {
-        gsap.from(ctaSection.querySelector('.container'), {
-          y: 80,
-          opacity: 0,
+        gsap.fromTo(ctaSection.querySelector('.container'), { y: 80, opacity: 0 }, {
+          y: 0,
+          opacity: 1,
           duration: 1,
           ease: 'power3.out',
-          scrollTrigger: { trigger: ctaSection, start: 'top 85%' }
+          clearProps: 'transform',
+          scrollTrigger: { trigger: ctaSection, start: 'top 85%', once: true }
         });
       }
 
       // HACCA Inline: Reveal
       const haccaInline = document.querySelector('.hacca-inline__card');
       if (haccaInline) {
-        gsap.from(haccaInline, {
-          y: 60,
-          opacity: 0,
-          scale: 0.95,
+        gsap.fromTo(haccaInline, { y: 60, opacity: 0, scale: 0.95 }, {
+          y: 0,
+          opacity: 1,
+          scale: 1,
           duration: 1,
           ease: 'power3.out',
-          scrollTrigger: { trigger: haccaInline, start: 'top 85%' }
+          clearProps: 'transform',
+          scrollTrigger: { trigger: haccaInline, start: 'top 85%', once: true }
         });
       }
 
@@ -483,7 +491,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.card, .reference-card').forEach(card => {
       card.style.transformStyle = 'preserve-3d';
-      card.style.transition = 'transform 0.15s ease-out';
+
+      card.addEventListener('mouseenter', () => {
+        card.classList.remove('is-settling');
+        card.classList.add('is-tilting');
+      });
 
       card.addEventListener('mousemove', (e) => {
         const rect = card.getBoundingClientRect();
@@ -495,8 +507,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
       card.addEventListener('mouseleave', () => {
         card.style.transform = '';
-        card.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
-        setTimeout(() => { card.style.transition = 'transform 0.15s ease-out'; }, 400);
+        card.classList.remove('is-tilting');
+        card.classList.add('is-settling');
+        setTimeout(() => card.classList.remove('is-settling'), 450);
       });
     });
   }
