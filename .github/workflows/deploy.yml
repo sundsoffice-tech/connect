@@ -42,7 +42,7 @@ jobs:
           done
 
           # Statische Unterseiten
-          for d in services projects contact impressum datenschutz 3d-hero; do
+          for d in services projects contact impressum datenschutz 3d-hero promo; do
             [ -d "$d" ] && cp -r "$d" _site/
           done
 

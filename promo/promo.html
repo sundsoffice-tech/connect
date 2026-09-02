@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>S&S Connect Promo</title>
+<style>
+  /* Schriften der Website (Pfad relativ zu promo/) */
+  @font-face { font-family: 'Syne'; font-weight: 400 800; font-display: block;
+    src: url('../assets/fonts/syne-latin.woff2') format('woff2'); }
+  @font-face { font-family: 'DM Sans'; font-weight: 300 700; font-display: block;
+    src: url('../assets/fonts/dm-sans-latin.woff2') format('woff2'); }
+  @font-face { font-family: 'JetBrains Mono'; font-weight: 400 500; font-display: block;
+    src: url('../assets/fonts/jetbrains-mono-latin.woff2') format('woff2'); }
+
+  :root {
+    --bg: #060b14;
+    --teal: #00d4aa;
+    --teal-hell: #00f0c0;
+    --blau: #0077b6;
+    --text: #e8edf5;
+    --muted: #9aaabe;
+    --dim: #6b7d94;
+    --grad: linear-gradient(135deg, #00d4aa 0%, #0077b6 100%);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); }
+  body { font-family: 'DM Sans', sans-serif; color: var(--text); position: relative; }
+
+  /* Hintergrund: Punktraster + zwei Leuchtflaechen, driften langsam (JS setzt transform) */
+  .raster { position: absolute; inset: -200px;
+    background-image: radial-gradient(circle at 1px 1px, rgba(0,212,170,0.07) 1.5px, transparent 0);
+    background-size: 56px 56px; }
+  .glow { position: absolute; border-radius: 50%; filter: blur(10px); pointer-events: none; }
+  .glow-a { width: 1300px; height: 1300px; left: 900px; top: -500px;
+    background: radial-gradient(circle, rgba(0,212,170,0.10) 0%, transparent 62%); }
+  .glow-b { width: 1200px; height: 1200px; left: -400px; top: 400px;
+    background: radial-gradient(circle, rgba(0,119,182,0.10) 0%, transparent 62%); }
+  .vignette { position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, transparent 55%, rgba(2,5,10,0.75) 100%); }
+
+  .szene { position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; opacity: 0; }
+
+  .el { opacity: 0; will-change: transform, opacity, filter; }
+
+  .badge { display: inline-flex; align-items: center; gap: 14px;
+    font-family: 'JetBrains Mono', monospace; font-size: 26px; letter-spacing: 0.12em;
+    color: var(--teal); border: 1.5px solid rgba(0,212,170,0.35); border-radius: 999px;
+    padding: 12px 34px; background: rgba(0,212,170,0.06); }
+  .badge .punkt { width: 11px; height: 11px; border-radius: 50%; background: var(--teal);
+    box-shadow: 0 0 18px rgba(0,212,170,0.9); }
+
+  .grad-text { background: var(--grad); -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; }
+
+  h1, h2 { font-family: 'Syne', sans-serif; font-weight: 800; line-height: 1.06;
+    letter-spacing: -0.02em; text-align: center; color: #fff; }
+
+  /* Szene 1: Marke */
+  .logotraeger { position: relative; margin-bottom: 34px; }
+  .logotraeger::before { content: ''; position: absolute; left: 50%; top: 50%;
+    width: 480px; height: 480px; transform: translate(-50%, -50%); border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,212,170,0.22) 0%, transparent 60%); }
+  #s1 .logo { width: 230px; height: 230px; display: block; position: relative;
+    filter: brightness(1.45) saturate(1.15) drop-shadow(0 0 40px rgba(0,212,170,0.55)); }
+  #s1 .name { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 120px;
+    letter-spacing: -0.02em; color: #fff; }
+  #s1 .claim { font-size: 44px; color: var(--muted); margin-top: 26px; font-weight: 300; }
+  #s1 .claim b { color: var(--text); font-weight: 600; }
+  #s1 .badge { margin-top: 46px; }
+
+  /* Szene 2: Problem */
+  #s2 h2 { font-size: 88px; max-width: 1500px; }
+  #s2 .chips { display: flex; gap: 34px; margin: 64px 0; }
+  .chip { font-family: 'JetBrains Mono', monospace; font-size: 34px; color: var(--text);
+    border: 1.5px solid rgba(0,212,170,0.35); border-radius: 999px; padding: 22px 52px;
+    background: rgba(15,25,50,0.75); display: flex; align-items: center; gap: 18px; }
+  .chip .punkt { width: 12px; height: 12px; border-radius: 50%; background: var(--teal); }
+  #s2 .schluss { font-size: 46px; color: var(--muted); max-width: 1350px; text-align: center; }
+  #s2 .schluss b { color: var(--teal-hell); font-weight: 600; }
+
+  /* Szene 3: Leistungen */
+  .kopfzeile { font-family: 'JetBrains Mono', monospace; font-size: 28px; color: var(--teal);
+    letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 30px; }
+  #s3 h2 { font-size: 84px; margin-bottom: 70px; }
+  #s3 .reihe1, #s3 .reihe2 { display: flex; gap: 34px; justify-content: center; align-items: stretch; }
+  #s3 .reihe2 { margin-top: 34px; }
+  #s3 .karte { width: 480px; }
+  .karte { background: rgba(15,25,50,0.72); border: 1.5px solid rgba(0,212,170,0.22);
+    border-radius: 26px; padding: 40px 42px; text-align: left; }
+  .karte .kt { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 40px; color: #fff;
+    margin-bottom: 12px; }
+  .karte .kd { font-size: 27px; color: var(--muted); line-height: 1.45; }
+  .karte .ki { width: 62px; height: 62px; border-radius: 16px; margin-bottom: 24px;
+    background: linear-gradient(135deg, rgba(0,212,170,0.18), rgba(0,119,182,0.18));
+    border: 1.5px solid rgba(0,212,170,0.35); display: flex; align-items: center; justify-content: center; }
+  .karte .ki svg { width: 34px; height: 34px; stroke: var(--teal); fill: none;
+    stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* Szene 4: Vorteile */
+  #s4 h2 { font-size: 84px; margin-bottom: 76px; }
+  #s4 .liste { display: flex; flex-direction: column; gap: 42px; }
+  .vorteil { display: flex; align-items: center; gap: 34px; font-size: 46px; color: var(--text); }
+  .vorteil .haken { width: 74px; height: 74px; border-radius: 50%; flex: none;
+    background: var(--grad); display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 34px rgba(0,212,170,0.35); }
+  .vorteil .haken svg { width: 38px; height: 38px; stroke: #06251e; stroke-width: 3.5;
+    fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .vorteil b { color: var(--teal-hell); font-weight: 600; }
+
+  /* Szene 5: Referenzen */
+  #s5 h2 { font-size: 76px; margin-bottom: 80px; }
+  #s5 .reihe { display: flex; gap: 110px; align-items: center; }
+  #s5 .ref { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 46px; color: var(--dim); }
+
+  /* Szene 6: Abschluss */
+  #s6 .logotraeger { margin-bottom: 30px; }
+  #s6 .logotraeger::before { width: 360px; height: 360px; }
+  #s6 .logo { width: 170px; height: 170px; display: block; position: relative;
+    filter: brightness(1.45) saturate(1.15) drop-shadow(0 0 36px rgba(0,212,170,0.55)); }
+  #s6 h2 { font-size: 96px; max-width: 1500px; }
+  #s6 .domain { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 74px;
+    margin-top: 54px; }
+  #s6 .cta { margin-top: 44px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 40px;
+    color: #06251e; background: var(--grad); border-radius: 999px;
+    padding: 26px 66px; box-shadow: 0 0 60px rgba(0,212,170,0.35); }
+  #s6 .tel { margin-top: 40px; font-family: 'JetBrains Mono', monospace; font-size: 32px;
+    color: var(--muted); letter-spacing: 0.06em; }
+
+  /* Fortschrittsbalken unten */
+  .balken { position: absolute; left: 0; bottom: 0; height: 6px; width: 0;
+    background: var(--grad); }
+</style>
+</head>
+<body>
+  <div class="raster" id="raster"></div>
+  <div class="glow glow-a" id="glowa"></div>
+  <div class="glow glow-b" id="glowb"></div>
+  <div class="vignette"></div>
+
+  <!-- Szene 1: Marke -->
+  <section class="szene" id="s1">
+    <span class="logotraeger el" id="s1logo"><img class="logo" src="../assets/img/logo-240.png" alt=""></span>
+    <div class="name el" id="s1name">S&amp;S Connect</div>
+    <div class="claim el" id="s1claim">Intelligente Systeme für <b>echtes Wachstum</b></div>
+    <div class="badge el" id="s1badge"><span class="punkt"></span>Mönchengladbach, Deutschland</div>
+  </section>
+
+  <!-- Szene 2: Problem -->
+  <section class="szene" id="s2">
+    <h2 class="el" id="s2t">Ihre Kunden suchen <span class="grad-text">heute anders.</span></h2>
+    <div class="chips">
+      <div class="chip el" id="s2c1"><span class="punkt"></span>Google</div>
+      <div class="chip el" id="s2c2"><span class="punkt"></span>ChatGPT</div>
+      <div class="chip el" id="s2c3"><span class="punkt"></span>Copilot</div>
+    </div>
+    <div class="schluss el" id="s2s">Sichtbar ist, wer dort steht, <b>wo entschieden wird.</b></div>
+  </section>
+
+  <!-- Szene 3: Leistungen -->
+  <section class="szene" id="s3">
+    <div class="kopfzeile el" id="s3k">Was wir machen</div>
+    <h2 class="el" id="s3t">Fünf Bereiche. <span class="grad-text">Ein Ziel.</span></h2>
+    <div class="reihe1">
+      <div class="karte el" id="k1">
+        <div class="ki"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+        <div class="kt">Vertrieb</div>
+        <div class="kd">Ihre Sales-Pipeline, optimiert von A bis Z.</div>
+      </div>
+      <div class="karte el" id="k2">
+        <div class="ki"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        <div class="kt">Automation</div>
+        <div class="kd">Prozesse, die rund um die Uhr laufen.</div>
+      </div>
+      <div class="karte el" id="k3">
+        <div class="ki"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+        <div class="kt">AI Infrastruktur</div>
+        <div class="kd">KI, die in Ihrem Betrieb wirklich arbeitet.</div>
+      </div>
+    </div>
+    <div class="reihe2">
+      <div class="karte el" id="k4">
+        <div class="ki"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+        <div class="kt">Google Ads &amp; AI&nbsp;Ads</div>
+        <div class="kd">Anzeigen in Google und Copilot. ChatGPT, sobald in Deutschland frei.</div>
+      </div>
+      <div class="karte el" id="k5">
+        <div class="ki"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg></div>
+        <div class="kt">Websites</div>
+        <div class="kd">Ab 200 Euro. Bezahlt wird erst, wenn's passt.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Szene 4: Vorteile -->
+  <section class="szene" id="s4">
+    <h2 class="el" id="s4t">Warum <span class="grad-text">S&amp;S Connect?</span></h2>
+    <div class="liste">
+      <div class="vorteil el" id="v1"><span class="haken"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span>Werbebudget <b>ohne Provision</b>, es läuft auf Ihr eigenes Konto</span></div>
+      <div class="vorteil el" id="v2"><span class="haken"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span>Monatsreport im Klartext: <b>was eine Anfrage gekostet hat</b></span></div>
+      <div class="vorteil el" id="v3"><span class="haken"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span>Website: Sie zahlen erst, <b>wenn das Ergebnis passt</b></span></div>
+      <div class="vorteil el" id="v4"><span class="haken"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span>Alles aus einer Hand, Technik auf <b>eigenen Servern in Deutschland</b></span></div>
+    </div>
+  </section>
+
+  <!-- Szene 5: Referenzen -->
+  <section class="szene" id="s5">
+    <h2 class="el" id="s5t">Kunden, die uns <span class="grad-text">vertrauen.</span></h2>
+    <div class="reihe">
+      <div class="ref el" id="r1">RA Kranz</div>
+      <div class="ref el" id="r2">Sunds Messebau</div>
+      <div class="ref el" id="r3">Lebensblick</div>
+      <div class="ref el" id="r4">Pure Bud</div>
+    </div>
+  </section>
+
+  <!-- Szene 6: Abschluss -->
+  <section class="szene" id="s6">
+    <span class="logotraeger el" id="s6logo"><img class="logo" src="../assets/img/logo-240.png" alt=""></span>
+    <h2 class="el" id="s6t">Bereit für den <span class="grad-text">nächsten Schritt?</span></h2>
+    <div class="domain el" id="s6d"><span class="grad-text">sundsconnect.de</span></div>
+    <div class="cta el" id="s6c">Kostenlose Analyse anfragen</div>
+    <div class="tel el" id="s6p">+49 151 40322125</div>
+  </section>
+
+  <div class="balken" id="balken"></div>
+
+<script>
+/* Deterministische Zeitleiste: seek(ms) setzt jeden Zustand absolut, nichts laeuft frei.
+   So liefert jeder Frame beim Rendern exakt denselben Stand, egal wie langsam die Aufnahme ist. */
+const DAUER = 46000;
+
+const eOut  = t => 1 - Math.pow(1 - t, 3);
+const eExpo = t => t >= 1 ? 1 : 1 - Math.pow(2, -10 * t);
+const eIn   = t => t * t * t;
+const clamp = t => Math.max(0, Math.min(1, t));
+const mix   = (a, b, t) => a + (b - a) * t;
+
+/* Szenenfenster [Beginn, Ende] in ms */
+const SZENEN = {
+  s1: [0, 7500],
+  s2: [7000, 15500],
+  s3: [15000, 27000],
+  s4: [26500, 36000],
+  s5: [35500, 40500],
+  s6: [40000, 46000],
+};
+
+/* Einblendungen: sel, t0, dauer, von, nach; Ausblenden macht die Szene als Ganzes */
+const CUES = [
+  { s: '#s1logo',  t0: 300,  d: 1100, von: { o: 0, y: 40, sc: 0.86 }, nach: { o: 1, y: 0, sc: 1 }, e: eExpo },
+  { s: '#s1name',  t0: 900,  d: 1000, von: { o: 0, y: 55 }, nach: { o: 1, y: 0 }, e: eExpo },
+  { s: '#s1claim', t0: 1600, d: 900,  von: { o: 0, y: 40 }, nach: { o: 1, y: 0 }, e: eOut },
+  { s: '#s1badge', t0: 2300, d: 800,  von: { o: 0, y: 30 }, nach: { o: 1, y: 0 }, e: eOut },
+
+  { s: '#s2t',  t0: 7150,  d: 950, von: { o: 0, y: 60 }, nach: { o: 1, y: 0 }, e: eExpo },
+  { s: '#s2c1', t0: 8600,  d: 650, von: { o: 0, y: 34, sc: 0.9 }, nach: { o: 1, y: 0, sc: 1 }, e: eOut },
+  { s: '#s2c2', t0: 9000,  d: 650, von: { o: 0, y: 34, sc: 0.9 }, nach: { o: 1, y: 0, sc: 1 }, e: eOut },
+  { s: '#s2c3', t0: 9400,  d: 650, von: { o: 0, y: 34, sc: 0.9 }, nach: { o: 1, y: 0, sc: 1 }, e: eOut },
+  { s: '#s2s',  t0: 10600, d: 900, von: { o: 0, y: 40 }, nach: { o: 1, y: 0 }, e: eOut },
+
+  { s: '#s3k', t0: 15150, d: 700, von: { o: 0, y: 30 }, nach: { o: 1, y: 0 }, e: eOut },
+  { s: '#s3t', t0: 15450, d: 900, von: { o: 0, y: 50 }, nach: { o: 1, y: 0 }, e: eExpo },
+  { s: '#k1', t0: 17000, d: 750, von: { o: 0, y: 60, sc: 0.94 }, nach: { o: 1, y: 0, sc: 1 }, e: eOut },
+  { s: '#k2', t0: 17700, d: 750, von: { o: 0, y: 60, sc: 0.94 }, nach: { o: 1, y: 0, sc: 1 }, e: eOut },
+  { s: '#k3', t0: 18400, d: 750, von: { o: 0, y: 60, sc: 0.94 }, nach: { o: 1, y: 0, sc: 1 }, e: eOut },
+  { s: '#k4', t0: 19100, d: 750, von: { o: 0, y: 60, sc: 0.94 }, nach: { o: 1, y: 0, sc: 1 }, e: eOut },
+  { s: '#k5', t0: 19800, d: 750, von: { o: 0, y: 60, sc: 0.94 }, nach: { o: 1, y: 0, sc: 1 }, e: eOut },
+
+  { s: '#s4t', t0: 26650, d: 900, von: { o: 0, y: 50 }, nach: { o: 1, y: 0 }, e: eExpo },
+  { s: '#v1', t0: 28100, d: 800, von: { o: 0, x: -70 }, nach: { o: 1, x: 0 }, e: eOut },
+  { s: '#v2', t0: 29300, d: 800, von: { o: 0, x: -70 }, nach: { o: 1, x: 0 }, e: eOut },
+  { s: '#v3', t0: 30500, d: 800, von: { o: 0, x: -70 }, nach: { o: 1, x: 0 }, e: eOut },
+  { s: '#v4', t0: 31700, d: 800, von: { o: 0, x: -70 }, nach: { o: 1, x: 0 }, e: eOut },
+
+  { s: '#s5t', t0: 35650, d: 850, von: { o: 0, y: 50 }, nach: { o: 1, y: 0 }, e: eExpo },
+  { s: '#r1', t0: 36700, d: 600, von: { o: 0, y: 26 }, nach: { o: 0.85, y: 0 }, e: eOut },
+  { s: '#r2', t0: 37000, d: 600, von: { o: 0, y: 26 }, nach: { o: 0.85, y: 0 }, e: eOut },
+  { s: '#r3', t0: 37300, d: 600, von: { o: 0, y: 26 }, nach: { o: 0.85, y: 0 }, e: eOut },
+  { s: '#r4', t0: 37600, d: 600, von: { o: 0, y: 26 }, nach: { o: 0.85, y: 0 }, e: eOut },
+
+  { s: '#s6logo', t0: 40150, d: 900, von: { o: 0, y: 40, sc: 0.88 }, nach: { o: 1, y: 0, sc: 1 }, e: eExpo },
+  { s: '#s6t', t0: 40550, d: 900, von: { o: 0, y: 55 }, nach: { o: 1, y: 0 }, e: eExpo },
+  { s: '#s6d', t0: 41700, d: 800, von: { o: 0, y: 40 }, nach: { o: 1, y: 0 }, e: eOut },
+  { s: '#s6c', t0: 42600, d: 800, von: { o: 0, y: 34, sc: 0.92 }, nach: { o: 1, y: 0, sc: 1 }, e: eOut },
+  { s: '#s6p', t0: 43400, d: 700, von: { o: 0, y: 26 }, nach: { o: 1, y: 0 }, e: eOut },
+];
+
+const el = {};
+for (const c of CUES) el[c.s] = document.querySelector(c.s);
+const szn = {};
+for (const k of Object.keys(SZENEN)) szn[k] = document.getElementById(k);
+const raster = document.getElementById('raster');
+const glowa = document.getElementById('glowa');
+const glowb = document.getElementById('glowb');
+const balken = document.getElementById('balken');
+const UEBERGANG = 500;   /* Aus- und Einblendung teilen sich die 500 ms Ueberlappung: Kreuzblende */
+
+function seek(ms) {
+  const t = Math.max(0, Math.min(DAUER, ms));
+
+  /* Szenen ein- und ausblenden (leichter Zoom beim Verlassen) */
+  for (const [k, [a, b]] of Object.entries(SZENEN)) {
+    const s = szn[k];
+    if (t < a || t >= b) { s.style.opacity = 0; s.style.visibility = 'hidden'; continue; }
+    s.style.visibility = 'visible';
+    const raus = clamp((b - t) / UEBERGANG);
+    const rein = k === 's1' ? 1 : clamp((t - a) / 500);
+    s.style.opacity = Math.min(rein, raus);
+    const z = 1 + 0.02 * (1 - raus);
+    s.style.transform = `scale(${z})`;
+  }
+
+  /* Elemente nach Keyframes */
+  for (const c of CUES) {
+    const e = el[c.s];
+    const p = clamp((t - c.t0) / c.d);
+    const w = c.e(p);
+    const von = c.von, nach = c.nach;
+    const o = mix(von.o ?? 0, nach.o ?? 1, w);
+    const x = mix(von.x ?? 0, nach.x ?? 0, w);
+    const y = mix(von.y ?? 0, nach.y ?? 0, w);
+    const sc = mix(von.sc ?? 1, nach.sc ?? 1, w);
+    e.style.opacity = o;
+    e.style.transform = `translate(${x}px, ${y}px) scale(${sc})`;
+  }
+
+  /* Hintergrund driftet deterministisch */
+  const d = t / 1000;
+  raster.style.transform = `translate(${-d * 3.2}px, ${-d * 1.6}px)`;
+  glowa.style.transform = `translate(${Math.sin(d * 0.21) * 70}px, ${Math.cos(d * 0.17) * 55}px)`;
+  glowb.style.transform = `translate(${Math.cos(d * 0.16) * 75}px, ${Math.sin(d * 0.19) * 60}px)`;
+  balken.style.width = (t / DAUER * 100) + '%';
+  return t;
+}
+
+window.seek = seek;
+window.DAUER = DAUER;
+seek(0);
+
+/* Vorschau im Browser: ?play spielt einmal ab */
+if (location.search.includes('play')) {
+  const start = performance.now();
+  (function schritt() {
+    const t = performance.now() - start;
+    seek(t);
+    if (t < DAUER) requestAnimationFrame(schritt);
+  })();
+}
+</script>
+</body>
+</html>
