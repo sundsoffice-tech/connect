@@ -67,17 +67,24 @@ try {
   const DAUER = bereit.result.value;
   if (DAUER < 0) throw new Error('Seite hat kein window.seek');
   const BIS = Number(wert('bis', DAUER));
-  const gesamt = Math.floor((BIS - VON) / 1000 * FPS);
-  console.log(`Dauer ${DAUER} ms, ${FPS} fps, Frames ${VON / 1000 * FPS} bis ${gesamt} (Schritt ${SCHRITT})`);
+  // ENDE ist ein Frame-INDEX, keine Anzahl: --von 21200 --bis 27400 rendert i=636..821.
+  // Vorher stand hier die Anzahl (186) als Schleifengrenze gegen den Startindex (636),
+  // die Schleife lief nie und meldete trotzdem "fertig" (gemessen 02.09.2026).
+  const START = Math.floor(VON / 1000 * FPS);
+  const ENDE = Math.floor(BIS / 1000 * FPS);
+  console.log(`Dauer ${DAUER} ms, ${FPS} fps, Frames ${START} bis ${ENDE} (Schritt ${SCHRITT})`);
   const t0 = Date.now();
-  for (let i = Math.floor(VON / 1000 * FPS); i < gesamt; i += SCHRITT) {
+  let geschrieben = 0;
+  for (let i = START; i < ENDE; i += SCHRITT) {
     const ms = i * 1000 / FPS;
     await cdp('Runtime.evaluate', { expression: `seek(${ms})`, returnByValue: true });
     const bild = await cdp('Page.captureScreenshot', { format: 'jpeg', quality: 92 });
     await writeFile(join(framedir, `f${String(i).padStart(5, '0')}.jpg`), Buffer.from(bild.data, 'base64'));
-    if (i % (FPS * 5) === 0) console.log(`  Frame ${i}/${gesamt} (${((Date.now() - t0) / 1000).toFixed(0)} s)`);
+    geschrieben += 1;
+    if (i % (FPS * 5) === 0) console.log(`  Frame ${i}/${ENDE} (${((Date.now() - t0) / 1000).toFixed(0)} s)`);
   }
-  console.log(`fertig: ${gesamt} Frames in ${((Date.now() - t0) / 1000).toFixed(0)} s -> ${framedir}`);
+  if (geschrieben === 0) throw new Error('kein einziger Frame geschrieben, Bereich pruefen');
+  console.log(`fertig: ${geschrieben} Frames in ${((Date.now() - t0) / 1000).toFixed(0)} s -> ${framedir}`);
 } finally {
   ws.close(); chrome.kill();
 }

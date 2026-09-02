@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>S&S Connect Promo Action</title>
+<style>
+  @font-face { font-family: 'Syne'; font-weight: 400 800; font-display: block;
+    src: url('../assets/fonts/syne-latin.woff2') format('woff2'); }
+  @font-face { font-family: 'DM Sans'; font-weight: 300 700; font-display: block;
+    src: url('../assets/fonts/dm-sans-latin.woff2') format('woff2'); }
+  @font-face { font-family: 'JetBrains Mono'; font-weight: 400 500; font-display: block;
+    src: url('../assets/fonts/jetbrains-mono-latin.woff2') format('woff2'); }
+  :root {
+    --bg: #060b14; --teal: #00d4aa; --teal-hell: #00f0c0; --blau: #0077b6;
+    --text: #e8edf5; --muted: #9aaabe; --dim: #6b7d94;
+    --grad: linear-gradient(135deg, #00d4aa 0%, #0077b6 100%);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); }
+  body { font-family: 'DM Sans', sans-serif; color: var(--text); position: relative; }
+
+  #welt { position: absolute; inset: 0; }   /* bekommt Shake + Punch-Zoom */
+  .raster { position: absolute; inset: -300px;
+    background-image: radial-gradient(circle at 1px 1px, rgba(0,212,170,0.08) 1.5px, transparent 0);
+    background-size: 52px 52px; }
+  .glow { position: absolute; border-radius: 50%; pointer-events: none; }
+  .glow-a { width: 1400px; height: 1400px; left: 800px; top: -550px;
+    background: radial-gradient(circle, rgba(0,212,170,0.13) 0%, transparent 62%); }
+  .glow-b { width: 1300px; height: 1300px; left: -450px; top: 350px;
+    background: radial-gradient(circle, rgba(0,119,182,0.13) 0%, transparent 62%); }
+  .vignette { position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, transparent 52%, rgba(2,5,10,0.8) 100%); }
+
+  /* Tempolinien: rotierendes radiales Strahlenfeld, nur in schnellen Szenen sichtbar */
+  #linien { position: absolute; left: 50%; top: 50%; width: 2600px; height: 2600px;
+    transform: translate(-50%, -50%); opacity: 0;
+    background: repeating-conic-gradient(rgba(0,212,170,0.05) 0deg 1.2deg, transparent 1.2deg 9deg); }
+
+  /* Blitz-Overlay fuer Einschlaege */
+  #blitz { position: absolute; inset: 0; background: #dffcf4; opacity: 0; z-index: 90; }
+
+  .szene { position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; opacity: 0; z-index: 10; }
+  .el { opacity: 0; will-change: transform, opacity, filter; }
+  h1, h2 { font-family: 'Syne', sans-serif; font-weight: 800; line-height: 1.04;
+    letter-spacing: -0.02em; text-align: center; color: #fff; }
+  .grad-text { background: var(--grad); -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; }
+
+  /* A1 Marke */
+  #a1 .logotraeger { position: relative; margin-bottom: 30px; }
+  #a1 .logotraeger::before { content: ''; position: absolute; left: 50%; top: 50%;
+    width: 560px; height: 560px; transform: translate(-50%, -50%); border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,212,170,0.28) 0%, transparent 60%); }
+  #a1 .logo { width: 250px; height: 250px; display: block; position: relative;
+    filter: brightness(1.5) saturate(1.15) drop-shadow(0 0 50px rgba(0,212,170,0.6)); }
+  #a1 .name { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 150px;
+    letter-spacing: -0.02em; color: #fff;
+    text-shadow: 4px 0 0 rgba(0,212,170,0.55), -4px 0 0 rgba(0,119,182,0.55); }
+
+  /* A2 Rakete */
+  #a2 h2 { font-size: 108px; }
+  #rakete { position: absolute; left: 0; top: 0; width: 300px; height: 300px; opacity: 0; z-index: 5; }
+  .funke { position: absolute; border-radius: 50%; opacity: 0; z-index: 4;
+    background: radial-gradient(circle, #00f0c0 0%, rgba(0,212,170,0.55) 55%, transparent 75%); }
+
+  /* A3 Kanaele */
+  #a3 .chips { display: flex; gap: 44px; margin-bottom: 70px; }
+  #a3 .chip { font-family: 'JetBrains Mono', monospace; font-size: 52px; color: #fff;
+    border: 2px solid rgba(0,212,170,0.5); border-radius: 999px; padding: 30px 72px;
+    background: rgba(15,25,50,0.85); box-shadow: 0 0 50px rgba(0,212,170,0.18); }
+  #a3 h2 { font-size: 88px; max-width: 1500px; }
+
+  /* A4 Bereiche */
+  #a4 h2 { font-size: 84px; margin-bottom: 64px; }
+  #a4 .schlag { display: flex; gap: 22px; }
+  #a4 .wort { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 44px; color: #fff;
+    border: 2px solid rgba(0,212,170,0.4); border-radius: 18px; padding: 26px 36px;
+    background: rgba(15,25,50,0.85); white-space: nowrap; }
+  #a4 .wort.akzent { background: var(--grad); color: #06251e; border-color: transparent; }
+
+  /* A5 Zahlen */
+  #a5 .zeilen { display: flex; gap: 60px; }
+  .zahlkarte { width: 500px; text-align: center; border: 2px solid rgba(0,212,170,0.3);
+    border-radius: 28px; padding: 56px 30px; background: rgba(15,25,50,0.85); }
+  /* inline-block: die Box waechst mit dem Text. background-clip: text macht Glyphenteile
+     AUSSERHALB der Box unsichtbar, ein zu schmaler Block schneidet % und Euro ab (gemessen). */
+  .zahl { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 92px; line-height: 1; white-space: nowrap; display: inline-block; padding: 0 8px;
+    background: var(--grad); -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; }
+  .zahltext { font-size: 30px; color: var(--muted); margin-top: 18px; line-height: 1.35; }
+
+  /* A6 Abschluss */
+  #a6 h2 { font-size: 100px; }
+  #a6 .domain { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 88px; margin-top: 40px; }
+  #a6 .cta { margin-top: 46px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 46px;
+    color: #06251e; background: var(--grad); border-radius: 999px; padding: 30px 78px;
+    box-shadow: 0 0 80px rgba(0,212,170,0.5); }
+
+  .balken { position: absolute; left: 0; bottom: 0; height: 6px; width: 0; background: var(--grad); z-index: 95; }
+</style>
+</head>
+<body>
+<div id="welt">
+  <div class="raster" id="raster"></div>
+  <div class="glow glow-a" id="glowa"></div>
+  <div class="glow glow-b" id="glowb"></div>
+  <div id="linien"></div>
+  <div class="vignette"></div>
+
+  <!-- A1: Marke schlaegt ein -->
+  <section class="szene" id="a1">
+    <span class="logotraeger el" id="a1logo"><img class="logo" src="../assets/img/logo-240.png" alt=""></span>
+    <div class="name el" id="a1name">S&amp;S Connect</div>
+  </section>
+
+  <!-- A2: Rakete -->
+  <section class="szene" id="a2">
+    <h2 class="el" id="a2t">Zeit für <span class="grad-text">echtes Wachstum.</span></h2>
+  </section>
+
+  <!-- A3: Kanaele -->
+  <section class="szene" id="a3">
+    <div class="chips">
+      <div class="chip el" id="c1">Google</div>
+      <div class="chip el" id="c2">ChatGPT</div>
+      <div class="chip el" id="c3">Copilot</div>
+    </div>
+    <h2 class="el" id="a3t">Sichtbar, wo <span class="grad-text">entschieden wird.</span></h2>
+  </section>
+
+  <!-- A4: Fuenf Bereiche -->
+  <section class="szene" id="a4">
+    <h2 class="el" id="a4t">Fünf Bereiche. <span class="grad-text">Ein Ziel.</span></h2>
+    <div class="schlag">
+      <div class="wort el" id="w1">Vertrieb</div>
+      <div class="wort el" id="w2">Automation</div>
+      <div class="wort el" id="w3">KI</div>
+      <div class="wort el akzent" id="w4">Ads</div>
+      <div class="wort el" id="w5">Websites</div>
+    </div>
+  </section>
+
+  <!-- A5: Zahlen -->
+  <section class="szene" id="a5">
+    <div class="zeilen">
+      <div class="zahlkarte el" id="z1"><div class="zahl"><span id="z1n">0</span>%</div>
+        <div class="zahltext">Provision auf Ihr Werbebudget</div></div>
+      <div class="zahlkarte el" id="z2"><div class="zahl"><span id="z2n">0</span>%</div>
+        <div class="zahltext">Klartext im Monatsreport</div></div>
+      <div class="zahlkarte el" id="z3"><div class="zahl" style="font-size: 64px;">ab <span id="z3n">0</span>€</div>
+        <div class="zahltext">Websites, bezahlt erst, wenn's passt</div></div>
+    </div>
+  </section>
+
+  <!-- A6: Abschluss -->
+  <section class="szene" id="a6">
+    <h2 class="el" id="a6t">Bereit zum <span class="grad-text">Abheben?</span></h2>
+    <div class="domain el grad-text" id="a6d">sundsconnect.de</div>
+    <div class="cta el" id="a6c">Jetzt kostenlose Analyse anfragen</div>
+  </section>
+</div>
+<div id="blitz"></div>
+<div class="balken" id="balken"></div>
+
+<svg id="rakete" viewBox="0 0 120 120">
+  <defs>
+    <linearGradient id="rg" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#0077b6"/><stop offset="1" stop-color="#00f0c0"/>
+    </linearGradient>
+  </defs>
+  <g transform="rotate(45 60 60)">
+    <path d="M60 8 C74 26 80 46 80 66 L60 84 L40 66 C40 46 46 26 60 8 Z" fill="url(#rg)"/>
+    <circle cx="60" cy="46" r="10" fill="#06251e" stroke="#dffcf4" stroke-width="3"/>
+    <path d="M40 66 L26 92 L44 80 Z" fill="#0077b6"/>
+    <path d="M80 66 L94 92 L76 80 Z" fill="#0077b6"/>
+    <path d="M52 84 L60 112 L68 84 Z" fill="#00f0c0" opacity="0.95"/>
+  </g>
+</svg>
+
+<script>
+const DAUER = 32000;
+const eOut = t => 1 - Math.pow(1 - t, 3);
+const eExpo = t => t >= 1 ? 1 : 1 - Math.pow(2, -10 * t);
+const eBack = t => { const c = 1.70158 * 1.35; return 1 + (c + 1) * Math.pow(t - 1, 3) + c * Math.pow(t - 1, 2); };
+const clamp = t => Math.max(0, Math.min(1, t));
+const mix = (a, b, t) => a + (b - a) * t;
+
+const SZENEN = {
+  a1: [0, 4000], a2: [3600, 8400], a3: [8000, 15000],
+  a4: [14600, 21600], a5: [21200, 27400], a6: [27000, 32000],
+};
+const CUES = [
+  { s: '#a1logo', t0: 250, d: 550, von: { o: 0, sc: 3.2 }, nach: { o: 1, sc: 1 }, e: eExpo },
+  { s: '#a1name', t0: 750, d: 500, von: { o: 0, sc: 2.4 }, nach: { o: 1, sc: 1 }, e: eExpo },
+
+  { s: '#a2t', t0: 4100, d: 600, von: { o: 0, y: 90 }, nach: { o: 1, y: 0 }, e: eExpo },
+
+  { s: '#c1', t0: 8450, d: 420, von: { o: 0, sc: 2.6, r: -7 }, nach: { o: 1, sc: 1, r: 0 }, e: eBack },
+  { s: '#c2', t0: 9050, d: 420, von: { o: 0, sc: 2.6, r: 6 }, nach: { o: 1, sc: 1, r: 0 }, e: eBack },
+  { s: '#c3', t0: 9650, d: 420, von: { o: 0, sc: 2.6, r: -5 }, nach: { o: 1, sc: 1, r: 0 }, e: eBack },
+  { s: '#a3t', t0: 10600, d: 650, von: { o: 0, y: 80 }, nach: { o: 1, y: 0 }, e: eExpo },
+
+  { s: '#a4t', t0: 14800, d: 600, von: { o: 0, y: 70 }, nach: { o: 1, y: 0 }, e: eExpo },
+  { s: '#w1', t0: 15600, d: 380, von: { o: 0, sc: 2.2, r: -8 }, nach: { o: 1, sc: 1, r: -1.5 }, e: eBack },
+  { s: '#w2', t0: 16100, d: 380, von: { o: 0, sc: 2.2, r: 7 }, nach: { o: 1, sc: 1, r: 1 }, e: eBack },
+  { s: '#w3', t0: 16600, d: 380, von: { o: 0, sc: 2.2, r: -6 }, nach: { o: 1, sc: 1, r: -1 }, e: eBack },
+  { s: '#w4', t0: 17100, d: 380, von: { o: 0, sc: 2.4, r: 8 }, nach: { o: 1, sc: 1.06, r: 1.5 }, e: eBack },
+  { s: '#w5', t0: 17600, d: 380, von: { o: 0, sc: 2.2, r: -7 }, nach: { o: 1, sc: 1, r: -1 }, e: eBack },
+
+  { s: '#z1', t0: 21500, d: 450, von: { o: 0, y: 120 }, nach: { o: 1, y: 0 }, e: eExpo },
+  { s: '#z2', t0: 21900, d: 450, von: { o: 0, y: 120 }, nach: { o: 1, y: 0 }, e: eExpo },
+  { s: '#z3', t0: 22300, d: 450, von: { o: 0, y: 120 }, nach: { o: 1, y: 0 }, e: eExpo },
+
+  { s: '#a6t', t0: 27250, d: 550, von: { o: 0, sc: 2.0 }, nach: { o: 1, sc: 1 }, e: eExpo },
+  { s: '#a6d', t0: 27900, d: 500, von: { o: 0, y: 60 }, nach: { o: 1, y: 0 }, e: eOut },
+  { s: '#a6c', t0: 28500, d: 500, von: { o: 0, sc: 0.7 }, nach: { o: 1, sc: 1 }, e: eBack },
+];
+/* Einschlaege: kurzer Blitz + Kamerastoss */
+const SCHLAEGE = [800, 4100, 8450, 9050, 9650, 15600, 16100, 16600, 17100, 17600, 21500, 27250, 28500];
+/* Zaehler: [Element, Ziel, t0, d] */
+const ZAEHLER = [['z1n', 0, 21950, 900], ['z2n', 100, 22350, 1100], ['z3n', 200, 22750, 1100]];
+
+const el = {}; for (const c of CUES) el[c.s] = document.querySelector(c.s);
+const szn = {}; for (const k of Object.keys(SZENEN)) szn[k] = document.getElementById(k);
+const welt = document.getElementById('welt');
+const raster = document.getElementById('raster');
+const glowa = document.getElementById('glowa');
+const glowb = document.getElementById('glowb');
+const linien = document.getElementById('linien');
+const blitz = document.getElementById('blitz');
+const balken = document.getElementById('balken');
+const rakete = document.getElementById('rakete');
+const UEBER = 400;
+
+/* Deterministische Abgasfunken der Rakete */
+const FUNKEN = [];
+for (let i = 0; i < 26; i += 1) {
+  const f = document.createElement('div');
+  f.className = 'funke';
+  document.getElementById('welt').appendChild(f);
+  FUNKEN.push(f);
+}
+const zufall = (i, k) => { const x = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return x - Math.floor(x); };
+
+function raketenPos(p) {
+  /* Bogen von unten links nach oben rechts, leicht ansteigend */
+  const x = mix(-320, 2100, p);
+  const y = mix(1180, -260, Math.pow(p, 0.92)) + Math.sin(p * Math.PI) * -60;
+  return { x, y, winkel: mix(6, -8, p) };
+}
+
+function seek(ms) {
+  const t = Math.max(0, Math.min(DAUER, ms));
+  for (const [k, [a, b]] of Object.entries(SZENEN)) {
+    const s = szn[k];
+    if (t < a || t >= b) { s.style.opacity = 0; s.style.visibility = 'hidden'; continue; }
+    s.style.visibility = 'visible';
+    const raus = clamp((b - t) / UEBER);
+    const rein = k === 'a1' ? 1 : clamp((t - a) / UEBER);
+    s.style.opacity = Math.min(rein, raus);
+    s.style.transform = `scale(${1 + 0.035 * (1 - raus)})`;
+  }
+  for (const c of CUES) {
+    const e = el[c.s];
+    const p = clamp((t - c.t0) / c.d);
+    const w = c.e(p);
+    const o = mix(c.von.o ?? 0, c.nach.o ?? 1, p < 0.35 ? clamp(p / 0.35) : 1);
+    const x = mix(c.von.x ?? 0, c.nach.x ?? 0, w);
+    const y = mix(c.von.y ?? 0, c.nach.y ?? 0, w);
+    const sc = mix(c.von.sc ?? 1, c.nach.sc ?? 1, w);
+    const r = mix(c.von.r ?? 0, c.nach.r ?? 0, w);
+    e.style.opacity = o;
+    e.style.transform = `translate(${x}px, ${y}px) scale(${sc}) rotate(${r}deg)`;
+  }
+  /* Blitz + Kamerastoss */
+  let blitzO = 0, stossX = 0, stossY = 0, punch = 0;
+  for (const z of SCHLAEGE) {
+    const dt = t - z;
+    if (dt >= 0 && dt < 360) {
+      blitzO = Math.max(blitzO, 0.55 * Math.exp(-dt / 70));
+      const kraft = 26 * Math.exp(-dt / 110);
+      stossX += Math.sin(dt * 0.11 + z) * kraft;
+      stossY += Math.cos(dt * 0.13 + z * 2) * kraft * 0.7;
+      punch = Math.max(punch, 0.045 * Math.exp(-dt / 130));
+    }
+  }
+  blitz.style.opacity = blitzO;
+  welt.style.transform = `translate(${stossX}px, ${stossY}px) scale(${1 + punch})`;
+  /* Tempolinien in den schnellen Szenen */
+  const linienO = (t >= 3600 && t < 8400) ? 0.9 : (t >= 14600 && t < 21600 ? 0.5 : 0);
+  linien.style.opacity = linienO;
+  linien.style.transform = `translate(-50%, -50%) rotate(${t * 0.012}deg)`;
+  /* Rakete in A2 und A6 */
+  let rOpac = 0;
+  if (t >= 4300 && t <= 8300) {
+    const p = (t - 4300) / 4000;
+    const { x, y, winkel } = raketenPos(p);
+    rakete.style.left = x + 'px'; rakete.style.top = y + 'px';
+    rakete.style.transform = `rotate(${winkel}deg)`;
+    rOpac = clamp((t - 4300) / 200) * clamp((8300 - t) / 250);
+    for (let i = 0; i < FUNKEN.length; i += 1) {
+      const f = FUNKEN[i];
+      const leben = 0.55 + zufall(i, 1) * 0.5;
+      const alter = ((t / 1000 + zufall(i, 2) * leben) % leben) / leben;
+      const zp = clamp(p - alter * 0.13);
+      const q = raketenPos(zp);
+      const gr = mix(46, 7, alter) * (0.7 + zufall(i, 3) * 0.6);
+      f.style.width = gr + 'px'; f.style.height = gr + 'px';
+      f.style.left = (q.x + 24 + (zufall(i, 4) - 0.5) * 60 * alter) + 'px';
+      f.style.top = (q.y + 210 + (zufall(i, 5) - 0.5) * 60 * alter + alter * 90) + 'px';
+      f.style.opacity = rOpac * (1 - alter) * 0.85;
+    }
+  } else {
+    for (const f of FUNKEN) f.style.opacity = 0;
+  }
+  rakete.style.opacity = rOpac;
+  /* Zaehler */
+  for (const [id, ziel, t0, d] of ZAEHLER) {
+    const p = clamp((t - t0) / d);
+    document.getElementById(id).textContent = Math.round(eOut(p) * ziel);
+  }
+  /* Hintergrund schneller als in der ruhigen Fassung */
+  const dsek = t / 1000;
+  raster.style.transform = `translate(${-dsek * 26}px, ${-dsek * 12}px)`;
+  glowa.style.transform = `translate(${Math.sin(dsek * 0.6) * 120}px, ${Math.cos(dsek * 0.5) * 90}px)`;
+  glowb.style.transform = `translate(${Math.cos(dsek * 0.55) * 130}px, ${Math.sin(dsek * 0.6) * 100}px)`;
+  balken.style.width = (t / DAUER * 100) + '%';
+  return t;
+}
+window.seek = seek;
+window.DAUER = DAUER;
+seek(0);
+if (location.search.includes('play')) {
+  const start = performance.now();
+  (function schritt() { const t = performance.now() - start; seek(t); if (t < DAUER) requestAnimationFrame(schritt); })();
+}
+</script>
+</body>
+</html>
