@@ -20,7 +20,15 @@ ueber server hosten", nachdem GitHub Pages seit 21.08.2026 kein Zertifikat mehr 
 | Register | `/opt/sunds-hub/projekte.json` -> `connect-website` (Server, Deploy, /gesund eingetragen) |
 | Waechter | `/opt/sunds-waechter/ziele.json`: "S&S-Connect-Website (sunds-hub)", www ohne `wartet_auf_entscheidung`, Kontaktformular |
 
-## Formulare nach dem Umzug (gemessen 01.09.2026, 16:13)
+## Formulare seit 18.10.2026: nur noch der Lead-Endpunkt
+
+- Formspree ist für das Kontaktformular abgeschaltet (Fabrice 18.10.2026), Commit 4b73a5a, live
+  gebaut 13:28. CSP ohne formspree.io.
+- Gemessen 13:29: Testlead an `leads.sundsconnect.de/lead` mit Origin `https://sundsconnect.de`
+  200, Vorgang c8a3d182b3 „zugestellt“, um 11:29 UTC im Posteingang Info@sundsconnect.de.
+- Ausnahme: Selbstauskunftsseite `d-c8df...` sendet weiter an Formspree (Bericht über 4000 Zeichen).
+
+## Formulare nach dem Umzug (gemessen 01.09.2026, 16:13; Formspree-Teil seit 18.10.2026 Geschichte)
 
 - Kontaktformular auf der Live-Seite mit gefuelltem Honigtopf abgeschickt (nichts gespeichert,
   nichts gemailt): `leads.sundsconnect.de/lead` 200, `formspree.io/f/xqeyelgr` 200, Erfolgsmeldung,
