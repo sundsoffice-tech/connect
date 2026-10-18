@@ -293,9 +293,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   merkeHerkunft();
 
-  // --- Lead-Endpunkt (sunds-hub) — zweiter, unabhaengiger Zustellweg ---
+  // --- Lead-Endpunkt (sunds-hub) — einziger Zustellweg seit 18.10.2026 ---
   // Vertrag: SCHNITTSTELLE-LEADS.md (Repo) = /opt/sunds-hub/schnittstellen/connect-website-leads.md
-  // Sendet ZUSAETZLICH zu Formspree, nie statt. Wirft nie; Erfolg = einer von beiden hat angenommen.
+  // Bis 18.10.2026 lief Formspree parallel (Stufe A, 21.08.). Fabrice 18.10.: fremde Formulardienste
+  // abloesen. Der Endpunkt speichert zuerst, sendet ueber Strato und sendet alle 5 min nach.
   const LEAD_ENDPUNKT = 'https://leads.sundsconnect.de/lead';
   const SUBJECT_LABELS = { general: 'Allgemeine Anfrage', vertrieb: 'Vertrieb & Sales', automation: 'Automation', ai: 'AI Infrastruktur', ads: 'Google Ads & AI Ads', webdesign: 'Webdesign', project: 'Projektanfrage' };
 
@@ -329,7 +330,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (e) { return Promise.resolve(false); }
   }
 
-  // --- Contact Form (Formspree + Lead-Endpunkt parallel) ---
+  // --- Contact Form (Lead-Endpunkt) ---
   const form = document.querySelector('#contact-form');
   if (form) {
     form.addEventListener('submit', (e) => {
@@ -382,22 +383,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const data = new FormData(form);
 
-      const formspree = fetch(form.action, {
-        method: 'POST',
-        body: data,
-        headers: { 'Accept': 'application/json' }
-      }).then((r) => r.ok).catch(() => false);
-      const hub = relayLeadToHub(data);
-
-      Promise.all([formspree, hub]).then(([okFormspree, okHub]) => {
-        if (okFormspree || okHub) {
+      relayLeadToHub(data).then((okHub) => {
+        if (okHub) {
           zeigeStatus(isDE ? 'Vielen Dank! Ihre Nachricht wurde gesendet.' : 'Thank you! Your message has been sent.', 'success');
           form.reset();
         } else {
           throw new Error('Form submission failed');
         }
       }).catch(() => {
-        zeigeStatus(isDE ? 'Fehler beim Senden. Bitte versuchen Sie es erneut.' : 'Error sending message. Please try again.', 'error');
+        zeigeStatus(isDE ? 'Fehler beim Senden. Bitte versuchen Sie es erneut oder schreiben Sie an info@sundsconnect.de.' : 'Error sending message. Please try again or write to info@sundsconnect.de.', 'error');
       }).finally(() => {
         btn.removeAttribute('disabled');
       });
