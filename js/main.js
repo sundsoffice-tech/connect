@@ -87,33 +87,42 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Mobile Menu ---
   const hamburger = document.querySelector('.nav-hamburger');
   const navMenu = document.querySelector('.nav-menu');
+  const mobileNav = window.matchMedia('(max-width: 900px)');
 
   if (hamburger && navMenu) {
-    hamburger.addEventListener('click', () => {
-      const isOpen = hamburger.getAttribute('aria-expanded') === 'true';
-      hamburger.setAttribute('aria-expanded', !isOpen);
-      navMenu.setAttribute('aria-hidden', isOpen);
-      document.body.style.overflow = isOpen ? '' : 'hidden';
-    });
+    const isMenuOpen = () => hamburger.getAttribute('aria-expanded') === 'true';
+
+    const setMenu = (open) => {
+      if (open) {
+        // Panel beginnt unter der Kopfzeile; deren Hoehe haengt vom Scroll-Zustand ab
+        document.documentElement.style.setProperty('--nav-h', `${nav.offsetHeight}px`);
+      }
+      hamburger.setAttribute('aria-expanded', String(open));
+      hamburger.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
+      // Auf dem Desktop sind die Links immer sichtbar und duerfen nicht aria-hidden sein
+      navMenu.setAttribute('aria-hidden', String(mobileNav.matches && !open));
+      document.body.classList.toggle('menu-open', open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    };
+
+    hamburger.addEventListener('click', () => setMenu(!isMenuOpen()));
 
     // Close on link click
     navMenu.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        hamburger.setAttribute('aria-expanded', 'false');
-        navMenu.setAttribute('aria-hidden', 'true');
-        document.body.style.overflow = '';
-      });
+      link.addEventListener('click', () => setMenu(false));
     });
 
     // Close on Escape
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && hamburger.getAttribute('aria-expanded') === 'true') {
-        hamburger.setAttribute('aria-expanded', 'false');
-        navMenu.setAttribute('aria-hidden', 'true');
-        document.body.style.overflow = '';
+      if (e.key === 'Escape' && isMenuOpen()) {
+        setMenu(false);
         hamburger.focus();
       }
     });
+
+    // Wechsel Telefon <-> Desktop: Menue schliessen, aria-hidden passend setzen
+    mobileNav.addEventListener('change', () => setMenu(false));
+    setMenu(false);
   }
 
   // --- GSAP ScrollTrigger Reveals ---

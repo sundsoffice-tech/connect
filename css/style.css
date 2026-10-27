@@ -441,10 +441,22 @@ body.lang-en .lang-en-inline { display: inline; }
 
 .nav.scrolled {
   background: rgba(6, 11, 20, 0.92);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   box-shadow: 0 1px 0 var(--clr-border);
   padding: 0.6rem 0;
+}
+
+/* Der Blur liegt auf einem Pseudo-Element, nicht auf .nav selbst:
+   backdrop-filter macht sein Element zum Bezugsrahmen fuer position: fixed,
+   und das mobile Menue (fixed, inset: 0) war dann nur so hoch wie die Leiste
+   (gemessen 27.10.2026: 65 px statt Viewport). */
+.nav.scrolled::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  pointer-events: none;
 }
 
 .nav .container {
@@ -609,36 +621,178 @@ body.lang-en .lang-en-inline { display: inline; }
     margin-right: 0.5rem;
   }
 
+  /* Vollbild-Panel unter der Kopfzeile; --nav-h setzt main.js beim Oeffnen */
   .nav-menu {
     position: fixed;
     inset: 0;
-    background: rgba(6, 11, 20, 0.98);
-    backdrop-filter: blur(30px);
+    height: 100vh;
+    height: 100dvh;
+    z-index: 1000;
     display: flex;
     flex: none;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-xl);
+    justify-content: flex-start;
+    padding: calc(var(--nav-h, 5rem) + var(--space-md)) clamp(1rem, 4vw, 1.5rem) calc(var(--space-md) + env(safe-area-inset-bottom, 0px));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background:
+      radial-gradient(ellipse 90% 45% at 100% 0%, rgba(0, 212, 170, 0.14) 0%, transparent 65%),
+      radial-gradient(ellipse 70% 40% at 0% 100%, rgba(0, 119, 182, 0.16) 0%, transparent 65%),
+      var(--clr-bg-deep);
     opacity: 0;
     visibility: hidden;
-    transition: all var(--transition-smooth);
-    z-index: 1000;
+    transition: opacity var(--transition-smooth), visibility 0s linear 0.4s;
   }
 
   .nav-menu[aria-hidden="false"] {
     opacity: 1;
     visibility: visible;
+    transition: opacity var(--transition-smooth), visibility 0s;
   }
 
   .nav-links {
     flex-direction: column;
-    gap: var(--space-lg);
+    align-items: stretch;
+    gap: 0;
+    width: 100%;
+    max-width: 40rem;
+    counter-reset: nav-item;
+    border-top: 1px solid var(--clr-border);
   }
 
-  .nav-links a {
-    font-size: clamp(1.2rem, 4vw, 1.5rem);
+  .nav-links li {
+    counter-increment: nav-item;
+    border-bottom: 1px solid var(--clr-border);
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.35s ease, transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
+
+  .nav-menu[aria-hidden="false"] .nav-links li {
+    opacity: 1;
+    transform: none;
+  }
+  .nav-menu[aria-hidden="false"] .nav-links li:nth-child(1) { transition-delay: 0.05s; }
+  .nav-menu[aria-hidden="false"] .nav-links li:nth-child(2) { transition-delay: 0.10s; }
+  .nav-menu[aria-hidden="false"] .nav-links li:nth-child(3) { transition-delay: 0.15s; }
+  .nav-menu[aria-hidden="false"] .nav-links li:nth-child(4) { transition-delay: 0.20s; }
+  .nav-menu[aria-hidden="false"] .nav-links li:nth-child(n+5) { transition-delay: 0.25s; }
+
+  .nav-links a {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 1.1rem 0.25rem;
+    font-size: clamp(1.6rem, 6vw, 2.1rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    color: var(--clr-text);
+  }
+
+  /* Laufende Nummer links in Mono, Teal */
+  .nav-links a::before {
+    content: counter(nav-item, decimal-leading-zero);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--clr-teal);
+    min-width: 2ch;
+    flex-shrink: 0;
+  }
+
+  /* Der Desktop-Unterstrich wird auf dem Telefon zum Pfeil rechts */
+  .nav-links a::after {
+    content: '\2192';
+    position: static;
+    width: auto;
+    height: auto;
+    margin-left: auto;
+    background: none;
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--clr-text-dim);
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: opacity var(--transition-fast), transform var(--transition-fast), color var(--transition-fast);
+  }
+
+  .nav-links a:hover::after,
+  .nav-links a:focus-visible::after,
+  .nav-links a[aria-current="page"]::after {
+    width: auto;
+    opacity: 1;
+    transform: none;
+  }
+
+  .nav-links a[aria-current="page"] { color: #fff; }
+  .nav-links a[aria-current="page"]::after { color: var(--clr-teal); }
+
+  /* Fuss des Menues: Handlungsaufruf und Kontakt */
+  .nav-menu-footer {
+    margin-top: auto;
+    padding-top: var(--space-lg);
+    width: 100%;
+    max-width: 40rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.35s ease, transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .nav-menu[aria-hidden="false"] .nav-menu-footer {
+    opacity: 1;
+    transform: none;
+    transition-delay: 0.28s;
+  }
+
+  .nav-menu-footer .btn {
+    width: 100%;
+    justify-content: center;
+    min-height: 52px;
+    font-size: 1rem;
+  }
+
+  .nav-menu-contact {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    color: var(--clr-text-dim);
+  }
+
+  .nav-menu-contact a {
+    color: var(--clr-text-muted);
+    text-decoration: none;
+    padding: 0.5rem 0;
+    transition: color var(--transition-fast);
+  }
+
+  .nav-menu-contact a:hover,
+  .nav-menu-contact a:focus-visible {
+    color: var(--clr-teal);
+  }
+}
+
+/* Sehr niedrige Telefone (z. B. 320 x 568): kompakter, damit alles ohne Scrollen passt */
+@media (max-width: 900px) and (max-height: 620px) {
+  .nav-links a {
+    padding: 0.8rem 0.25rem;
+    font-size: clamp(1.4rem, 5.5vw, 1.8rem);
+  }
+  .nav-menu-footer { padding-top: var(--space-md); gap: var(--space-sm); }
+}
+
+/* Auf dem Desktop ist der Menue-Fuss nicht Teil der Leiste */
+@media (min-width: 901px) {
+  .nav-menu-footer { display: none; }
 }
 
 /* --- Buttons --- */
@@ -2820,6 +2974,10 @@ body.lang-en .lang-en-inline { display: inline; }
   }
   .sticky-cta.visible {
     transform: translateY(0);
+  }
+  /* Solange das Menue offen ist, bleibt der Sticky-CTA weg (er laege sonst ueber dem Menue) */
+  body.menu-open .sticky-cta {
+    transform: translateY(100%);
   }
   .sticky-cta .btn {
     width: 100%;
