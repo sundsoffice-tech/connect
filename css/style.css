@@ -731,7 +731,7 @@ body.lang-en .lang-en-inline { display: inline; }
 
   /* Fuss des Menues: Handlungsaufruf und Kontakt */
   .nav-menu-footer {
-    margin-top: auto;
+    margin-top: var(--space-md);
     padding-top: var(--space-lg);
     width: 100%;
     max-width: 40rem;
@@ -1879,7 +1879,6 @@ body.lang-en .lang-en-inline { display: inline; }
 .hero-product:hover .hero-product__arrow { transform: translateX(4px); }
 @media (max-width: 600px) {
   .hero-product { font-size: 0.75rem; line-height: 1.5; }
-  .hero-product__text { flex-basis: 100%; }
 }
 
 /* Webseiten-Referenzen */
@@ -3242,3 +3241,28 @@ main [id] {
     -webkit-backdrop-filter: none;
   }
 }
+
+/* --- Menue, Hero-HACCA, Vertrauensleiste (Rollen 28.10.2026) --- */
+/* Entscheidung Kuenstler, Unternehmer, Spieltheoretiker, Programmierer (28.10.2026, Fabrice: Rollen entscheiden):
+   Adresse aus dem Handy-Menue, Telefon bleibt in Fliessschrift; kein Pfeil, aktive Seite tuerkis;
+   HACCA-Zeile im Hero als Satz in Fliessschrift; Vertrauensleiste aus, bis Logos da sind. */
+@media (max-width: 900px) {
+  .nav-menu-contact span { display: none; }
+  .nav-menu-contact {
+    font-family: inherit;
+    font-size: 0.95rem;
+    letter-spacing: 0;
+    justify-content: flex-start;
+  }
+  .nav-links a::after,
+  .nav-links a[aria-current="page"]::after { display: none; }
+  .nav-links a[aria-current="page"] { color: var(--clr-teal); }
+}
+.hero-product {
+  font-family: inherit;
+  font-size: 0.95rem;
+  letter-spacing: 0;
+  gap: 0.4rem;
+}
+.hero-product strong { color: var(--clr-teal); font-weight: 600; }
+.trust-bar { display: none !important; }
