@@ -13,6 +13,7 @@ if [ -n "${1:-}" ]; then
 fi
 [ "$(git branch --show-current)" = "main" ] || { echo "nicht auf main" >&2; exit 2; }
 git remote get-url hub >/dev/null 2>&1 || git remote add hub sunds-hub:/opt/sunds-connect-website/repo.git
+python ops/stempel.py >/dev/null && git add -A -- "*.html" && { git commit -q -m "chore(stempel): Versionsstempel $(date +%Y%m%d-%H%M)" || true; }
 echo "-> GitHub (origin)"; git push origin main
 echo "-> sunds-hub (hub)";  git push hub main
 echo "-> Probe"
