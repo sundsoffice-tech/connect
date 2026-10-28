@@ -3213,3 +3213,32 @@ main [id] {
   display: block;
   filter: drop-shadow(0 12px 30px rgba(0, 0, 0, 0.35));
 }
+
+/* --- Mobil: teure Effekte aus (28.10.2026) --- */
+/* Fabrice 28.10.2026: Scrollen auf dem Handy hakt. Ursachen nach Codelage: ein dauerhaft
+   animierter blur()-Filter auf dem Hero-Button (Repaint in jedem Frame), backdrop-filter auf
+   Kopfleiste, Sticky-CTA und Preis-Karten (wird beim Scrollen jedes Frame neu gerechnet).
+   Auf Touch-Geraeten und schmalen Fenstern ersetzen deckende Hintergruende den Blur. */
+@media (max-width: 900px), (hover: none) {
+  .hero-actions .btn-primary::after {
+    animation: none;
+    opacity: 0.2;
+    filter: blur(16px);
+  }
+  .nav.scrolled {
+    background: rgb(6, 11, 20);
+  }
+  .nav.scrolled::before {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .sticky-cta {
+    background: rgb(6, 11, 20);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .pricing-card {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}

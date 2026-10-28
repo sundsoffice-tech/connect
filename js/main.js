@@ -243,8 +243,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
 
-      // Parallax auf Section-Glows
-      gsap.utils.toArray('.section').forEach(section => {
+      // Parallax auf Section-Glows; auf dem Handy nicht (scrub bewegt grosse Gradienten in
+      // jedem Scroll-Frame, Fabrice 28.10.2026: Scrollen hakt)
+      if (!mobileNav.matches) gsap.utils.toArray('.section').forEach(section => {
         const glow = section.querySelector('[class*="glow"]');
         if (glow) {
           gsap.to(glow, {
