@@ -6,8 +6,15 @@ Vertrag nach `/opt/sunds-hub/KONVENTION.md` § 8. Kopien: hier (Repo der Website
 Endpunkts). Registereintrag: `projekte.json` → `connect-website` (braucht) und `leads`
 (bietet). Muster: `ss-messebau-website/SCHNITTSTELLE-LEADS.md`.
 
-Stand: 2026-08-21 · Entscheidung (Messebau-Muster): **parallel zu Formspree**, bis der
-Lead-Weg vier Wochen sauber läuft. Danach wird entschieden, ob Formspree bleibt.
+Stand: 2026-10-18 · **Formspree ist abgeschaltet** (Fabrice 18.10.2026: fremde Formulardienste
+ablösen). Das Kontaktformular sendet nur noch an den Lead-Endpunkt; Erfolg heißt: der Endpunkt
+hat angenommen (gespeichert). Scheitert er, nennt die Fehlermeldung info@sundsconnect.de; ohne
+JavaScript zeigt das Formular denselben Hinweis (`noscript`). Ausnahme: die Selbstauskunftsseite
+`d-c8df…/` sendet weiter an Formspree, weil ihr Bericht länger ist als die 4000 Zeichen, die der
+Endpunkt je Nachricht nimmt. Die Abschnitte unten beschreiben die Stufe A (21.08.2026, parallel)
+und gelten für den Endpunkt-Aufruf unverändert; alles zu Formspree darin ist Geschichte.
+
+Früherer Stand 2026-08-21: parallel zu Formspree, bis der Lead-Weg vier Wochen sauber läuft.
 
 ## 1 · Was die Website braucht und warum
 

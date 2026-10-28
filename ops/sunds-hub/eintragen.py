@@ -49,25 +49,26 @@ KUNDE = {
 }
 
 EINTRAG = {
+    # Seit 01.09.2026 auf sunds-hub (ops/HOSTING-SUNDS-HUB.md). Werte am 18.10.2026 dem laufenden Register
+    # angeglichen; vorher schrieb ein erneuter Lauf GitHub-Pages-Werte zurueck (Programmierer r2, KANN 2).
     "zweck": "Website + Kontaktformular der S&S Connect GbR (Firma 'connect'); "
-             "statisch auf GitHub Pages, Formular an Formspree UND Lead-Endpunkt",
+             "statisch, Formular nur an den Lead-Endpunkt (Formspree seit 18.10.2026 abgeschaltet)",
     "domain": "sundsconnect.de",
     "port": None,
-    "dienst": "GitHub Pages (statisch, kein Daemon)",
+    "dienst": "Caddy statisch (kein Daemon), Webroot /opt/sunds-connect-website/site",
     "benutzer": None,
-    "gesund": "/",
-    "daten": "keine (Formulardaten gehen an Formspree + Lead-Endpunkt, nicht an die Website)",
+    "gesund": "/gesund",
+    "daten": "keine (Formulardaten gehen an den Lead-Endpunkt, nicht an die Website)",
     "kunden": [],
-    "server": "GitHub Pages (185.199.108.153, CNAME sundsconnect.de)",
-    "quelle": "GitHub sundsoffice-tech/connect — main = Quelle = Live (Pages-Workflow)",
+    "server": "sunds-hub (169.58.211.51), Caddy-Block sundsconnect.de + www -> Apex",
+    "quelle": ("GitHub sundsoffice-tech/connect main = Quelle; Deploy: git push hub main (post-receive baut "
+               "site/), GitHub Pages bleibt Zweitausgabe"),
     "seit": "2026-08-21",
     "hinweis": (
-        "Laeuft NICHT auf sunds-hub. Lokale Kopie: Desktop/_Projekte/_S&S_Connect/S&S_CONNECT/website "
-        "(eigenes .git). Formular sendet seit Stufe A (21.08.2026) PARALLEL an Formspree (xqeyelgr) "
-        "und an den Lead-Endpunkt (kunde=connect) — beides bleibt, bis der Lead-Weg vier Wochen "
-        "sauber laeuft (Messebau-Muster). Offen (Stufe B): www.sundsconnect.de ohne Zertifikat "
-        "(GitHub-Pages-Zertifikat deckt nur die Apex-Domain), HTTPS nicht erzwungen "
-        "(Pages-Einstellung https_enforced=false) — beides Repo-Einstellung, gemessen 21.08.2026."),
+        "Seit 2026-09-01 auf sunds-hub (Umzug wegen haengendem GitHub-Pages-Zertifikat). Lokale Kopie: "
+        "Desktop/_Projekte/_S&S_Connect/S&S_CONNECT/website. Formular sendet seit 18.10.2026 nur an den "
+        "Lead-Endpunkt (kunde=connect); Formspree abgeschaltet, ausser Selbstauskunftsseite d-c8df. Offen: "
+        "Custom Domain im GitHub-Repo connect entfernen, sobald DNS ueberall umgestellt ist."),
     "schnittstellen": {
         "bietet": [],
         "braucht": {"leads": ["POST /lead (kunde=connect)"]},
