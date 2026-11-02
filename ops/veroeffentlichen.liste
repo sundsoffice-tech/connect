@@ -1,4 +1,4 @@
-# ops/veroeffentlichen.liste -- was auf die Domain und in die Pages-Zweitausgabe geht.
+# ops/veroeffentlichen.liste -- was auf die Domain geht (GitHub Pages ist seit 02.11.2026 abgeschaltet).
 # Die eine Kopierliste: gelesen von ops/sunds-hub/bauen.sh, den auch .github/workflows/deploy.yml
 # aufruft (--nur-kopieren). Was hier nicht steht, wird nicht veroeffentlicht.
 #

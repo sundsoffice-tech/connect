@@ -6,7 +6,7 @@
 # /opt/sunds-connect-website/bauen.sh; ein Push aendert die Server-Fassung nicht.
 #
 #   bauen.sh                               vom post-receive-Hook mit COMMIT=<sha>; laeuft als ubuntu
-#   bauen.sh --nur-kopieren <quelle> <ziel>  nur Liste pruefen und kopieren (.github/workflows/deploy.yml)
+#   bauen.sh --nur-kopieren <quelle> <ziel>  nur Liste pruefen und kopieren (Pruefschritt in .github/workflows/deploy.yml)
 #
 # Ablauf: Liste pruefen, blog.py pruefen, kopieren, tauschen. Jeder Abbruch vor dem Tausch laesst
 # den laufenden Webroot unberuehrt.

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# deploy.sh -- Connect-Website veroeffentlichen: erst GitHub (Quelle, Pages-Zweitausgabe),
+# deploy.sh -- Connect-Website veroeffentlichen: erst GitHub (Quelle; die CI prueft nur),
 # dann sunds-hub (post-receive-Hook baut /opt/sunds-connect-website/site synchron).
 # Scheitert der Bau auf dem Hub, ist dort NICHTS halb live (Galabau-Muster). git push meldet
 # das nicht, weil git den Exit-Code von post-receive nicht auswertet; deshalb vergleicht der
