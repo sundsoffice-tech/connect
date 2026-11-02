@@ -1,0 +1,39 @@
+# ops/veroeffentlichen.liste -- was auf die Domain und in die Pages-Zweitausgabe geht.
+# Die eine Kopierliste: gelesen von ops/sunds-hub/bauen.sh, den auch .github/workflows/deploy.yml
+# aufruft (--nur-kopieren). Was hier nicht steht, wird nicht veroeffentlicht.
+#
+# Format, eine Angabe je Zeile, ohne Kommentar hinter der Angabe:
+#   <name>                 Datei oder Ordner im Wurzelordner; fehlt er, bricht der Bau ab
+#   ordner-muster <ERE>    alle Ordner im Wurzelordner, deren Name passt; null Treffer sind erlaubt
+#   datei-muster <ERE>     alle Dateien im Wurzelordner, deren Name passt; null Treffer sind erlaubt
+# Erlaubt sind nur einfache Namen ohne /, .., ops und .git; das gilt auch fuer Mustertreffer.
+
+# Dateien im Wurzelordner
+index.html
+404.html
+robots.txt
+sitemap.xml
+llms.txt
+# Search-Console-Nachweis (Commit 4277c38)
+google97dc498729dced6b.html
+
+# Ordner
+assets
+css
+js
+services
+projects
+contact
+impressum
+datenschutz
+3d-hero
+promo
+blog
+# Weiterleitungsseite der Kurzadresse, erzeugt von ops/blog/blog.py
+sicherheit-2026
+
+# Discovery-Formulare: automatisch alle Ordner d-*
+ordner-muster ^d-.+$
+# IndexNow-Schluesseldatei <schluessel>.txt: genau 32 Zeichen a-f 0-9 wie der Schluessel in ops/blog/haus.toml,
+# damit keine andere .txt-Datei aus der Wurzel mit veroeffentlicht wird
+datei-muster ^[a-f0-9]{32}\.txt$

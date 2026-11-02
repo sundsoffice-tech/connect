@@ -1,0 +1,20 @@
+# Zeilenenden fuer die Dateien, die ops/blog/blog.py liest oder schreibt. pruefen vergleicht byte-genau;
+# ein Checkout mit CRLF wuerde sonst den Deploy sperren. Alle anderen Dateien bleiben unberuehrt.
+/inhalt/blog/** text eol=lf
+/ops/blog/** text eol=lf
+/blog/** text eol=lf
+/sicherheit-2026/index.html text eol=lf
+/sitemap.xml text eol=lf
+/llms.txt text eol=lf
+/5b8819eaaf02442fbbb5823f4eb95e71.txt text eol=lf
+# PDF und Bilder nie umschreiben
+/inhalt/blog/**/*.pdf binary
+/inhalt/blog/**/*.png binary
+/inhalt/blog/**/*.jpg binary
+/inhalt/blog/**/*.webp binary
+/ops/blog/**/*.pdf binary
+/ops/blog/**/*.png binary
+/blog/**/*.pdf binary
+/blog/**/*.png binary
+/blog/**/*.jpg binary
+/blog/**/*.webp binary

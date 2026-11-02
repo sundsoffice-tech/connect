@@ -1,0 +1,105 @@
+# ops/blog/haus.toml
+# Eine Quelle für alles, was ops/blog/blog.py über Firma und Site ausgibt.
+# Einziger Schreiber: ein Commit in diesem Repo, zusammen mit allen Stellen, die `blog.py pruefen` vergleicht.
+# Das Repo ist öffentlich: hier steht nur, was schon öffentlich ist. Keine Personen, keine Privatnummern,
+# keine Steuernummer, keine Bankdaten.
+
+fassung = 1
+
+[site]
+basis = "https://sundsconnect.de"   # ohne Schrägstrich am Ende; index.html:16 und :58. @id ist basis + "/#organisation"
+sprache = "de-DE"                   # html lang und inLanguage
+
+[firma]
+name = "S&S Connect GbR"            # index.html:56, contact/index.html:50, services/index.html:47; enthält die Rechtsform
+kurzname = "S&S Connect"            # index.html:31 und :82; llms.txt, og:site_name, WebSite.name
+strasse = "Nobelstraße 3-5"         # index.html:63, Impressum, Datenschutz. Bindestrich, nie Halbgeviertstrich
+plz = "41189"                       # index.html:65
+ort = "Mönchengladbach"             # index.html:64
+land = "DE"                         # index.html:66
+mail = "info@sundsconnect.de"       # contact/index.html (mailto), sicherheit-2026/index.html:241
+telefon_e164 = "+4921666459958"     # sicherheit-2026/index.html:241 (tel-Link). Büronummer
+telefon_anzeige = "02166 6459958"   # sicherheit-2026/index.html:241 und PDF; Ziffern müssen telefon_e164 ergeben
+telefon_gewaehlt = true             # true: JSON-LD mit telephone, Handseiten verglichen
+telefon_frueher = ["+4915140322125"]  # abgelöste Nummern; pruefen verbietet sie in allen Textdateien
+logo = "assets/img/favicon-512.png" # index.html:59; 512 mal 512 Pixel gemessen, quadratisch
+same_as = []                        # index.html:73 leer; kein Profil belegt. Nur Profile der Firma eintragen
+
+[abgleich]
+pflichttext = ["impressum/index.html", "datenschutz/index.html"]  # müssen name, strasse und "plz ort" als zusammenhängenden Block enthalten
+mail_pflicht = ["contact/index.html", "impressum/index.html"]
+
+[autoren.firma]
+typ = "organisation"                # zeigt auf [firma]; Autor der Beiträge ist die Firma, keine Personen
+
+[lizenzen."cc-by-nd-4.0"]
+name = "CC BY-ND 4.0"                                              # sicherheit-2026/index.html:263
+url = "https://creativecommons.org/licenses/by-nd/4.0/deed.de"     # sicherheit-2026/index.html:263
+text = "S&S Connect GbR, Mönchengladbach. Weitergabe und Ausdruck in unveränderter Form sind ausdrücklich erwünscht, auch an Kollegen, Kunden und Lieferanten. Änderungen und Ausschnitte bitte mit uns abstimmen. Diese Information fasst öffentliche Quellen zusammen, ist allgemein gehalten und ersetzt weder eine Prüfung Ihrer Systeme noch eine Beratung im Einzelfall. Vor Änderungen an Servern, Online-Shop und Geschäftsanwendungen bitte zuerst sichern."  # Wortlaut Auflage B12 der Rolle IT-Recht, 02.11.2026
+satz = "Lizenz für den Text dieses Beitrags:"                          # davor steht text, danach der Link auf name
+vorbehalt = "ausgenommen sind Logo, Marken und wörtliche Zitate aus den genannten Quellen"  # B12; der Bau hängt ihn mit Semikolon an
+
+[schlagwoerter]                     # Schlüssel ist der Pfad unter blog/thema/, Wert die Anzeige
+it-sicherheit = "IT-Sicherheit"
+ki = "KI"
+updates = "Updates"
+kleine-unternehmen = "Kleine Unternehmen"
+
+[pruefung]
+maschinen_zeichen = ["\u2014", "\u2013", "\u00B7", "\u2022", "\u2011"]  # im sichtbaren Text verboten: Geviert- und Halbgeviertstrich, Mittelpunkt, Aufz\u00e4hlungspunkt, gesch\u00fctzter Bindestrich
+sperrliste = ["fonts.googleapis", "fonts.gstatic", "googletagmanager", "google-analytics", "doubleclick", "facebook.net", "hotjar"]  # Fremdquellen, die keine Ausgabe laden oder verlinken darf
+csp = "default-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; script-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'"  # ohne Skripte und ohne unsafe-inline; blog.py prüft die Mindestregeln fest
+
+[grenzen]                           # Längen nach Suchmaschinen-Anzeige; Logo nach Google Search Central
+titel_min = 20
+titel_max = 110
+seitentitel_max = 60
+beschreibung_min = 70
+beschreibung_max = 140                # Zeichen; bis 920 px Trefferbreite (Arial 14) passen im Median 142
+schlagwoerter_min = 1
+schlagwoerter_max = 5
+pruefen_bis_tage_max = 183
+stand_pruefdatum_tage = 30
+hinweis_pruefdatum_tage = 14
+lesetempo_woerter_je_minute = 200     # Brysbaert 2019: Sachtext still 238 (175 bis 300), Deutsch rund 232; 200 bewusst vorsichtig für Text mit Zahlen
+inhaltsverzeichnis_mindestens = 3     # darunter nie, sonst stünde ein leeres oder einzeiliges Verzeichnis da
+inhaltsverzeichnis_ab_abschnitten = 5
+inhaltsverzeichnis_ab_woertern = 1500
+verwandte_max = 3
+schlagwortseite_ab_beitraegen = 3
+seitenteilung_ab = 20
+bild_breite = 1200
+bild_hoehe = 630
+logo_min_px = 112
+
+[indexnow]
+zeitgrenze_s = 10                   # je Anfrage
+schluessel = "5b8819eaaf02442fbbb5823f4eb95e71"  # einmal erzeugt, danach unveränderlich; öffentlich mit Absicht. Hier, weil ein Zufallswert beim Bau den Bau undeterministisch machte
+endpunkt = "https://api.indexnow.org/indexnow"
+
+# Texte der Übersicht und von llms.txt
+[blog]
+titel = "Blog"
+seitentitel = "Blog von S&S Connect"
+beschreibung = "Beiträge von S&S Connect für kleine Unternehmen: was passiert ist, was es für Sie bedeutet und was Sie tun können, mit Quellen belegt."
+vorspann = "Beiträge für kleine Unternehmen: was passiert ist, was es für Sie bedeutet und was Sie tun können, mit Quellen belegt."
+bild = "assets/img/og-image-new.png"
+bild_alt = "S&S Connect"
+
+[llms]
+kurzbeschreibung = "S&S Connect GbR aus Mönchengladbach verbindet Vertrieb, Automation und KI-Infrastruktur. Das Blog erklärt kleinen Unternehmen aktuelle Themen mit Quellen."
+
+[[llms.firma]]
+titel = "Leistungen"
+pfad = "services/"
+text = "Was S&S Connect anbietet"
+
+[[llms.firma]]
+titel = "Kontakt"
+pfad = "contact/"
+text = "So erreichen Sie uns"
+
+[[llms.firma]]
+titel = "Impressum"
+pfad = "impressum/"
+text = "Anbieterkennzeichnung"
