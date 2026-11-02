@@ -244,7 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       // Parallax auf Section-Glows; auf dem Handy nicht (scrub bewegt grosse Gradienten in
-      // jedem Scroll-Frame, Fabrice 28.10.2026: Scrollen hakt)
+      // jedem Scroll-Frame, das Scrollen hakt sonst)
       if (!mobileNav.matches) gsap.utils.toArray('.section').forEach(section => {
         const glow = section.querySelector('[class*="glow"]');
         if (glow) {
@@ -303,10 +303,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   merkeHerkunft();
 
-  // --- Lead-Endpunkt (sunds-hub) — einziger Zustellweg seit 18.10.2026 ---
-  // Vertrag: SCHNITTSTELLE-LEADS.md (Repo) = /opt/sunds-hub/schnittstellen/connect-website-leads.md
-  // Bis 18.10.2026 lief Formspree parallel (Stufe A, 21.08.). Fabrice 18.10.: fremde Formulardienste
-  // abloesen. Der Endpunkt speichert zuerst, sendet ueber Strato und sendet alle 5 min nach.
+  // --- Lead-Endpunkt: einziger Zustellweg ---
+  // Vertrag: SCHNITTSTELLE-LEADS.md im Repo.
+  // Der Endpunkt speichert zuerst, versendet dann und sendet alle 5 min nach.
   const LEAD_ENDPUNKT = 'https://leads.sundsconnect.de/lead';
   const SUBJECT_LABELS = { general: 'Allgemeine Anfrage', vertrieb: 'Vertrieb & Sales', automation: 'Automation', ai: 'AI Infrastruktur', ads: 'Google Ads & AI Ads', webdesign: 'Webdesign', project: 'Projektanfrage' };
 

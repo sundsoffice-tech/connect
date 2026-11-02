@@ -3214,7 +3214,7 @@ main [id] {
 }
 
 /* --- Mobil: teure Effekte aus (28.10.2026) --- */
-/* Fabrice 28.10.2026: Scrollen auf dem Handy hakt. Ursachen nach Codelage: ein dauerhaft
+/* Scrollen auf dem Handy hakt. Ursachen nach Codelage: ein dauerhaft
    animierter blur()-Filter auf dem Hero-Button (Repaint in jedem Frame), backdrop-filter auf
    Kopfleiste, Sticky-CTA und Preis-Karten (wird beim Scrollen jedes Frame neu gerechnet).
    Auf Touch-Geraeten und schmalen Fenstern ersetzen deckende Hintergruende den Blur. */
@@ -3243,7 +3243,7 @@ main [id] {
 }
 
 /* --- Menue, Hero-HACCA, Vertrauensleiste (Rollen 28.10.2026) --- */
-/* Entscheidung Kuenstler, Unternehmer, Spieltheoretiker, Programmierer (28.10.2026, Fabrice: Rollen entscheiden):
+/* Entscheidung 28.10.2026:
    Adresse aus dem Handy-Menue, Telefon bleibt in Fliessschrift; kein Pfeil, aktive Seite tuerkis;
    HACCA-Zeile im Hero als Satz in Fliessschrift; Vertrauensleiste aus, bis Logos da sind. */
 @media (max-width: 900px) {

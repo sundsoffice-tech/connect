@@ -1,0 +1,14 @@
+# S&S Connect
+<!-- erzeugt von ops/blog/blog.py, nicht von Hand ändern -->
+
+> S&S Connect GbR aus Mönchengladbach verbindet Vertrieb, Automation und KI-Infrastruktur. Das Blog erklärt kleinen Unternehmen aktuelle Themen mit Quellen.
+
+## Beiträge
+
+- [Sicherheitslücken 2026: Was passiert ist und was jetzt zählt](https://sundsconnect.de/blog/sicherheitsluecken-2026/index.html.md): KI findet Sicherheitslücken schneller, als Unternehmen Updates einspielen. Sieben Schritte für kleine Unternehmen, ohne Fachwissen.
+
+## Firma
+
+- [Leistungen](https://sundsconnect.de/services/): Was S&S Connect anbietet
+- [Kontakt](https://sundsconnect.de/contact/): So erreichen Sie uns
+- [Impressum](https://sundsconnect.de/impressum/): Anbieterkennzeichnung

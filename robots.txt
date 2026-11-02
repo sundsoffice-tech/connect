@@ -1,3 +1,4 @@
+# Suchmaschinen und KI-Crawler sind zugelassen, auch fuer das Blog unter /blog/
 User-agent: *
 Allow: /
 Disallow: /.git/

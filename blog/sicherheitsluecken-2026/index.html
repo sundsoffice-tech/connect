@@ -1,0 +1,365 @@
+<!doctype html>
+<!-- erzeugt von ops/blog/blog.py, nicht von Hand ändern -->
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; script-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Sicherheitslücken 2026: Was jetzt zählt</title>
+<meta name="description" content="KI findet Sicherheitslücken schneller, als Unternehmen Updates einspielen. Sieben Schritte für kleine Unternehmen, ohne Fachwissen.">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<link rel="canonical" href="https://sundsconnect.de/blog/sicherheitsluecken-2026/">
+<meta name="author" content="S&amp;S Connect GbR">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="de_DE">
+<meta property="og:site_name" content="S&amp;S Connect">
+<meta property="og:url" content="https://sundsconnect.de/blog/sicherheitsluecken-2026/">
+<meta property="og:title" content="Sicherheitslücken 2026: Was passiert ist und was jetzt zählt">
+<meta property="og:description" content="KI findet Sicherheitslücken schneller, als Unternehmen Updates einspielen. Sieben Schritte für kleine Unternehmen, ohne Fachwissen.">
+<meta property="og:image" content="https://sundsconnect.de/assets/img/og-sicherheit-2026.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Drei Kennzahlen: 129.000 Lücken meldet der KI-Hersteller, 31 Minuten vom Update zum Nachweis, 276 Prozent mehr von Microsoft erfasste Erpressungsfälle in Deutschland">
+<meta property="article:published_time" content="2026-11-01T23:58:28+01:00">
+<meta property="article:modified_time" content="2026-11-02T19:10:00+01:00">
+<meta property="article:tag" content="IT-Sicherheit">
+<meta property="article:tag" content="Kleine Unternehmen">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sicherheitslücken 2026: Was passiert ist und was jetzt zählt">
+<meta name="twitter:description" content="KI findet Sicherheitslücken schneller, als Unternehmen Updates einspielen. Sieben Schritte für kleine Unternehmen, ohne Fachwissen.">
+<meta name="twitter:image" content="https://sundsconnect.de/assets/img/og-sicherheit-2026.png">
+<meta name="twitter:image:alt" content="Drei Kennzahlen: 129.000 Lücken meldet der KI-Hersteller, 31 Minuten vom Update zum Nachweis, 276 Prozent mehr von Microsoft erfasste Erpressungsfälle in Deutschland">
+<link rel="alternate" type="application/atom+xml" title="S&amp;S Connect, Blog (Atom)" href="../../blog/feed.xml">
+<link rel="alternate" type="application/rss+xml" title="S&amp;S Connect, Blog (RSS)" href="../../blog/rss.xml">
+<link rel="alternate" type="text/markdown" title="Klartext-Fassung" href="index.html.md">
+<link rel="icon" href="../../assets/img/favicon-48.png" type="image/png" sizes="48x48">
+<link rel="icon" href="../../assets/img/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="../../assets/img/favicon-180.png">
+<link rel="preload" href="../../assets/fonts/ibm-plex-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../../assets/fonts/source-serif-4-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../css/blog.css?v=3eb1664d">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://sundsconnect.de/#organisation",
+      "name": "S&S Connect GbR",
+      "url": "https://sundsconnect.de/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://sundsconnect.de/assets/img/favicon-512.png"
+      },
+      "email": "info@sundsconnect.de",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Nobelstraße 3-5",
+        "postalCode": "41189",
+        "addressLocality": "Mönchengladbach",
+        "addressCountry": "DE"
+      },
+      "telephone": "+4921666459958"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://sundsconnect.de/#website",
+      "url": "https://sundsconnect.de/",
+      "name": "S&S Connect",
+      "publisher": {
+        "@id": "https://sundsconnect.de/#organisation"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://sundsconnect.de/blog/sicherheitsluecken-2026/#seite",
+      "url": "https://sundsconnect.de/blog/sicherheitsluecken-2026/",
+      "name": "Sicherheitslücken 2026: Was passiert ist und was jetzt zählt",
+      "inLanguage": "de-DE",
+      "isPartOf": {
+        "@id": "https://sundsconnect.de/#website"
+      },
+      "breadcrumb": {
+        "@id": "https://sundsconnect.de/blog/sicherheitsluecken-2026/#brotkrumen"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://sundsconnect.de/blog/sicherheitsluecken-2026/#brotkrumen",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Startseite",
+          "item": "https://sundsconnect.de/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://sundsconnect.de/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Sicherheitslücken 2026: Was passiert ist und was jetzt zählt",
+          "item": "https://sundsconnect.de/blog/sicherheitsluecken-2026/"
+        }
+      ]
+    },
+    {
+      "@type": "BlogPosting",
+      "@id": "https://sundsconnect.de/blog/sicherheitsluecken-2026/#beitrag",
+      "headline": "Sicherheitslücken 2026: Was passiert ist und was jetzt zählt",
+      "description": "KI findet Sicherheitslücken schneller, als Unternehmen Updates einspielen. Sieben Schritte für kleine Unternehmen, ohne Fachwissen.",
+      "datePublished": "2026-11-01T23:58:28+01:00",
+      "dateModified": "2026-11-02T19:10:00+01:00",
+      "author": {
+        "@id": "https://sundsconnect.de/#organisation"
+      },
+      "publisher": {
+        "@id": "https://sundsconnect.de/#organisation"
+      },
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://sundsconnect.de/assets/img/og-sicherheit-2026.png",
+        "width": 1200,
+        "height": 630
+      },
+      "mainEntityOfPage": {
+        "@id": "https://sundsconnect.de/blog/sicherheitsluecken-2026/#seite"
+      },
+      "inLanguage": "de-DE",
+      "keywords": "IT-Sicherheit, Kleine Unternehmen",
+      "wordCount": 1019,
+      "timeRequired": "PT6M",
+      "license": "https://creativecommons.org/licenses/by-nd/4.0/deed.de",
+      "isAccessibleForFree": true,
+      "citation": [
+        {
+          "@type": "CreativeWork",
+          "name": "BSI, Sicherheitsinformation 2026-262788-1032, 22.06.2026 (PDF)",
+          "url": "https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-262788-1032.pdf?__blob=publicationFile",
+          "publisher": {
+            "@type": "Organization",
+            "name": "Bundesamt für Sicherheit in der Informationstechnik"
+          },
+          "datePublished": "2026-06-22"
+        },
+        {
+          "@type": "CreativeWork",
+          "name": "BSI-Blog „Eine neue Zeitrechnung der Cybersicherheit“, 08.05.2026",
+          "url": "https://www.bsi.bund.de/DE/Service-Navi/Presse/Alle-Meldungen-News/Blog/KI-Modelle_neue_Zeitrechnung_260508.html",
+          "publisher": {
+            "@type": "Organization",
+            "name": "Bundesamt für Sicherheit in der Informationstechnik"
+          },
+          "datePublished": "2026-05-08"
+        },
+        {
+          "@type": "CreativeWork",
+          "name": "Anthropic, Project Glasswing, 07.04.2026",
+          "url": "https://www.anthropic.com/glasswing",
+          "publisher": {
+            "@type": "Organization",
+            "name": "Anthropic"
+          },
+          "datePublished": "2026-04-07"
+        },
+        {
+          "@type": "CreativeWork",
+          "name": "Anthropic, Zwischenbericht Glasswing, 22.05.2026",
+          "url": "https://www.anthropic.com/news/glasswing-initial-update",
+          "publisher": {
+            "@type": "Organization",
+            "name": "Anthropic"
+          },
+          "datePublished": "2026-05-22"
+        },
+        {
+          "@type": "CreativeWork",
+          "name": "Anthropic, Messung vom Update bis zum Nachweis, 08.06.2026",
+          "url": "https://www.anthropic.com/research/n-days",
+          "publisher": {
+            "@type": "Organization",
+            "name": "Anthropic"
+          },
+          "datePublished": "2026-06-08"
+        },
+        {
+          "@type": "CreativeWork",
+          "name": "Anthropic, Cyber Verification Program mit der Zahl 129.000, 06.10.2026",
+          "url": "https://www.anthropic.com/news/cyber-verification-program",
+          "publisher": {
+            "@type": "Organization",
+            "name": "Anthropic"
+          },
+          "datePublished": "2026-10-06"
+        },
+        {
+          "@type": "CreativeWork",
+          "name": "Anthropic, frei verfügbare Modelle und die kritische Schwelle, 2026",
+          "url": "https://www.anthropic.com/research/glm-5-3-and-the-spread-of-advanced-cyber-capabilities",
+          "publisher": {
+            "@type": "Organization",
+            "name": "Anthropic"
+          }
+        },
+        {
+          "@type": "CreativeWork",
+          "name": "Microsoft Digital Defense Report 2026, 01.10.2026",
+          "url": "https://www.microsoft.com/en-us/security/blog/2026/10/01/insights-from-the-2026-microsoft-digital-defense-report/",
+          "publisher": {
+            "@type": "Organization",
+            "name": "Microsoft"
+          },
+          "datePublished": "2026-10-01"
+        },
+        {
+          "@type": "CreativeWork",
+          "name": "Trending Topics, 01.10.2026",
+          "url": "https://www.trendingtopics.eu/microsoft-digital-defense-report-2026/",
+          "publisher": {
+            "@type": "Organization",
+            "name": "Trending Topics"
+          }
+        },
+        {
+          "@type": "CreativeWork",
+          "name": "Zero Day Initiative, Microsoft-Updates Oktober 2025 (177 Lücken), 14.10.2025",
+          "url": "https://www.zerodayinitiative.com/blog/2025/10/14/the-october-2025-security-update-review",
+          "publisher": {
+            "@type": "Organization",
+            "name": "Zero Day Initiative"
+          },
+          "datePublished": "2025-10-14"
+        },
+        {
+          "@type": "CreativeWork",
+          "name": "BSI, CyberRisikoCheck für kleine Unternehmen",
+          "url": "https://www.bsi.bund.de/DE/Themen/Unternehmen-und-Organisationen/Informationen-und-Empfehlungen/KMU/CyberRisikoCheck/CyberRisikoCheck_node.html",
+          "publisher": {
+            "@type": "Organization",
+            "name": "Bundesamt für Sicherheit in der Informationstechnik"
+          }
+        },
+        {
+          "@type": "CreativeWork",
+          "name": "BSI, IT-Notfallkarte zum Ausdrucken",
+          "url": "https://www.bsi.bund.de/DE/Themen/Unternehmen-und-Organisationen/Informationen-und-Empfehlungen/Empfehlungen-nach-Angriffszielen/Unternehmen-allgemein/IT-Notfallkarte/it-notfallkarte_node.html",
+          "publisher": {
+            "@type": "Organization",
+            "name": "Bundesamt für Sicherheit in der Informationstechnik"
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<main>
+
+<div class="brand">
+  <a class="logo" href="../../" aria-label="Zur Startseite von S&amp;S Connect">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 4 L28 18 H21 V28 H11 V18 H4 Z" fill="currentColor"/></svg>
+    <span>S&amp;S Connect</span>
+  </a>
+  <div class="meta"><span class="breit">Information für kleine Unternehmen<br></span>Stand <time datetime="2026-11-02">2. November 2026</time><span class="breit">, Fassung 1.2<br>Nächste Prüfung <time datetime="2027-02-01">1. Februar 2027</time></span><span class="nur-web"><br>6 Min. Lesezeit</span></div>
+</div>
+
+<nav class="brotkrumen nur-web" aria-label="Brotkrumen"><ol><li><a href="../../">Startseite</a></li><li><a href="../">Blog</a></li></ol></nav>
+
+<article>
+<h1>Sicherheitslücken 2026: Was passiert ist und was jetzt zählt</h1>
+<p class="lead">Seit dem Frühjahr 2026 finden KI-Systeme Schwachstellen in Software so schnell, dass die alten Spielregeln nicht mehr gelten. Das betrifft jedes Unternehmen, das einen Rechner, einen Router oder einen Online-Shop betreibt. Dieses Blatt sagt in Kürze, was passiert ist, warum das anders ist als frühere Lücken, und was Sie jetzt tun können. <a href="#schritte">Die sieben Schritte stehen weiter unten</a>; die ersten drei, Updates, zweiter Faktor und Sicherung, erledigen das meiste.</p>
+<div class="werkzeuge nur-web">
+<a class="knopf" href="Infoblatt_Sicherheitsluecken_2026.pdf" download>
+  <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 19h16"/></svg>
+  Als PDF herunterladen
+</a>
+<p class="klein">Zwei Seiten A4, zum Ausdrucken und Weitergeben.</p>
+</div>
+
+<div class="kennzahlen">
+  <div><b>129.000</b><span>Lücken meldet der KI-Hersteller für April bis Juli 2026, aus Partnerberichten</span></div>
+  <div><b>31 Min.</b><span>vom Windows-Update bis zum Nachweis, dass sich die Lücke auslösen lässt, Messung des KI-Herstellers</span></div>
+  <div><b>+276 %</b><span>von Microsoft erfasste Erpressungsfälle in Deutschland, von 59 auf 222 in einem Jahr, laut Berichterstattung zum Microsoft-Bericht, Oktober 2026</span></div>
+</div>
+<p class="klein">Die 129.000 sind eine Herstellerangabe; unabhängige Zähler ordnen bislang nur einige hundert Lücken eindeutig zu. Die Richtung ist unstrittig, die genaue Zahl nicht.</p>
+<h2 id="was-passiert-ist">Was passiert ist</h2>
+<p>Im April 2026 hat der Anbieter Anthropic ein KI-Modell vorgestellt, das Sicherheitslücken in Software selbständig findet. Innerhalb weniger Wochen fand es nach Angaben des Herstellers kritische Lücken in jedem großen Betriebssystem und jedem großen Browser, dazu tausende Lücken in über tausend Open-Source-Bausteinen, die in fast jeder Firmensoftware stecken. Eine davon war 27 Jahre alt und bis dahin niemandem aufgefallen.</p>
+<p>Seitdem reißt die Kette nicht ab. Allein in diesem Jahr gab es ernste, zum Teil aktiv ausgenutzte Lücken in Windows, Linux, Apple-Systemen und Firefox, in Netzwerkgeräten von Cisco, Fortinet, Citrix, Ivanti, Palo Alto und SonicWall, in Microsoft Exchange und in PHP, der Technik hinter den meisten Online-Shops und Websites. Nicht jede davon stammt aus der KI-Suche, aber alle treffen auf Angreifer, die mit ihr arbeiten. Microsoft hat allein im Oktober 2026 über 1.400 Lücken an einem Tag geschlossen. Im ganzen Jahr 2025 waren es nie mehr als 177 auf einmal.</p>
+<h2 id="warum-das-fuer-unternehmen-alles-aendert">Warum das für Unternehmen alles ändert</h2>
+<p>Bisher galt: Ein Hersteller veröffentlicht ein Update, und man hat einige Wochen Zeit, es einzuspielen, bis Angreifer die Lücke ausnutzen. Diese Zeit ist weg. Kriminelle nutzen dieselbe Technik, und laut BSI lässt sich aus einem veröffentlichten Update binnen Minuten bis Stunden ableiten, wie ein Angriff aussehen kann. Das Bundesamt für Sicherheit in der Informationstechnik (BSI) spricht von einer neuen Zeitrechnung der Cybersicherheit und schreibt in seiner Sicherheitsinformation vom 22. Juni 2026 wörtlich, „wenige Tage sind dabei keine angemessene Reaktionsgeschwindigkeit“.</p>
+<p>Zweitens trifft es nicht mehr nur große Konzerne. Angriffe laufen automatisiert gegen alles, was im Internet erreichbar ist: Router, VPN-Zugänge (der Fernzugang ins Büro), Mailserver, Online-Shops. Ob dahinter ein Weltkonzern oder ein Fünf-Mann-Betrieb steht, spielt für den Automaten keine Rolle. Deutschland ist das einzige EU-Land unter den zehn Ländern, die in Microsofts Daten am häufigsten angegriffen werden, laut Berichterstattung zum Microsoft-Bericht.</p>
+<div class="karte hinweis">
+  <p><strong>Wie lange das so bleibt.</strong> Oft ist von 18 Monaten die Rede. Die Zahl stammt aus einer Einschätzung des Anbieters vom April 2026: In sechs bis 18 Monaten hätten auch andere Anbieter Modelle mit denselben Fähigkeiten. Inzwischen sagt derselbe Anbieter, dass frei verfügbare Modelle eine kritische Schwelle überschritten haben. Die 18 Monate sind also keine Frist, nach der es vorbei ist. Eine Entwarnung hat bisher niemand ausgesprochen. Unsere Einschätzung: mindestens bis Ende 2027 mit deutlich erhöhter Gefahr rechnen und die Abläufe so einrichten, dass sie dauerhaft tragen.</p>
+</div>
+<h2 id="schritte">Was Sie selbst tun können, ohne Fachwissen</h2>
+<ol class="liste">
+  <li><b>Updates am selben Tag einspielen.</b> Automatische Updates überall einschalten: Windows, Mac, Handy, Browser, Router, Online-Shop. Zuerst alles, was aus dem Internet erreichbar ist (Router, VPN, Mailserver, Online-Shop). Ein Update, das eine Woche wartet, ist heute ein offenes Fenster.</li>
+  <li><b>Zweiten Faktor überall anschalten.</b> E-Mail, Online-Banking, Cloud-Speicher, Verwaltung des Online-Shops, Social Media: Anmeldung nur mit Passwort plus Code aus einer App oder einem Sicherheitsschlüssel. Das stoppt den größten Teil aller Kontoübernahmen.</li>
+  <li><b>Sicherung getrennt aufbewahren.</b> Eine Kopie aller wichtigen Daten auf einer Festplatte, die nach der Sicherung abgezogen wird, oder in einem Speicher, den der Rechner nicht löschen kann. Einmal im Quartal probehalber eine Datei zurückholen. Eine Sicherung, die nie geprüft wurde, ist eine Hoffnung.</li>
+  <li><b>Alte Technik abschalten.</b> Windows 10 ohne die bezahlte Verlängerung von Microsoft, Windows Server 2012, Exchange 2016 und 2019, PHP 8.1 und älter bekommen keine Korrekturen mehr. Was keine Updates mehr erhält, gehört vom Netz oder wird ersetzt.</li>
+  <li><b>Administratorrechte nur, wo sie nötig sind.</b> Im Alltag mit einem normalen Benutzerkonto arbeiten. Schadsoftware kann dann nur so viel, wie der Benutzer darf.</li>
+  <li><b>Anrufe und Mails misstrauisch prüfen.</b> KI-Stimmen klingen inzwischen wie der Chef, die Bank oder der Lieferant. Bei Zahlungsaufträgen oder Kontoänderungen immer über eine bekannte Nummer zurückrufen, nie über die Nummer aus der Nachricht.</li>
+  <li><b>Notfallkarte an die Wand.</b> Wen rufe ich an, wenn der Bildschirm eine Erpressung zeigt? Vom Netz trennen (Kabel ziehen, WLAN aus), nichts bezahlen, nichts löschen, Hilfe rufen. Das BSI stellt dafür eine IT-Notfallkarte kostenlos zum Ausdrucken bereit.</li>
+</ol>
+<h2 id="was-darueber-hinaus-sinnvoll-ist">Was darüber hinaus sinnvoll ist</h2>
+<div class="zwei">
+  <div class="karte">
+    <p class="label">Mit überschaubarem Aufwand</p>
+    <p><b>CyberRisikoCheck des BSI.</b> Ein vom BSI geschulter Dienstleister geht in ein bis zwei Stunden 27 Punkte mit Ihnen durch. Der Ergebnisbericht nennt passende Förderprogramme von Bund, Ländern und Kommunen; Höhe und Bedingungen unterscheiden sich. Das Ergebnis zeigt, welche Punkte bei Ihnen fehlen.</p>
+    <p><b>Überwachung der Geräte.</b> Ein Schutzprogramm, das Angriffe erkennt und meldet (Fachbegriff EDR), statt nur klassischer Virenscanner. Gibt es für kleine Betriebe als Monatsdienst.</p>
+    <p><b>Notfallplan und eine Übung.</b> Einmal durchspielen: Was tun wir, wenn morgen nichts mehr geht? Wer meldet es der Versicherung, den Kunden, der Polizei?</p>
+  </div>
+  <div class="karte">
+    <p class="label">Wenn Ihr Betrieb ohne Internet stillsteht</p>
+    <p><b>Netz trennen.</b> Kasse, Büro, Gäste-WLAN und Maschinen in getrennten Netzen, damit ein befallenes Gerät nicht alles erreicht.</p>
+    <p><b>Protokolle außerhalb speichern.</b> Gemeint sind Aufzeichnungen, wer wann was getan hat. Wer einen Einbruch später nachvollziehen will, braucht sie an einem Ort, den der Angreifer nicht löschen kann.</p>
+    <p><b>Externe Hilfe fest vereinbaren.</b> Ein IT-Dienstleister, der die Updates überwacht und im Notfall binnen Stunden erreichbar ist. Das BSI führt Listen qualifizierter Anbieter.</p>
+    <p><b>Cyberversicherung prüfen.</b> Sie ersetzt keinen Schutz, deckt aber je nach Vertrag Betriebsunterbrechung und Wiederherstellung. Versicherer fragen die Punkte von oben häufig beim Abschluss ab.</p>
+  </div>
+</div>
+<div class="karte angebot">
+  <p><b>Wie S&amp;S Connect unterstützt.</b> Wer die sieben Punkte nicht allein durchgehen möchte, bekommt bei uns eine Durchsicht von ein bis zwei Stunden. Das ist eine eigene Durchsicht von uns, kein CyberRisikoCheck des BSI. Anfrage per Mail oder Telefon, Kontakt siehe unten. Dieses Blatt ist eine Information, kein Angebot mit Preis.</p>
+</div>
+
+
+<div class="kontakt">
+  <div>
+<p class="label">Kontakt</p>
+<p>S&amp;S Connect GbR<br><span class="nb">Nobelstraße 3-5,</span> <span class="nb">41189 Mönchengladbach</span><br><a href="mailto:info@sundsconnect.de">info@sundsconnect.de</a><br><a href="tel:+4921666459958">02166 6459958</a></p>
+<p class="klein nur-druck">Dieses Blatt im Netz: <a class="nb" href="https://sundsconnect.de/sicherheit-2026/">sundsconnect.de/sicherheit-2026/</a></p>
+</div>
+  <div>
+<p class="label">Quellen</p>
+<ol class="quellen">
+  <li><a href="https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-262788-1032.pdf?__blob=publicationFile" rel="noopener">BSI, Sicherheitsinformation 2026-262788-1032, 22.06.2026 (PDF)</a> <span class="adresse">bsi.bund.de, Cybersicherheitswarnung 2026-262788-1032</span></li>
+  <li><a href="https://www.bsi.bund.de/DE/Service-Navi/Presse/Alle-Meldungen-News/Blog/KI-Modelle_neue_Zeitrechnung_260508.html" rel="noopener">BSI-Blog „Eine neue Zeitrechnung der Cybersicherheit“, 08.05.2026</a> <span class="adresse">bsi.bund.de, Blog 08.05.2026</span></li>
+  <li><a href="https://www.anthropic.com/glasswing" rel="noopener">Anthropic, Project Glasswing, 07.04.2026</a> <span class="adresse">anthropic.com/glasswing</span></li>
+  <li><a href="https://www.anthropic.com/news/glasswing-initial-update" rel="noopener">Anthropic, Zwischenbericht Glasswing, 22.05.2026</a> <span class="adresse">anthropic.com/news/glasswing-initial-update</span></li>
+  <li><a href="https://www.anthropic.com/research/n-days" rel="noopener">Anthropic, Messung vom Update bis zum Nachweis, 08.06.2026</a> <span class="adresse">anthropic.com/research/n-days</span></li>
+  <li><a href="https://www.anthropic.com/news/cyber-verification-program" rel="noopener">Anthropic, Cyber Verification Program mit der Zahl 129.000, 06.10.2026</a> <span class="adresse">anthropic.com/news/cyber-verification-program</span></li>
+  <li><a href="https://www.anthropic.com/research/glm-5-3-and-the-spread-of-advanced-cyber-capabilities" rel="noopener">Anthropic, frei verfügbare Modelle und die kritische Schwelle, 2026</a> <span class="adresse">anthropic.com/research/glm-5-3-and-the-spread-of-advanced-cyber-capabilities</span></li>
+  <li><a href="https://www.microsoft.com/en-us/security/blog/2026/10/01/insights-from-the-2026-microsoft-digital-defense-report/" rel="noopener">Microsoft Digital Defense Report 2026, 01.10.2026</a>, Berichterstattung dazu bei <a href="https://www.trendingtopics.eu/microsoft-digital-defense-report-2026/" rel="noopener">Trending Topics, 01.10.2026</a> <span class="adresse">microsoft.com/security/blog, trendingtopics.eu</span></li>
+  <li><a href="https://www.zerodayinitiative.com/blog/2025/10/14/the-october-2025-security-update-review" rel="noopener">Zero Day Initiative, Microsoft-Updates Oktober 2025 (177 Lücken), 14.10.2025</a> <span class="adresse">zerodayinitiative.com/blog, 14.10.2025</span></li>
+  <li><a href="https://www.bsi.bund.de/DE/Themen/Unternehmen-und-Organisationen/Informationen-und-Empfehlungen/KMU/CyberRisikoCheck/CyberRisikoCheck_node.html" rel="noopener">BSI, CyberRisikoCheck für kleine Unternehmen</a> <span class="adresse">bsi.bund.de, Seite „CyberRisikoCheck“</span></li>
+  <li><a href="https://www.bsi.bund.de/DE/Themen/Unternehmen-und-Organisationen/Informationen-und-Empfehlungen/Empfehlungen-nach-Angriffszielen/Unternehmen-allgemein/IT-Notfallkarte/it-notfallkarte_node.html" rel="noopener">BSI, IT-Notfallkarte zum Ausdrucken</a> <span class="adresse">bsi.bund.de, Seite „IT-Notfallkarte“</span></li>
+</ol>
+</div>
+</div>
+</article>
+
+<footer>
+  <p>S&amp;S Connect GbR, Mönchengladbach. Weitergabe und Ausdruck in unveränderter Form sind ausdrücklich erwünscht, auch an Kollegen, Kunden und Lieferanten. Änderungen und Ausschnitte bitte mit uns abstimmen. Diese Information fasst öffentliche Quellen zusammen, ist allgemein gehalten und ersetzt weder eine Prüfung Ihrer Systeme noch eine Beratung im Einzelfall. Vor Änderungen an Servern, Online-Shop und Geschäftsanwendungen bitte zuerst sichern. Lizenz für den Text dieses Beitrags: <a href="https://creativecommons.org/licenses/by-nd/4.0/deed.de" rel="noopener">CC BY-ND 4.0</a>; ausgenommen sind Logo, Marken und wörtliche Zitate aus den genannten Quellen.</p>
+<p class="nur-web">Fassung 1.2, Stand <time datetime="2026-11-02">2. November 2026</time>, nächste Prüfung <time datetime="2027-02-01">1. Februar 2027</time>.</p>
+  <p class="fusslinks nur-web"><a href="../../impressum/">Impressum</a> <a href="../../datenschutz/">Datenschutz</a> <a href="../../blog/">Blog</a> <a href="../../">Startseite S&amp;S Connect</a></p>
+</footer>
+
+</main>
+</body>
+</html>
