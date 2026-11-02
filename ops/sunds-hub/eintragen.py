@@ -6,8 +6,8 @@ und in den Zielen des Aussenwaechters. Idempotent, laeuft ohne Schaden zweimal.
 
     sudo python3 eintragen.py
 
-Die Website selbst laeuft NICHT auf sunds-hub (GitHub Pages, Repo
-sundsoffice-tech/connect, CNAME sundsconnect.de). Dieser Eintrag ist die
+Die Website laeuft seit 01.09.2026 auf sunds-hub (Repo sundsoffice-tech/connect,
+GitHub Pages seit 02.11.2026 abgeschaltet). Dieser Eintrag ist die
 Sichtbarkeit nach KONVENTION.md § 8: ein Vertrag, den die Gegenseite nicht
 findet, ist keiner. Muster: ss-messebau-website/ops/sunds-hub/eintragen.py.
 
@@ -44,7 +44,6 @@ KUNDE = {
     "herkunft": [
         "https://sundsconnect.de",
         "https://www.sundsconnect.de",
-        "https://sundsoffice-tech.github.io",
     ],
 }
 
@@ -62,7 +61,7 @@ EINTRAG = {
     "kunden": [],
     "server": "sunds-hub (169.58.211.51), Caddy-Block sundsconnect.de + www -> Apex",
     "quelle": ("GitHub sundsoffice-tech/connect main = Quelle; Deploy: git push hub main (post-receive baut "
-               "site/), GitHub Pages bleibt Zweitausgabe"),
+               "site/), GitHub Pages abgeschaltet seit 02.11.2026"),
     "seit": "2026-08-21",
     "hinweis": (
         "Seit 2026-09-01 auf sunds-hub (Umzug wegen haengendem GitHub-Pages-Zertifikat). Lokale Kopie: "

@@ -92,8 +92,7 @@ Implementierung: `js/main.js` (`buildLeadPayload`, `relayLeadToHub`); wirft nie
   **Nicht** `sunds.office@gmail.com` — Messebau-Anmeldekonto, falsche Firma. Betreff
   „Neue Anfrage (Website sundsconnect.de)" (trifft die Triage-Regel `angebotsanfrage`,
   Domain in der Klammer macht die Herkunft maschinenlesbar). `telefon_pflicht: false`,
-  `herkunft` = `https://sundsconnect.de`, `https://www.sundsconnect.de`,
-  `https://sundsoffice-tech.github.io`.
+  `herkunft` = `https://sundsconnect.de`, `https://www.sundsconnect.de`.
 - Absender ist der feste Domain-Absender des Dienstes (`ABSENDER_MAIL`, kein no-reply),
   **Reply-To = Adresse des Anfragenden** (`dienst.py`, SMTP und API) — der Leitstand
   erzeugt damit Antwortentwürfe direkt an den Lead.
@@ -144,7 +143,7 @@ Implementierung: `js/main.js` (`buildLeadPayload`, `relayLeadToHub`); wirft nie
 - Offene (nicht zugestellte) Leads: `GET /gesund` → `"offen"`. Dauerhaft > 0 → Mailweg kaputt.
 - Protokoll: `sudo journalctl -u sunds-leads -f` auf sunds-hub.
 - Wer `kunden.json` ändert: `sudo systemctl restart sunds-leads` (Datei wird beim Start gelesen).
-- Website-Deploy: Push auf `main` in `sundsoffice-tech/connect` → GitHub-Pages-Workflow.
+- Website-Deploy: `ops/deploy.sh` (Push nach `origin` und zum Hub auf sunds-hub); der GitHub-Workflow prüft nur, GitHub Pages ist seit 02.11.2026 abgeschaltet.
 
 ## 8 · Bekannte Befunde der Website (Stufe B, nicht Teil dieses Vertrags)
 
