@@ -16,7 +16,7 @@ ueber server hosten", nachdem GitHub Pages seit 21.08.2026 kein Zertifikat mehr 
 | Gesund | `https://sundsconnect.de/gesund` -> `gesund.json` (Commit, Zeit) |
 | Caddy | Block in der Caddyfile (Vorlage `caddy-block.txt`); www -> 301 auf Apex; HSTS, nosniff, X-Frame-Options SAMEORIGIN (3D-Hero-iframe); CSP bleibt als Meta in den Seiten |
 | Umschaltung | `/opt/sunds-hub/connect-umstellen.sh` hat am 01.09. umgestellt (`NUR_APEX=1`, weil Strato schneller war als der Timer); Timer `sunds-connect-umschalt` ist beendet und deaktiviert |
-| GitHub | Repo `sundsoffice-tech/connect` bleibt Quelle; Pages ohne Custom Domain als Zweitausgabe unter https://sundsoffice-tech.github.io/connect/ ; `CNAME` aus Repo und Workflow entfernt |
+| GitHub | Repo `sundsoffice-tech/connect` bleibt Quelle; GitHub Pages seit 02.11.2026 abgeschaltet, der Workflow prueft nur noch (Blog, Tests, Kopierliste); `CNAME` aus Repo und Workflow entfernt |
 | Register | `/opt/sunds-hub/projekte.json` -> `connect-website` (Server, Deploy, /gesund eingetragen) |
 | Waechter | `/opt/sunds-waechter/ziele.json`: "S&S-Connect-Website (sunds-hub)", www ohne `wartet_auf_entscheidung`, Kontaktformular |
 
