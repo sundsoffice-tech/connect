@@ -2105,7 +2105,7 @@ body.lang-en .lang-en-inline { display: inline; }
 
 .reference-tag {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   padding: 0.2rem 0.65rem;
   border-radius: var(--radius-pill);
   border: 1px solid rgba(0,212,170,0.2);
@@ -2238,7 +2238,7 @@ body.lang-en .lang-en-inline { display: inline; }
     padding: 0.25rem 0.75rem;
   }
   .project-tag {
-    font-size: 0.6rem;
+    font-size: 0.7rem;
     padding: 0.2rem 0.5rem;
   }
   .contact-info-block {
@@ -2261,7 +2261,7 @@ body.lang-en .lang-en-inline { display: inline; }
     font-size: 0.8rem;
   }
   .metric-label {
-    font-size: 0.65rem;
+    font-size: 0.75rem;
   }
 }
 
