@@ -102,6 +102,9 @@ document.addEventListener('DOMContentLoaded', () => {
       // Auf dem Desktop sind die Links immer sichtbar und duerfen nicht aria-hidden sein
       navMenu.setAttribute('aria-hidden', String(mobileNav.matches && !open));
       document.body.classList.toggle('menu-open', open);
+      // Offenes Menue verdeckt den Cookie-Hinweis: dann auch nicht per Tab erreichbar
+      const cookieHinweis = document.getElementById('cookie-banner');
+      if (cookieHinweis) cookieHinweis.inert = open;
       document.body.style.overflow = open ? 'hidden' : '';
     };
 
@@ -307,7 +310,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Vertrag: SCHNITTSTELLE-LEADS.md im Repo.
   // Der Endpunkt speichert zuerst, versendet dann und sendet alle 5 min nach.
   const LEAD_ENDPUNKT = 'https://leads.sundsconnect.de/lead';
-  const SUBJECT_LABELS = { general: 'Allgemeine Anfrage', vertrieb: 'Vertrieb & Sales', automation: 'Automation', ai: 'AI Infrastruktur', ads: 'Google Ads & AI Ads', webdesign: 'Webdesign', project: 'Projektanfrage' };
+  const SUBJECT_LABELS = { general: 'Allgemeine Anfrage', vertrieb: 'Vertrieb & Sales', automation: 'Automation', ai: 'KI-Infrastruktur', ads: 'Google Ads & AI Ads', webdesign: 'Webdesign', project: 'Projektanfrage' };
 
   function buildLeadPayload(fd) {
     const get = (k) => String(fd.get(k) || '').trim();

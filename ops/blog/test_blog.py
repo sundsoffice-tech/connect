@@ -984,6 +984,38 @@ class Befehle(Baum):
         lauf = self.lauf("bauen", env={"PATH": ""})
         self.assertEqual(lauf.returncode, 3, lauf.stdout + lauf.stderr)
 
+    @unittest.skipIf(os.name == "nt", "der Ersatz für node ist ein Skript mit Shebang")
+    def test_bauen_zweiter_durchgang_nach_neuem_og(self) -> None:
+        """Nach einem neu erzeugten og.png trägt die Seite dessen Versionsteil. Ohne den zweiten Durchgang in
+        befehl_bauen stünde dort die Adresse ohne Versionsteil, weil das Bild beim ersten Durchgang noch fehlte."""
+        text = re.sub(r'^bild = ".*"$', 'bild = ""', self.lies(QUELLE), count=1, flags=re.M)
+        self.schreib(QUELLE, text)
+        self.neu_freigeben()
+        og = self.w / "blog" / SLUG / "og.png"
+        self.assertFalse(og.exists(), "Ausgangszustand: noch kein og.png")
+        # Ersatz für node und ops/schirmfoto.mjs (auf dem Prüfrechner gibt es kein Chrome): schreibt ein schwarzes PNG
+        # in der Größe aus haus.toml an den Zielpfad, den blog.py als drittes Argument übergibt.
+        self.schreib("ops/schirmfoto.mjs", "// Ersatz, wird nicht ausgeführt\n")
+        ersatz = Path(self._tmp.name) / "ersatz-bin"
+        ersatz.mkdir()
+        node = ersatz / "node"
+        node.write_text(
+            f"#!{sys.executable}\n"
+            "import struct, sys, zlib\n"
+            "b, h = 1200, 630\n"
+            "def stueck(art, daten):\n"
+            "    return struct.pack('>I', len(daten)) + art + daten + struct.pack('>I', zlib.crc32(art + daten) & 0xffffffff)\n"
+            "roh = b''.join(b'\\x00' + b'\\x00' * (b * 3) for _ in range(h))\n"
+            "png = b'\\x89PNG\\r\\n\\x1a\\n' + stueck(b'IHDR', struct.pack('>IIBBBBB', b, h, 8, 2, 0, 0, 0)) "
+            "+ stueck(b'IDAT', zlib.compress(roh)) + stueck(b'IEND', b'')\n"
+            "open(sys.argv[3], 'wb').write(png)\n", encoding="utf-8")
+        node.chmod(0o755)
+        lauf = self.lauf("bauen", env={"PATH": f"{ersatz}{os.pathsep}{os.environ.get('PATH', '')}"})
+        self.assertEqual(lauf.returncode, 0, lauf.stdout + lauf.stderr)
+        self.assertTrue(og.is_file(), "der Ersatz hat kein og.png geschrieben")
+        version = hashlib.sha256(og.read_bytes()).hexdigest()[:8]
+        self.assertIn(f"/blog/{SLUG}/og.png?v={version}", self.lies(f"blog/{SLUG}/index.html"))
+
     def test_pruefen_schreibt_nichts(self) -> None:
         (self.w / "blog/rss.xml").unlink()
         self.assertEqual(self.lauf("pruefen").returncode, 1)
