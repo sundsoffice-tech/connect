@@ -74,7 +74,7 @@ speichert (gemessen: keine Whitelist, nur `roh.get`); Zusage leadmaschine-53 vom
 | `phone` | `telefon` | optional |
 | `email` | `email` | Pflicht auf der Website |
 | `message` | `nachricht` (Kopf) | |
-| `subject` (general/vertrieb/automation/ai/project) | `nachricht` (Block „— Angaben aus dem Formular —", Zeile `Betreff: <Label>`) | deutsches Label |
+| `subject` (general/vertrieb/automation/ai/ads/webdesign/project) | `nachricht` (Block „— Angaben aus dem Formular —", Zeile `Betreff: <Label>`) | deutsches Label |
 | `dsgvo-consent` | — | wird clientseitig geprüft, nicht übertragen (Formspree bekommt es weiter) |
 | `_gotcha` (unsichtbares Feld, Formspree-Konvention) | `botcheck` | Honigtopf — Formspree verwirft gefüllte Einsendungen selbst (204), der Endpunkt antwortet 200 ohne `vorgang` |
 | `window.location.pathname` | `seite` | |
