@@ -26,6 +26,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.documentElement.setAttribute('lang', lang);
     localStorage.setItem('ss-lang', lang);
 
+    document.querySelectorAll('.lang-switch').forEach(g => {
+      g.setAttribute('aria-label', lang === 'de' ? 'Sprachauswahl' : 'Language selection');
+    });
     document.querySelectorAll('.lang-switch button').forEach(b => {
       const isActive = b.dataset.lang === lang;
       b.setAttribute('aria-pressed', isActive);
