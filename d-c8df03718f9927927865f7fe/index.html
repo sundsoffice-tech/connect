@@ -1118,7 +1118,7 @@ async function tryUnlock(pwd){
 }
 
 function unlock(){
-  sessionStorage.setItem(SESSION_KEY,"1");
+  try{ sessionStorage.setItem(SESSION_KEY,"1"); }catch(e){}
   document.getElementById("lockOverlay").style.display = "none";
   document.getElementById("app").classList.remove("hidden-app");
   initApp();
@@ -1135,7 +1135,9 @@ document.getElementById("lockForm").addEventListener("submit", async (e) => {
 });
 
 // Auto-unlock wenn Session bereits entsperrt
-if(sessionStorage.getItem(SESSION_KEY) === "1"){
+let schonEntsperrt = false;
+try{ schonEntsperrt = sessionStorage.getItem(SESSION_KEY) === "1"; }catch(e){}
+if(schonEntsperrt){
   unlock();
 } else {
   setTimeout(() => document.getElementById("lockPwd").focus(), 100);
@@ -1232,7 +1234,8 @@ function initWizard(){
   });
 
   // Initial-Step: wo war der User zuletzt?
-  let saved = parseInt(sessionStorage.getItem('ssc_self_step') || '0', 10);
+  let saved = 0;
+  try{ saved = parseInt(sessionStorage.getItem('ssc_self_step') || '0', 10); }catch(e){}
   if(isNaN(saved) || saved < 0 || saved > 10) saved = 0;
   goToStep(saved);
 }
@@ -1245,7 +1248,7 @@ function goToStep(n){
     el.classList.toggle('active', parseInt(el.dataset.step,10) === n);
   });
   currentStep = n;
-  sessionStorage.setItem('ssc_self_step', String(n));
+  try{ sessionStorage.setItem('ssc_self_step', String(n)); }catch(e){}
 
   // Buttons
   const prev = document.getElementById('btnPrev');
@@ -1413,7 +1416,8 @@ function saveError(e){
 
 function updateSaveIndicator(){
   const el = document.getElementById('saveState');
-  const last = parseInt(localStorage.getItem(LAST_SAVE_KEY) || '0', 10);
+  let last = 0;
+  try{ last = parseInt(localStorage.getItem(LAST_SAVE_KEY) || '0', 10); }catch(e){}
   if(!last){ el.textContent = '–'; return; }
   const diff = Math.floor((Date.now() - last) / 1000);
   let txt;
