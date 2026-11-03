@@ -39,6 +39,8 @@ ROTPROBEN: list[tuple[str, int, str]] = []
 # Was der Blog-Bau gegenüber der geprüften Seite zusätzlich zeigen darf, und sonst nichts: Brotkrumen,
 # Lesezeit und der Blog-Link der Fußzeile. Die neue Beschreibung steht nur im Kopf und ist nicht sichtbar.
 ERLAUBTE_ZUSAETZE = [
+    # Hauptnavigation der Website im Seitenkopf: breite Zeile und Menü-Knopf mit derselben Liste (je Medium eine sichtbar)
+    re.compile(r"Startseite Leistungen Projekte Blog Kontakt Menü Startseite Leistungen Projekte Blog Kontakt"),
     re.compile(r"\d+ Min\. Lesezeit"),
     re.compile(r"Startseite Blog"),
     re.compile(r"Blog"),
