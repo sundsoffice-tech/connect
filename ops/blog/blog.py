@@ -2614,7 +2614,7 @@ def befehl_vorschau(args: argparse.Namespace) -> int:
     for pfad, daten in ausgaben.items():
         atomar_schreiben(ziel / pfad, daten)
     # Stilbogen und Schriften, damit die Seite wie live aussieht
-    for quellpfad in ("css/blog.css", "assets/img/favicon-32.png", "assets/img/favicon-48.png", "assets/img/favicon-180.png"):
+    for quellpfad in ("css/blog.css", "assets/img/logo-cropped.png", "assets/img/favicon-32.png", "assets/img/favicon-48.png", "assets/img/favicon-180.png"):
         von = WURZEL / quellpfad
         if von.is_file():
             atomar_schreiben(ziel / quellpfad, von.read_bytes())

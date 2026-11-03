@@ -1229,7 +1229,8 @@ body.lang-en .lang-en-inline { display: inline; }
 
 .feature-list li {
   display: flex;
-  align-items: center;
+  /* Punkt an der ersten Zeile, auch wenn der Eintrag umbricht */
+  align-items: flex-start;
   gap: 0.75rem;
   color: var(--clr-text-muted);
   font-size: 0.95rem;
@@ -1242,6 +1243,8 @@ body.lang-en .lang-en-inline { display: inline; }
   border-radius: 50%;
   background: var(--clr-teal);
   flex-shrink: 0;
+  margin-top: 0.6em;
+  margin-top: calc((1lh - 6px) / 2);
 }
 
 .feature-visual {
@@ -3141,14 +3144,29 @@ main [id] {
 .cookie-settings-link { min-height: 44px; }
 .cookie-settings-link { display: inline-flex; align-items: center; }
 body.menu-open .cookie-banner { z-index: 999; }
+/* Gleichwertige Wahl: "Alle akzeptieren" und "Nur notwendige" gleich breit (zwei gleiche Rasterspalten)
+   und gleich auffaellig ("Nur notwendige" traegt dieselbe Flaeche wie der Hauptknopf) */
+.cookie-banner-actions { display: grid; grid-template-columns: 1fr 1fr auto; }
+.cookie-banner-actions .btn { justify-content: center; }
+#cookie-reject,
+#cookie-reject:hover,
+#cookie-reject:focus-visible { background: var(--gradient-main); color: var(--clr-bg-deep); border: none; }
 @media (max-width: 600px) {
   .cookie-banner { padding: 10px 0 calc(10px + env(safe-area-inset-bottom, 0px)); }
   .cookie-banner-inner { padding: 0 16px; }
   .cookie-banner-compact { gap: 8px; }
   .cookie-banner-compact p { font-size: 0.85rem; line-height: 1.45; }
-  .cookie-banner-actions { width: 100%; flex-wrap: nowrap; gap: 6px; }
-  .cookie-banner-actions .btn { flex: 1 1 auto; justify-content: center; padding: 0 0.7rem; font-size: 0.8rem; }
-  .cookie-settings-link { flex: 0 0 auto; padding: 0 0.4rem; }
+  .cookie-banner-actions { width: 100%; gap: 6px; }
+  .cookie-banner-actions .btn { padding: 0 0.6rem; font-size: 0.8rem; }
+  .cookie-settings-link { padding: 0 0.4rem; }
+}
+/* Unter 375 px passen drei Knoepfe nicht in eine Zeile: die beiden Wahlknoepfe oben, Einstellungen darunter */
+@media (max-width: 374px) {
+  .cookie-banner-actions { grid-template-columns: 1fr 1fr; }
+  .cookie-settings-link { grid-column: 1 / -1; justify-self: center; }
+  /* Hinweis nimmt auf kleinen Telefonen weniger Höhe ein, Wortlaut unverändert */
+  .cookie-banner-compact p { font-size: 0.8rem; line-height: 1.4; }
+  .cookie-banner-actions { row-gap: 2px; }
 }
 /* Banner unsichtbar = nicht fokussierbar; solange er offen ist, bleibt der Sticky-CTA weg */
 .cookie-banner { visibility: hidden; transition: transform var(--transition-smooth), visibility 0s linear var(--transition-smooth); }
@@ -3279,6 +3297,12 @@ body.menu-open .cookie-banner { z-index: 999; }
 /* Im Mobilmenue: so weit, wie das Menue gilt (max-width 900px, siehe Mobile Nav) */
 @media (max-width: 900px) {
   .nav-menu-contact a[href^="tel:"] { display: inline-flex; align-items: center; min-height: 44px; }
+}
+/* Fusszeile auf schmalen Bildschirmen: jeder Link mindestens 44 px hoch antippbar; der Zeilenabstand
+   entfaellt dafuer, das Raster bleibt fast gleich (vorher 18 px Link plus 0,5rem Abstand) */
+@media (max-width: 768px) {
+  ul.footer-links { gap: 0; }
+  .footer-links a, .footer-bottom a { display: inline-flex; align-items: center; min-height: 44px; }
 }
 
 /* ============================================
@@ -3483,4 +3507,14 @@ body.menu-open .cookie-banner { z-index: 999; }
 /* Schmale Bildschirme: lange deutsche Woerter in Ueberschriften trennen statt abschneiden (Datenschutzerklaerung bei 390 px) */
 @media (max-width: 480px) {
   h1, h2 { hyphens: auto; -webkit-hyphens: auto; overflow-wrap: break-word; }
+}
+
+/* Schmale Telefone (bis 360 px), steht am Ende, damit es die Grundregeln überschreibt:
+   lange Wörter wie „Intelligente“ und „Impressum“ passen ohne Trennung in die Zeile,
+   der Firmenname hält Abstand zum Sprachschalter. */
+@media (max-width: 360px) {
+  h1 { font-size: 1.85rem; }
+  .nav-logo { gap: 0.5rem; margin-right: 0.5rem; }
+  .nav-logo span { font-size: 1rem; }
+  .lang-switch button { padding: 0.6rem 0.4rem; }
 }
