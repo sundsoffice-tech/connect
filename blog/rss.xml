@@ -7,7 +7,7 @@
     <description>Beiträge von S&amp;S Connect für kleine Unternehmen: was passiert ist, was es für Sie bedeutet und was Sie tun können, mit Quellen belegt.</description>
     <language>de-de</language>
     <atom:link rel="self" type="application/rss+xml" href="https://sundsconnect.de/blog/rss.xml"/>
-    <lastBuildDate>Mon, 02 Nov 2026 23:31:00 +0100</lastBuildDate>
+    <lastBuildDate>Tue, 03 Nov 2026 02:50:00 +0100</lastBuildDate>
     <item>
       <title>Sicherheitslücken 2026: Was passiert ist und was jetzt zählt</title>
       <link>https://sundsconnect.de/blog/sicherheitsluecken-2026/</link>
@@ -22,12 +22,12 @@
 &lt;div class="kennzahlen"&gt;
   &lt;div&gt;&lt;b&gt;129.000&lt;/b&gt;&lt;span&gt;Lücken meldet der KI-Hersteller für April bis Juli 2026, aus Partnerberichten&lt;/span&gt;&lt;/div&gt;
   &lt;div&gt;&lt;b&gt;31 Min.&lt;/b&gt;&lt;span&gt;vom Windows-Update bis zum Nachweis, dass sich die Lücke auslösen lässt, Messung des KI-Herstellers&lt;/span&gt;&lt;/div&gt;
-  &lt;div&gt;&lt;b&gt;59 → 222&lt;/b&gt;&lt;span&gt;Erpressungsfälle in Deutschland, Vorjahr zu diesem Jahr, von Microsoft erfasst, laut Presseberichten&lt;/span&gt;&lt;/div&gt;
+  &lt;div&gt;&lt;b&gt;59 → 222&lt;/b&gt;&lt;span&gt;Erpressungsfälle in Deutschland im Vergleich zum Vorjahr, von Microsoft erfasst, laut Presseberichten&lt;/span&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;p class="klein"&gt;Die 129.000 sind eine Herstellerangabe; unabhängige Zähler ordnen bislang nur einige hundert Lücken eindeutig zu. Die Richtung ist unstrittig, die genaue Zahl nicht.&lt;/p&gt;
 &lt;h2 id="was-passiert-ist"&gt;Was passiert ist&lt;/h2&gt;
 &lt;p&gt;Im April 2026 hat der Anbieter Anthropic ein KI-Modell vorgestellt, das Sicherheitslücken in Software selbständig findet. Innerhalb weniger Wochen fand es nach Angaben des Herstellers kritische Lücken in jedem großen Betriebssystem und jedem großen Browser, dazu tausende Lücken in über tausend Open-Source-Bausteinen, die in fast jeder Firmensoftware stecken. Eine davon war 27 Jahre alt und bis dahin niemandem aufgefallen.&lt;/p&gt;
-&lt;p&gt;Seitdem reißt die Kette nicht ab. Allein in diesem Jahr gab es ernste, zum Teil aktiv ausgenutzte Lücken in Windows, Linux, Apple-Systemen und Firefox, in Netzwerkgeräten von Cisco, Fortinet, Citrix, Ivanti, Palo Alto und SonicWall, in Microsoft Exchange und in PHP, der Technik hinter den meisten Online-Shops und Websites. Nicht jede davon stammt aus der KI-Suche, aber alle treffen auf Angreifer, die mit ihr arbeiten. Microsoft hat allein im Oktober 2026 über 1.400 Lücken an einem Tag geschlossen. Im ganzen Jahr 2025 waren es nie mehr als 177 auf einmal.&lt;/p&gt;
+&lt;p&gt;Seitdem reißt die Kette nicht ab. Allein 2026 gab es ernste, zum Teil aktiv ausgenutzte Lücken in Windows, Linux, Apple-Systemen und Firefox, in Netzwerkgeräten von Cisco, Fortinet, Citrix, Ivanti, Palo Alto und SonicWall, in Microsoft Exchange und in PHP, der Technik hinter den meisten Online-Shops und Websites. Nicht jede davon stammt aus der KI-Suche, aber alle treffen auf Angreifer, die mit ihr arbeiten. Microsoft hat allein im Oktober 2026 über 1.400 Lücken an einem Tag geschlossen. Im ganzen Jahr 2025 waren es nie mehr als 177 auf einmal.&lt;/p&gt;
 &lt;h2 id="warum-das-fuer-unternehmen-alles-aendert"&gt;Warum das für Unternehmen alles ändert&lt;/h2&gt;
 &lt;p&gt;Bisher galt: Ein Hersteller veröffentlicht ein Update, und man hat einige Wochen Zeit, es einzuspielen, bis Angreifer die Lücke ausnutzen. Erstens ist diese Zeit weg. Kriminelle nutzen dieselbe Technik, und laut BSI lässt sich aus einem veröffentlichten Update binnen Minuten bis Stunden ableiten, wie ein Angriff aussehen kann. Das Bundesamt für Sicherheit in der Informationstechnik (BSI) spricht von einer neuen Zeitrechnung der Cybersicherheit und schreibt in seiner Sicherheitsinformation vom 22. Juni 2026 wörtlich, „wenige Tage sind dabei keine angemessene Reaktionsgeschwindigkeit“.&lt;/p&gt;
 &lt;p&gt;Zweitens trifft es nicht mehr nur große Konzerne. Angriffe laufen automatisiert gegen alles, was im Internet erreichbar ist: Router, VPN-Zugänge (der Fernzugang ins Büro), Mailserver, Online-Shops. Ob dahinter ein Weltkonzern oder ein Fünf-Mann-Betrieb steht, spielt für den Automaten keine Rolle. Deutschland ist das einzige EU-Land unter den zehn Ländern, die in Microsofts Daten am häufigsten angegriffen werden, laut Berichterstattung zum Microsoft-Bericht.&lt;/p&gt;
@@ -42,7 +42,7 @@
   &lt;li&gt;&lt;b&gt;Alte Technik abschalten.&lt;/b&gt; Windows 10 ohne die bezahlte Verlängerung von Microsoft, Windows Server 2012, Exchange 2016 und 2019, PHP 8.1 und älter bekommen keine Korrekturen mehr. Was keine Updates mehr erhält, gehört vom Netz oder wird ersetzt.&lt;/li&gt;
   &lt;li&gt;&lt;b&gt;Administratorrechte nur, wo sie nötig sind.&lt;/b&gt; Im Alltag mit einem normalen Benutzerkonto arbeiten. Schadsoftware kann dann nur so viel, wie der Benutzer darf.&lt;/li&gt;
   &lt;li&gt;&lt;b&gt;Anrufe und Mails misstrauisch prüfen.&lt;/b&gt; KI-Stimmen klingen inzwischen wie der Chef, die Bank oder der Lieferant. Bei Zahlungsaufträgen oder Kontoänderungen immer über eine bekannte Nummer zurückrufen, nie über die Nummer aus der Nachricht.&lt;/li&gt;
-  &lt;li&gt;&lt;b&gt;Notfallkarte an die Wand.&lt;/b&gt; Wen rufe ich an, wenn der Bildschirm eine Erpressung zeigt? Vom Netz trennen (Kabel ziehen, WLAN aus), nichts bezahlen, nichts löschen, Hilfe rufen. Das BSI stellt dafür eine IT-Notfallkarte kostenlos zum Ausdrucken bereit.&lt;/li&gt;
+  &lt;li&gt;&lt;b&gt;Notfallkarte an die Wand.&lt;/b&gt; Wen rufe ich an, wenn der Bildschirm eine Erpressung zeigt? Vom Netz trennen (Kabel ziehen, WLAN aus), nichts bezahlen, nichts löschen, Hilfe rufen. Das BSI stellt dafür eine &lt;a href="https://www.bsi.bund.de/DE/Themen/Unternehmen-und-Organisationen/Informationen-und-Empfehlungen/Empfehlungen-nach-Angriffszielen/Unternehmen-allgemein/IT-Notfallkarte/it-notfallkarte_node.html" rel="noopener"&gt;IT-Notfallkarte&lt;/a&gt; kostenlos zum Ausdrucken bereit.&lt;/li&gt;
 &lt;/ol&gt;
 &lt;h2 id="was-darueber-hinaus-sinnvoll-ist"&gt;Was darüber hinaus sinnvoll ist&lt;/h2&gt;
 &lt;div class="zwei"&gt;

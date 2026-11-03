@@ -23,6 +23,7 @@ import threading
 import unittest
 import urllib.parse
 import xml.etree.ElementTree as ET
+import zlib
 from html.parser import HTMLParser
 from pathlib import Path
 
@@ -81,6 +82,14 @@ FREIGEGEBENE_AENDERUNGEN = [
     ("Kontakt siehe unten. Dieses Blatt ist", "Kontakt siehe unten. Dieser Beitrag Dieses Blatt ist"),
     ("02166 6459958", "+49 151 40322125"),
     ("Fassung 1.2, Stand 2. November 2026, nächste Prüfung 1. Februar 2027.", ""),
+    # Fassung 1.4, wartet auf Fabrices Freigabe und den Bau: Lizenzsatz am Bildschirm "Beitrag", im Druck "Blatt"
+    # (beide Spannen im Quelltext, wie oben). Link auf die Notfallkarte und bild_alt ändern keinen sichtbaren Wortlaut.
+    ("Stand 2. November 2026, Fassung 1.3", "Stand 3. November 2026, Fassung 1.4"),
+    ("Lizenz für den Text dieses Beitrags: CC BY-ND", "Lizenz für den Text dieses Beitrags dieses Blatts: CC BY-ND"),
+    # Fassung 1.4, Zeitbezug nach Fabrices Wahl vom 03.11.2026: ohne "dieses Jahr", das mit dem Kalender veraltet
+    ("Erpressungsfälle in Deutschland, Vorjahr zu diesem Jahr, von Microsoft erfasst",
+     "Erpressungsfälle in Deutschland im Vergleich zum Vorjahr, von Microsoft erfasst"),
+    ("Allein in diesem Jahr gab es", "Allein 2026 gab es"),
 ]
 
 
@@ -437,6 +446,48 @@ class Gruen(Baum):
         self.assertEqual(self.lauf("pruefen").returncode, 0)
 
 
+class Hauptnavigation(Baum):
+    """Die Blog-Seiten tragen dasselbe Menü wie die Website: fünf Punkte in fester Reihenfolge, breit und schmal,
+    jeder relative Link führt auf eine Seite, die im Baum liegt, und „Blog“ ist als aktueller Bereich markiert."""
+
+    PUNKTE = ["Startseite", "Leistungen", "Projekte", "Blog", "Kontakt"]
+    ZIELE = ["index.html", "services/index.html", "projects/index.html", "blog/index.html", "contact/index.html"]
+
+    def menues(self, seite: str) -> list[list[tuple[str, str, str | None]]]:
+        html = self.lies(seite)
+        nav = re.search(r'<nav class="hauptnav nur-web"[^>]*>(.*?)</nav>', html, re.S)
+        self.assertIsNotNone(nav, f"{seite}: keine Hauptnavigation mit nur-web")
+        listen = re.findall(r"<ul[^>]*>(.*?)</ul>", nav.group(1), re.S)
+        return [[(t, h, a) for h, a, t in re.findall(r'<a href="([^"]*)"(?: aria-current="([^"]*)")?>([^<]*)</a>', liste)]
+                for liste in listen]
+
+    def test_blogseiten_fuenf_punkte_mit_gueltigen_zielen(self) -> None:
+        self.neu_freigeben()
+        lauf = self.lauf("bauen")
+        self.assertEqual(lauf.returncode, 0, lauf.stdout)
+        for seite in ("blog/index.html", f"blog/{SLUG}/index.html"):
+            menues = self.menues(seite)
+            self.assertEqual(len(menues), 2, f"{seite}: breite Zeile und Menü-Knopf erwartet")
+            for menue in menues:
+                self.assertEqual([t for t, _, _ in menue], self.PUNKTE, seite)
+                ordner = (self.w / seite).parent
+                for (text, href, _), ziel in zip(menue, self.ZIELE):
+                    self.assertFalse(href.startswith(("http", "/", "file:")), f"{seite}: {text} ist nicht relativ: {href}")
+                    getroffen = (ordner / href / "index.html").resolve()
+                    self.assertEqual(getroffen, (self.w / ziel).resolve(), f"{seite}: {text} zeigt auf {href}")
+                    self.assertTrue(getroffen.is_file(), f"{seite}: Ziel von {text} fehlt im Baum")
+                markiert = [(t, a) for t, _, a in menue if a]
+                # Übersicht ist die Seite selbst, im Beitrag ist Blog der Bereich
+                wert = "page" if seite == "blog/index.html" else "true"
+                self.assertEqual(markiert, [("Blog", wert)], f"{seite}: genau Blog ist markiert, mit {wert}")
+
+    def test_stil_hebt_jede_markierung_hervor(self) -> None:
+        """Ein Selektor nur auf ="page" ließe den Beitrag markiert, aber unsichtbar."""
+        css = self.lies("css/blog.css")
+        self.assertRegex(css, r'\.hauptnav a\[aria-current\]\s*\{[^}]*font-weight')
+        self.assertNotIn('.hauptnav a[aria-current="page"]', css)
+
+
 class Rotproben(Baum):
     def test_p1_jedes_zeichen_in_der_quelle(self) -> None:
         for cp in (0x2014, 0x2013, 0x00B7, 0x2022, 0x2011):
@@ -618,7 +669,7 @@ class Rotproben(Baum):
         lauf = self.lauf("bauen")
         self.assertEqual(lauf.returncode, 0, lauf.stdout)
         seite = self.lies(f"blog/{SLUG}/index.html")
-        self.assertIn('<span class="nur-web">Bildschirmwort</span> <span class="nur-druck">Papierwort</span> Seitdem', seite)
+        self.assertIn('<span class="nur-web">Bildschirmwort</span><span class="nur-druck" hidden> Papierwort</span> Seitdem', seite)
         for ausgabe in (f"blog/{SLUG}/index.html.md", "blog/feed.xml", "blog/rss.xml"):
             with self.subTest(ausgabe):
                 text = self.lies(ausgabe)
@@ -740,6 +791,25 @@ class Rotproben(Baum):
         # Fassung 1.3, Freigabe vom 03.11.2026 01:46. Der Hash ist ungesalzen: ein kurzer Satz lässt sich aus ihm
         # zurückraten. Vor Beitrag 2 bekommt er ein Salz außerhalb des Repos.
         self.assertIn('wortlaut_sha256 = "aa32e7eaa111d22182715f51a62a9140c6a4181ced0a1ae81270e292d1519f84"', self.lies(QUELLE))
+
+    def test_p16_relativer_link_im_druck(self) -> None:
+        """Das Logo der Beitragsseite ist im Druck sichtbar; relativ würde es im PDF zu file:/// des Rechners."""
+        self.ersetze("ops/blog/vorlagen/beitrag.html", 'href="$startseite"', 'href="$wurzel"')
+        self.assertIn("Link ../../ ist im Druck sichtbar", self.rot("relativer Logo-Link", "P16"))
+
+    def test_p16_pdf_mit_file_adresse(self) -> None:
+        pdf = self.w / f"inhalt/blog/{SLUG}/Infoblatt_Sicherheitsluecken_2026.pdf"
+        pdf.write_bytes(pdf.read_bytes() + b"\n9999 0 obj << /S /URI /URI (file:///C:/Users/x/seite/) >> endobj\n")
+        self.assertIn("file:///C:/Users/x/seite/", self.rot("file-Adresse im PDF", "P16"))
+
+    def test_p16_pdf_adressen_auch_komprimiert(self) -> None:
+        spec = importlib.util.spec_from_file_location("blog_p16", REPO / "ops/blog/blog.py")
+        blog = importlib.util.module_from_spec(spec)
+        sys.modules["blog_p16"] = blog
+        spec.loader.exec_module(blog)
+        strom = zlib.compress(b"<< /S /URI /URI (file:///y/) >> << /URI (https://sundsconnect.de/) >>")
+        daten = b"1 0 obj << /Filter /FlateDecode >> stream\n" + strom + b"\nendstream endobj << /URI (mailto:info@x.de) >>"
+        self.assertEqual(blog.pdf_adressen(daten), ["file:///y/", "https://sundsconnect.de/", "mailto:info@x.de"])
 
     def test_p13_fremde_nummer_aus_der_vorlage_in_der_ausgabe(self) -> None:
         self.ersetze("ops/blog/vorlagen/uebersicht.html", "</main>", "<p>02166 6459958</p></main>")
