@@ -1132,6 +1132,8 @@ body.lang-en .lang-en-inline { display: inline; }
   display: inline-block;
   margin-bottom: var(--space-sm);
 }
+/* In den Schlagwort-Reihen sorgt gap für den Abstand; der Rand darunter verdreifachte ihn */
+.mt-lg > .project-tag { margin-bottom: 0; }
 
 .project-card-body {
   padding: clamp(1.25rem, 4vw, 2.5rem);
