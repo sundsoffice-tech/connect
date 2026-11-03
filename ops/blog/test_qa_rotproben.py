@@ -239,7 +239,7 @@ class P3(QA):
         shutil.copy2(self.w / "assets/img/og-sicherheit-2026.png", self.w / f"inhalt/blog/{SLUG}/vorschau.png")
         self.kopf('bild = "assets/img/og-sicherheit-2026.png"', f'bild = "inhalt/blog/{SLUG}/vorschau.png"')
         self.assertNotIn("inhalt", [z.strip() for z in self.lies("ops/veroeffentlichen.liste").splitlines()], "Gegenprobe: inhalt/ wird nicht ausgeliefert")
-        self.probe("P3", "bild liegt in inhalt/ (nicht ausgeliefert, og:image 404)", zeuge=(f"blog/{SLUG}/index.html", f'content="https://sundsconnect.de/inhalt/blog/{SLUG}/vorschau.png"'))
+        self.probe("P3", "bild liegt in inhalt/ (nicht ausgeliefert, og:image 404)", zeuge=(f"blog/{SLUG}/index.html", f'content="https://sundsconnect.de/inhalt/blog/{SLUG}/vorschau.png?v='))
 
     def test_bild_mit_punktpunkt_ausserhalb_des_repos(self) -> None:
         shutil.copy2(self.w / "assets/img/og-sicherheit-2026.png", self.w.parent / "aussen.png")
