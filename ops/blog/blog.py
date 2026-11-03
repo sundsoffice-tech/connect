@@ -36,6 +36,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
+import zlib
 from dataclasses import dataclass, field
 from html.parser import HTMLParser
 from pathlib import Path
@@ -414,6 +415,7 @@ def kopf_pruefen(b: Beitrag, haus: dict, funde: Funde, nur_quelle: bool = False)
             funde.neu(d, b.kopf_zeile("datei"), "P2", f"anhaenge[{i}] braucht datei und knopf")
             continue
         anhang_firmendaten(anhang, b, haus, funde)
+        anhang_adressen(anhang, b, funde)
         if not DATEI_MUSTER.match(anhang["datei"]):
             funde.neu(d, b.kopf_zeile("datei"), "P2", f"Anhang {anhang['datei']}: nur ein einfacher Dateiname")
         elif not (b.pfad.parent / b.slug / anhang["datei"]).is_file():
@@ -480,6 +482,70 @@ def freigabe_bindung_pruefen(b: Beitrag, funde: Funde) -> None:
 
 def ziffern(nummer: str) -> str:
     return re.sub(r"\D", "", nummer)
+
+
+# Prüfung 16: Was gedruckt oder als PDF weitergegeben wird, verweist nur auf öffentliche Adressen. Ein relativer Link wird
+# beim Drucken aus einer Vorschau zur Adresse des Rechners (file:///C:/Users/...), der Klick im PDF führt ins Leere.
+DRUCK_SCHEMEN = ("https:", "mailto:", "tel:")
+
+
+def pdf_adressen(daten: bytes) -> list[str]:
+    """Alle /URI-Ziele eines PDFs, auch aus komprimierten Strömen (FlateDecode)."""
+    teile = [daten]
+    for m in re.finditer(rb"stream\r?\n", daten):
+        try:
+            teile.append(zlib.decompressobj().decompress(daten[m.end():m.end() + 4_000_000]))
+        except zlib.error:
+            continue
+    adressen = []
+    for teil in teile:
+        for m in re.finditer(rb"/URI\s*\(((?:\\.|[^\\)])*)\)", teil):
+            roh = re.sub(rb"\\([0-7]{3})", lambda o: bytes([int(o.group(1), 8)]), m.group(1))
+            adressen.append(re.sub(rb"\\(.)", rb"\1", roh).decode("latin-1"))
+    return sorted(set(adressen))
+
+
+def anhang_adressen(anhang: dict, b: Beitrag, funde: Funde) -> None:
+    datei = b.pfad.parent / b.slug / anhang["datei"]
+    if not anhang["datei"].lower().endswith(".pdf") or not datei.is_file():
+        return
+    for adresse in pdf_adressen(datei.read_bytes()):
+        if not adresse.lower().startswith(DRUCK_SCHEMEN):
+            funde.neu(b.pfad, b.kopf_zeile("datei"), "P16", f"Anhang {anhang['datei']} verweist auf {adresse[:80]}; Soll: nur https:, mailto:, tel:")
+
+
+class DruckLinks(HTMLParser):
+    """Links, die im Druck sichtbar sind: nicht in einem Element mit der Klasse nur-web."""
+    LEER = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source", "track", "wbr"}
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self.stapel: list[tuple[str, bool]] = []
+        self.links: list[tuple[int, str]] = []
+
+    def handle_starttag(self, tag: str, attrs: list) -> None:
+        a = {k: (v or "") for k, v in attrs}
+        verborgen = "nur-web" in a.get("class", "").split() or tag in ("head", "template")
+        im_web = any(v for _, v in self.stapel) or verborgen
+        if tag == "a" and a.get("href") is not None and not im_web:
+            self.links.append((self.getpos()[0], a["href"]))
+        if tag not in self.LEER:
+            self.stapel.append((tag, verborgen))
+
+    def handle_endtag(self, tag: str) -> None:
+        for i in range(len(self.stapel) - 1, -1, -1):
+            if self.stapel[i][0] == tag:
+                del self.stapel[i:]
+                break
+
+
+def druck_links_pruefen(pfad: str, text: str, funde: Funde) -> None:
+    p = DruckLinks()
+    p.feed(text)
+    for zeile, href in p.links:
+        ziel = html.unescape(href).strip()
+        if not ziel.startswith("#") and not ziel.lower().startswith(DRUCK_SCHEMEN):
+            funde.neu(pfad, zeile, "P16", f"Link {ziel[:80]} ist im Druck sichtbar und nicht absolut; Soll: https:, mailto:, tel: oder #anker")
 
 
 def anhang_firmendaten(anhang: dict, b: Beitrag, haus: dict, funde: Funde) -> None:
@@ -891,8 +957,12 @@ def inline_html(teile: list, bezug: Bezug, stark: str = "b") -> str:
             if bezug.absolut:
                 aus.append(inline_html(teil[1], bezug, stark))
             else:
-                aus.append(f'<span class="nur-web">{inline_html(teil[1], bezug, stark)}</span> '
-                           f'<span class="nur-druck">{inline_html(teil[2], bezug, stark)}</span>')
+                # hidden am Druckwortlaut: Lesemodi (Firefox, Readability) werten keine Stilbögen aus, aber das Attribut;
+                # blog.css zeigt die Spanne im Druck wieder
+                # Das Leerzeichen steht in der Druckspanne: zwischen den Spannen bliebe es am Bildschirm vor einem
+                # folgenden Satzzeichen stehen ("dieses Beitrags :")
+                aus.append(f'<span class="nur-web">{inline_html(teil[1], bezug, stark)}</span>'
+                           f'<span class="nur-druck" hidden> {inline_html(teil[2], bezug, stark)}</span>')
         else:
             rel = ' rel="noopener"' if bezug.ist_fremd(teil[2]) else ""
             aus.append(f'<a href="{at(bezug.ziel(teil[2]))}"{rel}>{inline_html(teil[1], bezug, stark)}</a>')
@@ -1333,11 +1403,30 @@ def lizenz_vorbehalt(liz: dict) -> str:
     return f"; {liz['vorbehalt']}" if liz.get("vorbehalt") else ""
 
 
+MEDIEN = re.compile(r"\{web:([^{}|]*)\|druck:([^{}|]*)\}")
+
+
+def medien_html(text: str) -> str:
+    """Ein Satz aus haus.toml mit {web:...|druck:...} als HTML: Bildschirm- und Druckwortlaut wie im Beitragstext."""
+    aus, ende = [], 0
+    for m in MEDIEN.finditer(text):
+        aus.append(tx(text[ende:m.start()]))
+        aus.append(f'<span class="nur-web">{tx(m.group(1))}</span><span class="nur-druck" hidden> {tx(m.group(2))}</span>')
+        ende = m.end()
+    aus.append(tx(text[ende:]))
+    return "".join(aus)
+
+
+def medien_web(text: str) -> str:
+    """Derselbe Satz für Markdown-Fassung und Feed: nur der Bildschirmwortlaut."""
+    return MEDIEN.sub(lambda m: m.group(1), text)
+
+
 def lizenz_html(b: Beitrag, haus: dict) -> str:
     k = b.kopf
     liz = haus["lizenzen"][k["lizenz"]]
     satz = liz.get("satz", "Lizenz:")
-    return (f'<p>{tx(liz["text"])} {tx(satz)} <a href="{at(liz["url"])}" rel="noopener">{tx(liz["name"])}</a>'
+    return (f'<p>{tx(liz["text"])} {medien_html(satz)} <a href="{at(liz["url"])}" rel="noopener">{tx(liz["name"])}</a>'
             f'{tx(lizenz_vorbehalt(liz))}.</p>')
 
 
@@ -1387,7 +1476,7 @@ def markdown_fassung(b: Beitrag, haus: dict) -> str:
         teile.append("## Quellen\n\n" + "\n".join(zeilen))
     f = haus["firma"]
     teile.append(f"## Kontakt\n\n{f['name']}, {f['strasse']}, {f['plz']} {f['ort']}, {f['mail']}, {f['telefon_anzeige']}")
-    teile.append(f"{liz['text']} {liz.get('satz', 'Lizenz:')} {liz['name']}{lizenz_vorbehalt(liz)}.")
+    teile.append(f"{liz['text']} {medien_web(liz.get('satz', 'Lizenz:'))} {liz['name']}{lizenz_vorbehalt(liz)}.")
     return "\n\n".join(teile) + "\n"
 
 
@@ -1552,6 +1641,8 @@ def seite_beitrag(b: Beitrag, alle: list[Beitrag], haus: dict, funde: Funde) -> 
         "kanonisch": at(kanonisch(haus, b.slug)),
         "csp": haus["csp"],
         "kopf_meta": kopf_meta_beitrag(b, haus, wurzel),
+        # Logo absolut: die Beitragsseite ist die Druckquelle des PDFs, ein relativer Link würde dort zu file:///
+        "startseite": at(haus["basis"] + "/"),
         "jsonld": jsonld_beitrag(b, haus),
         "css": at(css_verweis(wurzel)),
         # Sichtbar endet die Krume in jeder Breite bei Blog, der Titel steht gleich darunter; das JSON-LD nennt ihn weiter
@@ -1580,6 +1671,7 @@ def seite_uebersicht(beitraege: list[Beitrag], haus: dict, funde: Funde) -> str:
         "kanonisch": at(f"{haus['basis']}/blog/"),
         "csp": haus["csp"],
         "kopf_meta": kopf_meta_uebersicht(haus, wurzel),
+        "startseite": at(haus["basis"] + "/"),
         "jsonld": jsonld_uebersicht(beitraege, haus),
         "css": at(css_verweis(wurzel)),
         "brotkrumen": brotkrumen_html([("Startseite", wurzel), (blog["titel"], None)]),
@@ -2075,6 +2167,8 @@ def ausgaben_pruefen(aus: dict, beitraege: list[Beitrag], haus: dict, funde: Fun
             funde.neu(pfad, csp[0][1], "P6", "CSP zu weich; Soll: script-src 'none', object-src 'none', ohne unsafe-inline und unsafe-eval")
         for z in s.skripte:
             funde.neu(pfad, z, "P6", "Skript auf der Seite: script-src 'none' würde es blockieren")
+        if re.fullmatch(r"blog/[^/]+/index\.html", pfad):  # Beitragsseiten: Druckquelle der PDFs
+            druck_links_pruefen(pfad, (daten if daten is not None else (WURZEL / pfad).read_bytes()).decode("utf-8", "replace"), funde)
         for z in s.styles:
             funde.neu(pfad, z, "P6", "<style>-Block: die CSP ohne unsafe-inline würde ihn blockieren")
         for tag, attrs, zeile in s.tags:

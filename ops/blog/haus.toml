@@ -36,7 +36,7 @@ typ = "organisation"                # zeigt auf [firma]; Autor der Beiträge ist
 name = "CC BY-ND 4.0"                                              # sicherheit-2026/index.html:263
 url = "https://creativecommons.org/licenses/by-nd/4.0/deed.de"     # sicherheit-2026/index.html:263
 text = "S&S Connect GbR, Mönchengladbach. Weitergabe und Ausdruck in unveränderter Form sind ausdrücklich erwünscht, auch an Kollegen, Kunden und Lieferanten. Änderungen und Ausschnitte bitte mit uns abstimmen. Diese Information fasst öffentliche Quellen zusammen, ist allgemein gehalten und ersetzt weder eine Prüfung Ihrer Systeme noch eine Beratung im Einzelfall. Vor Änderungen an Servern, Online-Shop und Geschäftsanwendungen bitte zuerst sichern."  # Wortlaut Auflage B12 der Rolle IT-Recht, 02.11.2026
-satz = "Lizenz für den Text dieses Beitrags:"                          # davor steht text, danach der Link auf name
+satz = "Lizenz für den Text {web:dieses Beitrags|druck:dieses Blatts}:"  # davor steht text, danach der Link auf name; {web:...|druck:...} wie im Beitragstext
 vorbehalt = "ausgenommen sind Logo, Marken und wörtliche Zitate aus den genannten Quellen"  # B12; der Bau hängt ihn mit Semikolon an
 
 [schlagwoerter]                     # Schlüssel ist der Pfad unter blog/thema/, Wert die Anzeige

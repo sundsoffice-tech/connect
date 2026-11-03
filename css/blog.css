@@ -126,7 +126,9 @@ footer p{margin:0 0 8px;max-width:75ch}
 .nav-breit{display:flex;flex-wrap:wrap;gap:0 18px}
 .hauptnav a{display:flex;align-items:center;min-height:44px;color:var(--text);text-decoration:none;font-size:.95rem}
 .hauptnav a:hover{color:var(--teal-dunkel);text-decoration:underline;text-underline-offset:4px}
-.hauptnav a[aria-current="page"]{color:var(--teal-dunkel);font-weight:600}
+.hauptnav a[aria-current]{color:var(--teal-dunkel);font-weight:600}
+/* Wie die Website: in der breiten Leiste ein 2-px-Strich unter dem aktuellen Punkt, im Menü-Knopf nur Farbe */
+.nav-breit a[aria-current]{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px;text-decoration-color:var(--teal)}
 .nav-schmal{display:none}
 .nav-schmal summary{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 14px;list-style:none;cursor:pointer;
   border:1px solid var(--linie);border-radius:6px;background:var(--flaeche);font-weight:600;font-size:.95rem}
@@ -170,6 +172,7 @@ footer p{margin:0 0 8px;max-width:75ch}
   body{background:#fff;color:#111;font-size:9.2pt;line-height:1.36}
   main{max-width:none;padding:0}
   .nur-web{display:none}
+  span.nur-druck[hidden]{display:inline}
   h1{font-size:1.6rem;margin-bottom:6px}
   h2{margin:10px 0 4px;font-size:1.1rem}
   p{margin-bottom:6px}

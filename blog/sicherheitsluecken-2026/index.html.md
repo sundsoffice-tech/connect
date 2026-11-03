@@ -2,7 +2,7 @@
 <!-- erzeugt von ops/blog/blog.py, nicht von Hand ändern -->
 
 Adresse: https://sundsconnect.de/blog/sicherheitsluecken-2026/
-Stand: 2. November 2026, Fassung 1.3
+Stand: 3. November 2026, Fassung 1.4
 Nächste Prüfung: 1. Februar 2027
 Herausgeber: S&S Connect GbR
 Lizenz: CC BY-ND 4.0 (https://creativecommons.org/licenses/by-nd/4.0/deed.de)
@@ -13,7 +13,7 @@ Seit dem Frühjahr 2026 finden KI-Systeme Schwachstellen in Software so schnell,
 
 - **129.000** Lücken meldet der KI-Hersteller für April bis Juli 2026, aus Partnerberichten
 - **31 Min.** vom Windows-Update bis zum Nachweis, dass sich die Lücke auslösen lässt, Messung des KI-Herstellers
-- **59 → 222** Erpressungsfälle in Deutschland, Vorjahr zu diesem Jahr, von Microsoft erfasst, laut Presseberichten
+- **59 → 222** Erpressungsfälle in Deutschland im Vergleich zum Vorjahr, von Microsoft erfasst, laut Presseberichten
 
 Die 129.000 sind eine Herstellerangabe; unabhängige Zähler ordnen bislang nur einige hundert Lücken eindeutig zu. Die Richtung ist unstrittig, die genaue Zahl nicht.
 
@@ -21,7 +21,7 @@ Die 129.000 sind eine Herstellerangabe; unabhängige Zähler ordnen bislang nur 
 
 Im April 2026 hat der Anbieter Anthropic ein KI-Modell vorgestellt, das Sicherheitslücken in Software selbständig findet. Innerhalb weniger Wochen fand es nach Angaben des Herstellers kritische Lücken in jedem großen Betriebssystem und jedem großen Browser, dazu tausende Lücken in über tausend Open-Source-Bausteinen, die in fast jeder Firmensoftware stecken. Eine davon war 27 Jahre alt und bis dahin niemandem aufgefallen.
 
-Seitdem reißt die Kette nicht ab. Allein in diesem Jahr gab es ernste, zum Teil aktiv ausgenutzte Lücken in Windows, Linux, Apple-Systemen und Firefox, in Netzwerkgeräten von Cisco, Fortinet, Citrix, Ivanti, Palo Alto und SonicWall, in Microsoft Exchange und in PHP, der Technik hinter den meisten Online-Shops und Websites. Nicht jede davon stammt aus der KI-Suche, aber alle treffen auf Angreifer, die mit ihr arbeiten. Microsoft hat allein im Oktober 2026 über 1.400 Lücken an einem Tag geschlossen. Im ganzen Jahr 2025 waren es nie mehr als 177 auf einmal.
+Seitdem reißt die Kette nicht ab. Allein 2026 gab es ernste, zum Teil aktiv ausgenutzte Lücken in Windows, Linux, Apple-Systemen und Firefox, in Netzwerkgeräten von Cisco, Fortinet, Citrix, Ivanti, Palo Alto und SonicWall, in Microsoft Exchange und in PHP, der Technik hinter den meisten Online-Shops und Websites. Nicht jede davon stammt aus der KI-Suche, aber alle treffen auf Angreifer, die mit ihr arbeiten. Microsoft hat allein im Oktober 2026 über 1.400 Lücken an einem Tag geschlossen. Im ganzen Jahr 2025 waren es nie mehr als 177 auf einmal.
 
 ## Warum das für Unternehmen alles ändert
 
@@ -39,7 +39,7 @@ Zweitens trifft es nicht mehr nur große Konzerne. Angriffe laufen automatisiert
 4. **Alte Technik abschalten.** Windows 10 ohne die bezahlte Verlängerung von Microsoft, Windows Server 2012, Exchange 2016 und 2019, PHP 8.1 und älter bekommen keine Korrekturen mehr. Was keine Updates mehr erhält, gehört vom Netz oder wird ersetzt.
 5. **Administratorrechte nur, wo sie nötig sind.** Im Alltag mit einem normalen Benutzerkonto arbeiten. Schadsoftware kann dann nur so viel, wie der Benutzer darf.
 6. **Anrufe und Mails misstrauisch prüfen.** KI-Stimmen klingen inzwischen wie der Chef, die Bank oder der Lieferant. Bei Zahlungsaufträgen oder Kontoänderungen immer über eine bekannte Nummer zurückrufen, nie über die Nummer aus der Nachricht.
-7. **Notfallkarte an die Wand.** Wen rufe ich an, wenn der Bildschirm eine Erpressung zeigt? Vom Netz trennen (Kabel ziehen, WLAN aus), nichts bezahlen, nichts löschen, Hilfe rufen. Das BSI stellt dafür eine IT-Notfallkarte kostenlos zum Ausdrucken bereit.
+7. **Notfallkarte an die Wand.** Wen rufe ich an, wenn der Bildschirm eine Erpressung zeigt? Vom Netz trennen (Kabel ziehen, WLAN aus), nichts bezahlen, nichts löschen, Hilfe rufen. Das BSI stellt dafür eine [IT-Notfallkarte](https://www.bsi.bund.de/DE/Themen/Unternehmen-und-Organisationen/Informationen-und-Empfehlungen/Empfehlungen-nach-Angriffszielen/Unternehmen-allgemein/IT-Notfallkarte/it-notfallkarte_node.html) kostenlos zum Ausdrucken bereit.
 
 ## Was darüber hinaus sinnvoll ist
 
