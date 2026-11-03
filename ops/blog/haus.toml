@@ -87,7 +87,7 @@ bild = "assets/img/og-image-new.png"
 bild_alt = "S&S Connect"
 
 [llms]
-kurzbeschreibung = "S&S Connect GbR aus Mönchengladbach verbindet Vertrieb, Automation und KI-Infrastruktur. Das Blog erklärt kleinen Unternehmen aktuelle Themen mit Quellen."
+kurzbeschreibung = "S&S Connect GbR aus Mönchengladbach verbindet Vertrieb, Automatisierung und KI-Infrastruktur. Das Blog erklärt kleinen Unternehmen aktuelle Themen mit Quellen."
 
 [[llms.firma]]
 titel = "Leistungen"

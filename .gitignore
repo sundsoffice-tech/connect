@@ -26,3 +26,6 @@ _site/
 node_modules/
 __pycache__/
 *.pyc
+
+# Arbeitsbäume und Sitzungsdateien der Werkzeuge
+.claude/

@@ -2550,7 +2550,7 @@ body.lang-en .lang-en-inline { display: inline; }
   border-radius: var(--radius-pill);
   padding: 0.55rem 1.25rem;
   margin-top: var(--space-md);
-  font-size: clamp(0.75rem, 2vw, 0.9rem);
+  font-size: clamp(0.8125rem, 2vw, 0.9rem);
   font-weight: 600;
   color: var(--clr-teal-light);
   animation: guaranteePulse 3s ease-in-out infinite;
@@ -2755,8 +2755,13 @@ body.lang-en .lang-en-inline { display: inline; }
 }
 
 .trust-item-text span {
-  font-size: clamp(0.68rem, 1.5vw, 0.8rem);
+  font-size: clamp(0.75rem, 1.5vw, 0.8rem);
   color: var(--clr-text-dim);
+}
+/* Sprachspannen im Wert (5,0 / 5.0) sind Teil der Zahl, nicht des Etiketts */
+.trust-item-text strong span {
+  font-size: inherit;
+  color: inherit;
 }
 
 /* Reference Block */
@@ -2962,7 +2967,7 @@ body.lang-en .lang-en-inline { display: inline; }
     grid-template-columns: 1fr;
   }
   .webdesign-guarantee {
-    font-size: 0.72rem;
+    font-size: 0.8125rem;
   }
 }
 
