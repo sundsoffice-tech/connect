@@ -18,10 +18,10 @@ plz = "41189"                       # index.html:65
 ort = "Mönchengladbach"             # index.html:64
 land = "DE"                         # index.html:66
 mail = "info@sundsconnect.de"       # contact/index.html (mailto), sicherheit-2026/index.html:241
-telefon_e164 = "+4921666459958"     # sicherheit-2026/index.html:241 (tel-Link). Büronummer
-telefon_anzeige = "02166 6459958"   # sicherheit-2026/index.html:241 und PDF; Ziffern müssen telefon_e164 ergeben
+telefon_e164 = "+4915140322125"     # index.html (tel-Link und JSON-LD), Impressum, Kontakt
+telefon_anzeige = "+49 151 40322125"  # Schreibweise der Handseiten und des PDF; Ziffern müssen telefon_e164 ergeben
 telefon_gewaehlt = true             # true: JSON-LD mit telephone, Handseiten verglichen
-telefon_frueher = ["+4915140322125"]  # abgelöste Nummern; pruefen verbietet sie in allen Textdateien
+telefon_frueher = ["+4921666459958"]  # abgelöste Nummern; pruefen verbietet sie in allen Textdateien
 logo = "assets/img/favicon-512.png" # index.html:59; 512 mal 512 Pixel gemessen, quadratisch
 same_as = []                        # index.html:73 leer; kein Profil belegt. Nur Profile der Firma eintragen
 

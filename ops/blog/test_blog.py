@@ -68,6 +68,17 @@ FREIGEGEBENE_AENDERUNGEN = [
      "fasst öffentliche Quellen zusammen, ist allgemein gehalten und ersetzt weder eine Prüfung Ihrer Systeme noch eine Beratung im "
      "Einzelfall. Vor Änderungen an Servern, Online-Shop und Geschäftsanwendungen bitte zuerst sichern. Lizenz für den Text dieses "
      "Beitrags: CC BY-ND 4.0; ausgenommen sind Logo, Marken und wörtliche Zitate aus den genannten Quellen."),
+    # Fassung 1.3: Handynummer statt Büronummer, am Bildschirm "Beitrag" und im Druck "Blatt" (beide Spannen stehen im
+    # Quelltext, CSS blendet je Medium eine aus), dritte Kachel kurz, Fassungsangabe nur noch im Kopf.
+    ("Stand 2. November 2026, Fassung 1.2", "Stand 2. November 2026, Fassung 1.3"),
+    ("Online-Shop betreibt. Dieses Blatt sagt", "Online-Shop betreibt. Dieser Beitrag Dieses Blatt sagt"),
+    ("+276 %von Microsoft erfasste Erpressungsfälle in Deutschland, von 59 auf 222 in einem Jahr, laut Berichterstattung zum "
+     "Microsoft-Bericht, Oktober 2026",
+     "59 → 222Erpressungsfälle in Deutschland, Vorjahr zu diesem Jahr, von Microsoft erfasst, laut Presseberichten"),
+    ("ausnutzen. Diese Zeit ist weg.", "ausnutzen. Erstens ist diese Zeit weg."),
+    ("Kontakt siehe unten. Dieses Blatt ist", "Kontakt siehe unten. Dieser Beitrag Dieses Blatt ist"),
+    ("02166 6459958", "+49 151 40322125"),
+    ("Fassung 1.2, Stand 2. November 2026, nächste Prüfung 1. Februar 2027.", ""),
 ]
 
 
@@ -78,7 +89,7 @@ def freigegeben_geaendert(worte: list[str]) -> list[str]:
         if text.count(alt) != 1:
             raise AssertionError(f"freigegebene Änderung greift {text.count(alt)}x statt 1x: {alt[:60]}")
         text = text.replace(alt, neu)
-    return text.split(" ")
+    return text.split()  # eine Ersetzung durch "" hinterließe sonst ein leeres Wort
 
 
 def erlaubt(zusatz: str) -> bool:
@@ -382,8 +393,8 @@ class Gruen(Baum):
         graph = {g["@type"]: g for g in json.loads(block)["@graph"]}
         posting = graph["BlogPosting"]
         self.assertEqual(graph["Organization"]["@id"], "https://sundsconnect.de/#organisation")
-        self.assertEqual(graph["Organization"]["telephone"], "+4921666459958")
-        self.assertIn("tel:+4921666459958", seite, "die sichtbare Büronummer bleibt")
+        self.assertEqual(graph["Organization"]["telephone"], "+4915140322125")
+        self.assertIn("tel:+4915140322125", seite, "die sichtbare Handynummer bleibt")
         self.assertEqual(posting["inLanguage"], "de-DE")
         self.assertEqual(len(posting["citation"]), 12)
         self.assertEqual(posting["timeRequired"], f"PT{max(1, -(-posting['wordCount'] // 200))}M")
@@ -598,6 +609,85 @@ class Rotproben(Baum):
         self.ersetze(QUELLE, "## Was passiert ist\n", "## Was passiert ist\n\n| a | b |\n")
         self.rot("Tabelle", "P7")
 
+    def test_web_druck_wortlaut(self) -> None:
+        """{web:...|druck:...}: Seite trägt beide Spannen, Feed und Markdown-Fassung nur den Bildschirmwortlaut."""
+        self.ersetze(QUELLE, "Seitdem reißt", "{web:Bildschirmwort|druck:Papierwort} Seitdem reißt")
+        self.neu_freigeben()
+        lauf = self.lauf("bauen")
+        self.assertEqual(lauf.returncode, 0, lauf.stdout)
+        seite = self.lies(f"blog/{SLUG}/index.html")
+        self.assertIn('<span class="nur-web">Bildschirmwort</span> <span class="nur-druck">Papierwort</span> Seitdem', seite)
+        for ausgabe in (f"blog/{SLUG}/index.html.md", "blog/feed.xml", "blog/rss.xml"):
+            with self.subTest(ausgabe):
+                text = self.lies(ausgabe)
+                self.assertIn("Bildschirmwort Seitdem", text)
+                self.assertNotIn("Papierwort", text)
+                self.assertNotIn("{web:", text)
+
+    def test_pfeil_als_bild_nur_auf_der_seite(self) -> None:
+        """Kennzahl mit →: die Seite zeichnet den Pfeil als SVG und trägt das Zeichen genau einmal unsichtbar;
+        Feed, RSS und Markdown-Fassung behalten „59 → 222“ als Text ohne SVG."""
+        self.neu_freigeben()
+        lauf = self.lauf("bauen")
+        self.assertEqual(lauf.returncode, 0, lauf.stdout)
+        self.assertIn("**59 → 222**", self.lies(QUELLE), "Gegenprobe: die Kachel trägt den Pfeil")
+        seite = self.lies(f"blog/{SLUG}/index.html")
+        self.assertIn('<b>59 <span class="pfeil"><svg', seite)
+        self.assertEqual(seite.count('<span class="unsichtbar">→</span>'), 1)
+        self.assertNotIn("<b>59 → 222</b>", seite)
+        for ausgabe in (f"blog/{SLUG}/index.html.md", "blog/feed.xml", "blog/rss.xml"):
+            with self.subTest(ausgabe):
+                text = self.lies(ausgabe)
+                self.assertIn("59 → 222", text)
+                self.assertNotIn("M3 12h17", text)
+                self.assertNotIn("pfeil", text)
+                self.assertNotIn("unsichtbar", text)
+
+    def test_vorschaubild_mit_versionsteil(self) -> None:
+        """og:image und twitter:image tragen ?v= aus den Bytes des Bildes; neue Bytes geben eine neue Adresse."""
+        self.neu_freigeben()
+        bild = self.w / "assets/img/og-sicherheit-2026.png"
+
+        def adressen() -> list[str]:
+            lauf = self.lauf("bauen")
+            self.assertEqual(lauf.returncode, 0, lauf.stdout)
+            seite = self.lies(f"blog/{SLUG}/index.html")
+            return re.findall(r'(?:property="og:image"|name="twitter:image") content="([^"]+)"', seite)
+
+        alt = adressen()
+        erwartet = "https://sundsconnect.de/assets/img/og-sicherheit-2026.png?v=" + hashlib.sha256(bild.read_bytes()).hexdigest()[:8]
+        self.assertEqual(alt, [erwartet, erwartet])
+        bild.write_bytes(bild.read_bytes() + b"\0")
+        neu = adressen()
+        self.assertEqual(len(neu), 2)
+        self.assertNotEqual(neu, alt)
+        uebersicht = self.lies("blog/index.html")
+        self.assertRegex(uebersicht, r'property="og:image" content="https://sundsconnect\.de/[^"?]+\.png\?v=[0-9a-f]{8}"')
+
+    def test_wortzahl_ohne_zeichen(self) -> None:
+        """Ein freistehendes Zeichen wie der Pfeil ist kein Wort: wordCount bleibt gleich."""
+        self.neu_freigeben()
+        self.assertEqual(self.lauf("bauen").returncode, 0)
+        vorher = re.search(r'"wordCount": ?(\d+)', self.lies(f"blog/{SLUG}/index.html")).group(1)
+        self.ersetze(QUELLE, "Seitdem reißt", "→ → Seitdem reißt")
+        self.neu_freigeben()
+        lauf = self.lauf("bauen")
+        self.assertEqual(lauf.returncode, 0, lauf.stdout)
+        nachher = re.search(r'"wordCount": ?(\d+)', self.lies(f"blog/{SLUG}/index.html")).group(1)
+        self.assertEqual(vorher, nachher)
+
+    def test_p7_web_druck_kaputt(self) -> None:
+        for name, kaputt in (("ohne schließende Klammer", "{web:Bildschirmwort|druck:Papierwort Seitdem reißt"),
+                             ("ohne |druck:", "{web:Bildschirmwort|Papierwort} Seitdem reißt"),
+                             ("zweimal |druck:", "{web:a|druck:b|druck:c} Seitdem reißt"),
+                             ("leerer Bildschirmteil", "{web:|druck:Papierwort} Seitdem reißt"),
+                             ("leerer Druckteil", "{web:Bildschirmwort|druck: } Seitdem reißt")):
+            with self.subTest(name):
+                alt = self.lies(QUELLE)
+                self.ersetze(QUELLE, "Seitdem reißt", kaputt)
+                self.assertIn(f"{QUELLE}:", self.rot(name, "P7"))
+                self.schreib(QUELLE, alt)
+
     def test_p8_entwurf_im_repo(self) -> None:
         self.ersetze(QUELLE, 'status = "veroeffentlicht"', 'status = "entwurf"')
         self.rot("status entwurf im Repo", "P8")
@@ -645,12 +735,12 @@ class Rotproben(Baum):
         self.assertIn("Entwurf mit [freigabe]", lauf.stdout)
 
     def test_beitrag1_traegt_den_hash_seines_worts(self) -> None:
-        # Fassung 1.2, Freigabe vom 02.11.2026 21:06. Der Hash ist ungesalzen: ein kurzer Satz lässt sich aus ihm
+        # Fassung 1.3, Freigabe vom 03.11.2026 01:46. Der Hash ist ungesalzen: ein kurzer Satz lässt sich aus ihm
         # zurückraten. Vor Beitrag 2 bekommt er ein Salz außerhalb des Repos.
-        self.assertIn('wortlaut_sha256 = "d956d1e08bdd100465d6c8d65905df1f521287e0833c4277e5b88c2ea62da6b0"', self.lies(QUELLE))
+        self.assertIn('wortlaut_sha256 = "aa32e7eaa111d22182715f51a62a9140c6a4181ced0a1ae81270e292d1519f84"', self.lies(QUELLE))
 
     def test_p13_fremde_nummer_aus_der_vorlage_in_der_ausgabe(self) -> None:
-        self.ersetze("ops/blog/vorlagen/uebersicht.html", "</main>", "<p>0151 40322125</p></main>")
+        self.ersetze("ops/blog/vorlagen/uebersicht.html", "</main>", "<p>02166 6459958</p></main>")
         self.rot("Nummer aus der Vorlage", "P13", ("bauen",))
 
     def test_p15_entwurfsordner_gelistet(self) -> None:
@@ -797,7 +887,7 @@ class Firmendaten(Baum):
         self.assertIn("haus.toml:", self.rot("unbekannter Schlüssel in firma", "P11"))
 
     def test_anzeige_ergibt_nicht_e164(self) -> None:
-        self.ersetze("ops/blog/haus.toml", 'telefon_anzeige = "02166 6459958"', 'telefon_anzeige = "02166 6459959"')
+        self.ersetze("ops/blog/haus.toml", 'telefon_anzeige = "+49 151 40322125"', 'telefon_anzeige = "+49 151 40322126"')
         self.assertIn("ergibt nicht telefon_e164", self.rot("telefon_anzeige ungleich e164", "P11"))
 
     def test_logo_zu_klein(self) -> None:
@@ -810,22 +900,22 @@ class Firmendaten(Baum):
         self.assertIn(f"{QUELLE}:", self.rot("Anhang ohne firmendaten", "P11"))
 
     def test_anhang_weicht_ab(self) -> None:
-        self.ersetze(QUELLE, 'telefon = "02166 6459958"', 'telefon = "0151 40322125"')
+        self.ersetze(QUELLE, 'telefon = "+49 151 40322125"', 'telefon = "02166 6459958"')
         self.rot("Anhang Telefon weicht ab", "P11")
 
     def test_blogausgabe_tel_und_mail(self) -> None:
-        self.ersetze("ops/blog/vorlagen/beitrag.html", "</main>", '<a href="tel:+4915140322125">x</a></main>')
+        self.ersetze("ops/blog/vorlagen/beitrag.html", "</main>", '<a href="tel:+4921666459958">x</a></main>')
         self.assertIn(f"blog/{SLUG}/index.html:", self.rot("Blogausgabe tel weicht ab", "P11"))
-        self.ersetze("ops/blog/vorlagen/beitrag.html", 'tel:+4915140322125', 'mailto:a@b.de')
+        self.ersetze("ops/blog/vorlagen/beitrag.html", 'tel:+4921666459958', 'mailto:a@b.de')
         self.assertIn("mailto:a@b.de", self.rot("Blogausgabe mailto weicht ab", "P11"))
 
     def test_telefon_gewaehlt_falsche_nummer_bricht_ab(self) -> None:
-        self.ersetze("index.html", "tel:+4921666459958", "tel:+4921666459959")
+        self.ersetze("index.html", "tel:+4915140322125", "tel:+4915140322126")
         aus = self.rot("Telefon nach der Wahl", "P11", ("bauen",))
-        self.assertIn("Soll: +4921666459958", aus)
+        self.assertIn("Soll: +4915140322125", aus)
 
     def test_frueher_als_klartext(self) -> None:
-        self.ersetze("services/index.html", "</body>", "<p>0151 40322125</p></body>")
+        self.ersetze("services/index.html", "</body>", "<p>02166 6459958</p></body>")
         self.assertIn("im Klartext", self.rot("frühere Nummer im Klartext", "P11"))
 
     def test_richtige_id_bleibt_gruen(self) -> None:
@@ -876,7 +966,7 @@ class Firmendaten(Baum):
             self.skipTest("pdftotext fehlt hier")
         lauf = subprocess.run([pdftotext, "-enc", "UTF-8", str(self.w / f"inhalt/blog/{SLUG}/Infoblatt_Sicherheitsluecken_2026.pdf"), "-"], capture_output=True, timeout=60, check=False)
         text = " ".join(lauf.stdout.decode("utf-8", "replace").split())
-        for erwartet in ("Nobelstraße 3-5", "info@sundsconnect.de", "02166 6459958"):
+        for erwartet in ("Nobelstraße 3-5", "info@sundsconnect.de", "+49 151 40322125"):
             self.assertIn(erwartet, text)
 
 

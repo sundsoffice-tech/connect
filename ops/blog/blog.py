@@ -85,6 +85,18 @@ ANKER_MUSTER = re.compile(r"^[a-z0-9][a-z0-9-]*\Z")
 PDF_SVG = ('<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" '
            'stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/>'
            '<path d="M4 19h16"/></svg>')
+# Die Hausschriften (Latin-Teilmengen) haben keinen Pfeil U+2192; ohne Ersatzschrift zeichnet ihn ein SVG,
+# das Zeichen selbst bleibt unsichtbar im Text für Vorleser, Suche und Textauszug.
+PFEIL_HTML = ('<span class="pfeil"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" '
+              'stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h17"/><path d="m13 5 7 7-7 7"/>'
+              '</svg><span class="unsichtbar">→</span></span>')
+
+
+def zahl_html(zahl: str, bezug: "Bezug") -> str:
+    """Kennzahl der Seite; Feed und Markdown-Fassung behalten das Zeichen, weil dort kein Stilbogen wirkt."""
+    if bezug.absolut or "→" not in zahl:
+        return tx(zahl)
+    return PFEIL_HTML.join(tx(teil) for teil in zahl.split("→"))
 
 
 # ---------------------------------------------------------------------------------------------------
@@ -537,7 +549,10 @@ LINK_KAPUTT = re.compile(r"\[[^\[\]]*\]\(")
 
 
 def inline_parsen(text: str, melde: Callable[[str], None]) -> list:
-    """Zerlegt **fett**, *kursiv* und [Text](Ziel). Ungeschlossenes ist ein Fehler, keine Nachsicht."""
+    """Zerlegt **fett**, *kursiv*, [Text](Ziel) und {web:Bildschirm|druck:Papier}. Ungeschlossenes ist ein Fehler.
+
+    {web:...|druck:...} trägt zwei Wortlaute: die Seite zeigt den ersten am Bildschirm und den zweiten im Druck (PDF);
+    Feed, Markdown-Fassung und Wortzahl nehmen den ersten."""
     aus: list = []
     puffer = ""
     i = 0
@@ -566,6 +581,22 @@ def inline_parsen(text: str, melde: Callable[[str], None]) -> list:
                 break
             leeren()
             aus.append(("kursiv", inline_parsen(text[i + 1:j], melde)))
+            i = j + 1
+        elif text.startswith("{web:", i):
+            j = text.find("}", i)
+            innen = text[i + 5:j] if j >= 0 else ""
+            if j < 0 or innen.count("|druck:") != 1:
+                melde("{web:...|druck:...} ohne schließende Klammer oder ohne genau ein |druck:")
+                puffer += text[i:]
+                break
+            web, druck = innen.split("|druck:")
+            if not web.strip() or not druck.strip():
+                # Feed und Markdown-Fassung nehmen den Bildschirmteil: leer verlöre das Wort dort still
+                melde("{web:...|druck:...} mit leerem Bildschirm- oder Druckteil")
+                puffer += text[i:]
+                break
+            leeren()
+            aus.append(("medien", inline_parsen(web, melde), inline_parsen(druck, melde)))
             i = j + 1
         elif text[i] == "[":
             m = LINK.match(text, i)
@@ -749,7 +780,7 @@ def koerper_parsen(b: Beitrag, funde: Funde) -> None:
         b.vorspann = []
     b.knoten = wurzel
     anker_vergeben(b, funde)
-    b.woerter = len(klartext_knoten(b).split())
+    b.woerter = wortzahl(klartext_knoten(b))
 
 
 def anker_vergeben(b: Beitrag, funde: Funde) -> None:
@@ -781,6 +812,11 @@ def klartext(teile: list) -> str:
         else:
             aus.append(klartext(teil[1]))
     return "".join(aus)
+
+
+def wortzahl(text: str) -> int:
+    """Wörter für Lesezeit und wordCount: Stücke mit mindestens einem Buchstaben oder einer Ziffer (ein freistehender Pfeil zählt nicht)."""
+    return sum(1 for stueck in text.split() if any(z.isalnum() for z in stueck))
 
 
 def klartext_knoten(b: Beitrag) -> str:
@@ -848,6 +884,13 @@ def inline_html(teile: list, bezug: Bezug, stark: str = "b") -> str:
             aus.append(f"<{stark}>{inline_html(teil[1], bezug, stark)}</{stark}>")
         elif teil[0] == "kursiv":
             aus.append(f"<em>{inline_html(teil[1], bezug, stark)}</em>")
+        elif teil[0] == "medien":
+            # Feed und Markdown-Fassung kennen kein Druckmedium: dort nur der Bildschirmwortlaut
+            if bezug.absolut:
+                aus.append(inline_html(teil[1], bezug, stark))
+            else:
+                aus.append(f'<span class="nur-web">{inline_html(teil[1], bezug, stark)}</span> '
+                           f'<span class="nur-druck">{inline_html(teil[2], bezug, stark)}</span>')
         else:
             rel = ' rel="noopener"' if bezug.ist_fremd(teil[2]) else ""
             aus.append(f'<a href="{at(bezug.ziel(teil[2]))}"{rel}>{inline_html(teil[1], bezug, stark)}</a>')
@@ -884,7 +927,7 @@ def knoten_html(knoten: list, bezug: Bezug, einzug: str = "", stark: str = "b", 
             aus.extend(knoten_html(k["kinder"], bezug, einzug + "  "))
             aus.append(f"{einzug}</div>")
         elif art == "kennzahl":
-            aus.append(f"{einzug}<div><b>{tx(k['zahl'])}</b><span>{inline_html(k['text'], bezug)}</span></div>")
+            aus.append(f"{einzug}<div><b>{zahl_html(k['zahl'], bezug)}</b><span>{inline_html(k['text'], bezug)}</span></div>")
         elif art == "kasten":
             innen_stark = "strong" if k["unterart"] == "hinweis" else "b"
             aus.append(f'{einzug}<div class="karte {k["unterart"]}">')
@@ -913,6 +956,8 @@ def inline_md(teile: list, bezug: Bezug) -> str:
             aus.append(f"**{inline_md(teil[1], bezug)}**")
         elif teil[0] == "kursiv":
             aus.append(f"*{inline_md(teil[1], bezug)}*")
+        elif teil[0] == "medien":
+            aus.append(inline_md(teil[1], bezug))
         else:
             aus.append(f"[{inline_md(teil[1], bezug)}]({bezug.ziel(teil[2])})")
     return "".join(aus)
@@ -969,8 +1014,17 @@ def kanonisch(haus: dict, slug: str) -> str:
 
 
 def bild_adresse(b: Beitrag, haus: dict) -> str:
-    bild = b.kopf.get("bild") or f"blog/{b.slug}/og.png"
-    return f"{haus['basis']}/{bild}"
+    return bild_mit_version(b.kopf.get("bild") or f"blog/{b.slug}/og.png", haus)
+
+
+def bild_mit_version(bild: str, haus: dict) -> str:
+    """Absolute Bildadresse mit Versionsteil aus den Bytes: Messenger und Netzwerke halten ein Vorschaubild
+    unter derselben Adresse lange im Speicher und holen ein neues nur unter einer neuen Adresse."""
+    adresse = f"{haus['basis']}/{bild}"
+    datei = (WURZEL / bild).resolve()
+    if datei.is_file() and datei.is_relative_to(WURZEL.resolve()):
+        adresse += f"?v={hashlib.sha256(datei.read_bytes()).hexdigest()[:8]}"
+    return adresse
 
 
 def css_verweis(wurzel: str) -> str:
@@ -1031,7 +1085,7 @@ def kopf_meta_beitrag(b: Beitrag, haus: dict, wurzel: str) -> str:
 
 def kopf_meta_uebersicht(haus: dict, wurzel: str) -> str:
     blog = haus["blog"]
-    bild = f"{haus['basis']}/{blog['bild']}"
+    bild = bild_mit_version(blog["bild"], haus)
     masse = png_masse(WURZEL / blog["bild"])
     z = [
         meta("author", haus["firma"]["name"]),
@@ -1179,8 +1233,9 @@ def brotkrumen_html(eintraege: list[tuple[str, str | None]]) -> str:
 def meta_stand_html(b: Beitrag, haus: dict) -> str:
     k = b.kopf
     rubrik = f'<span class="breit">{tx(k["rubrik"])}<br></span>' if k.get("rubrik") else ""
-    return (f'{rubrik}Stand {zeit_html(k["geaendert"])}<span class="breit">, Fassung {tx(k["fassung"])}<br>'
-            f'Nächste Prüfung {zeit_html(k["pruefen_bis"])}</span>'
+    # Die einzige Fassungsangabe der Seite; deshalb auch schmal sichtbar, dort fällt nur die Rubrik weg
+    return (f'{rubrik}Stand {zeit_html(k["geaendert"])}, Fassung {tx(k["fassung"])}<br>'
+            f'Nächste Prüfung {zeit_html(k["pruefen_bis"])}'
             f'<span class="nur-web"><br>{lesezeit_text(lesezeit(b, haus))}</span>')
 
 
@@ -1281,9 +1336,7 @@ def lizenz_html(b: Beitrag, haus: dict) -> str:
     liz = haus["lizenzen"][k["lizenz"]]
     satz = liz.get("satz", "Lizenz:")
     return (f'<p>{tx(liz["text"])} {tx(satz)} <a href="{at(liz["url"])}" rel="noopener">{tx(liz["name"])}</a>'
-            f'{tx(lizenz_vorbehalt(liz))}.</p>\n'
-            f'<p class="nur-web">Fassung {tx(k["fassung"])}, Stand {zeit_html(k["geaendert"])}, '
-            f'nächste Prüfung {zeit_html(k["pruefen_bis"])}.</p>')
+            f'{tx(lizenz_vorbehalt(liz))}.</p>')
 
 
 def liste_html(beitraege: list[Beitrag], haus: dict) -> str:
@@ -1780,7 +1833,9 @@ def firmendaten_pruefen(haus: dict, funde: Funde, aus: dict | None = None) -> No
     toml = HIER / "haus.toml"
     for schluessel in sorted(set(f) - FIRMA_SCHLUESSEL):
         funde.neu(toml, haus_zeile(schluessel), "P11", f"unbekannter Schlüssel in [firma]: {schluessel}; das Repo ist öffentlich")
-    if "49" + ziffern(f["telefon_anzeige"]).lstrip("0") != ziffern(f["telefon_e164"]):
+    anzeige = ziffern(f["telefon_anzeige"])
+    anzeige = anzeige if f["telefon_anzeige"].lstrip().startswith("+") else "49" + anzeige.lstrip("0")
+    if anzeige != ziffern(f["telefon_e164"]):
         funde.neu(toml, haus_zeile("telefon_anzeige"), "P11", f"telefon_anzeige {f['telefon_anzeige']} ergibt nicht telefon_e164 {f['telefon_e164']}")
     masse = png_masse(WURZEL / f["logo"])
     if masse is None or masse[0] != masse[1] or masse[0] < haus["grenzen"]["logo_min_px"]:
@@ -2206,12 +2261,19 @@ def befehl_bauen(args: argparse.Namespace) -> int:
         fehler_ausgeben(funde)
         return 1
     haus = haus_laden()
+    vorher = og_stand(bau)
     code = og_bilder(bau, haus, funde)
     if code:
         return code
     if funde:
         fehler_ausgeben(funde)
         return 1
+    if og_stand(bau) != vorher:
+        # Das og.png steht jetzt auf der Platte; die Seiten tragen seinen Versionsteil erst im zweiten Durchgang
+        bau = bauen_im_speicher(funde, tuple("/" + k.strip("/") + "/" for k in (args.uebernehmen or ())))
+        if funde:
+            fehler_ausgeben(funde)
+            return 1
     geschrieben = 0
     for pfad, daten in sorted(bau.ausgaben.items()):
         datei = WURZEL / pfad
@@ -2236,6 +2298,16 @@ def atomar_schreiben(datei: Path, daten: bytes) -> None:
     except BaseException:
         Path(zwischen).unlink(missing_ok=True)
         raise
+
+
+def og_stand(bau: Bau) -> dict:
+    """Bytes der erzeugten Vorschaubilder auf der Platte, je Beitrag ohne eigenes bild."""
+    stand = {}
+    for b in bau.beitraege:
+        if not b.kopf.get("bild"):
+            datei = WURZEL / "blog" / b.slug / "og.png"
+            stand[b.slug] = datei.read_bytes() if datei.is_file() else None
+    return stand
 
 
 def og_bilder(bau: Bau, haus: dict, funde: Funde) -> int:

@@ -7,7 +7,7 @@
     <description>Beiträge von S&amp;S Connect für kleine Unternehmen: was passiert ist, was es für Sie bedeutet und was Sie tun können, mit Quellen belegt.</description>
     <language>de-de</language>
     <atom:link rel="self" type="application/rss+xml" href="https://sundsconnect.de/blog/rss.xml"/>
-    <lastBuildDate>Mon, 02 Nov 2026 19:10:00 +0100</lastBuildDate>
+    <lastBuildDate>Mon, 02 Nov 2026 23:31:00 +0100</lastBuildDate>
     <item>
       <title>Sicherheitslücken 2026: Was passiert ist und was jetzt zählt</title>
       <link>https://sundsconnect.de/blog/sicherheitsluecken-2026/</link>
@@ -17,19 +17,19 @@
       <category>IT-Sicherheit</category>
       <category>Kleine Unternehmen</category>
       <creativeCommons:license>https://creativecommons.org/licenses/by-nd/4.0/deed.de</creativeCommons:license>
-      <content:encoded>&lt;p&gt;Seit dem Frühjahr 2026 finden KI-Systeme Schwachstellen in Software so schnell, dass die alten Spielregeln nicht mehr gelten. Das betrifft jedes Unternehmen, das einen Rechner, einen Router oder einen Online-Shop betreibt. Dieses Blatt sagt in Kürze, was passiert ist, warum das anders ist als frühere Lücken, und was Sie jetzt tun können. &lt;a href="https://sundsconnect.de/blog/sicherheitsluecken-2026/#schritte"&gt;Die sieben Schritte stehen weiter unten&lt;/a&gt;; die ersten drei, Updates, zweiter Faktor und Sicherung, erledigen das meiste.&lt;/p&gt;
+      <content:encoded>&lt;p&gt;Seit dem Frühjahr 2026 finden KI-Systeme Schwachstellen in Software so schnell, dass die alten Spielregeln nicht mehr gelten. Das betrifft jedes Unternehmen, das einen Rechner, einen Router oder einen Online-Shop betreibt. Dieser Beitrag sagt in Kürze, was passiert ist, warum das anders ist als frühere Lücken, und was Sie jetzt tun können. &lt;a href="https://sundsconnect.de/blog/sicherheitsluecken-2026/#schritte"&gt;Die sieben Schritte stehen weiter unten&lt;/a&gt;; die ersten drei, Updates, zweiter Faktor und Sicherung, erledigen das meiste.&lt;/p&gt;
 &lt;p&gt;&lt;a href="https://sundsconnect.de/blog/sicherheitsluecken-2026/Infoblatt_Sicherheitsluecken_2026.pdf"&gt;Als PDF herunterladen&lt;/a&gt;&lt;/p&gt;
 &lt;div class="kennzahlen"&gt;
   &lt;div&gt;&lt;b&gt;129.000&lt;/b&gt;&lt;span&gt;Lücken meldet der KI-Hersteller für April bis Juli 2026, aus Partnerberichten&lt;/span&gt;&lt;/div&gt;
   &lt;div&gt;&lt;b&gt;31 Min.&lt;/b&gt;&lt;span&gt;vom Windows-Update bis zum Nachweis, dass sich die Lücke auslösen lässt, Messung des KI-Herstellers&lt;/span&gt;&lt;/div&gt;
-  &lt;div&gt;&lt;b&gt;+276 %&lt;/b&gt;&lt;span&gt;von Microsoft erfasste Erpressungsfälle in Deutschland, von 59 auf 222 in einem Jahr, laut Berichterstattung zum Microsoft-Bericht, Oktober 2026&lt;/span&gt;&lt;/div&gt;
+  &lt;div&gt;&lt;b&gt;59 → 222&lt;/b&gt;&lt;span&gt;Erpressungsfälle in Deutschland, Vorjahr zu diesem Jahr, von Microsoft erfasst, laut Presseberichten&lt;/span&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;p class="klein"&gt;Die 129.000 sind eine Herstellerangabe; unabhängige Zähler ordnen bislang nur einige hundert Lücken eindeutig zu. Die Richtung ist unstrittig, die genaue Zahl nicht.&lt;/p&gt;
 &lt;h2 id="was-passiert-ist"&gt;Was passiert ist&lt;/h2&gt;
 &lt;p&gt;Im April 2026 hat der Anbieter Anthropic ein KI-Modell vorgestellt, das Sicherheitslücken in Software selbständig findet. Innerhalb weniger Wochen fand es nach Angaben des Herstellers kritische Lücken in jedem großen Betriebssystem und jedem großen Browser, dazu tausende Lücken in über tausend Open-Source-Bausteinen, die in fast jeder Firmensoftware stecken. Eine davon war 27 Jahre alt und bis dahin niemandem aufgefallen.&lt;/p&gt;
 &lt;p&gt;Seitdem reißt die Kette nicht ab. Allein in diesem Jahr gab es ernste, zum Teil aktiv ausgenutzte Lücken in Windows, Linux, Apple-Systemen und Firefox, in Netzwerkgeräten von Cisco, Fortinet, Citrix, Ivanti, Palo Alto und SonicWall, in Microsoft Exchange und in PHP, der Technik hinter den meisten Online-Shops und Websites. Nicht jede davon stammt aus der KI-Suche, aber alle treffen auf Angreifer, die mit ihr arbeiten. Microsoft hat allein im Oktober 2026 über 1.400 Lücken an einem Tag geschlossen. Im ganzen Jahr 2025 waren es nie mehr als 177 auf einmal.&lt;/p&gt;
 &lt;h2 id="warum-das-fuer-unternehmen-alles-aendert"&gt;Warum das für Unternehmen alles ändert&lt;/h2&gt;
-&lt;p&gt;Bisher galt: Ein Hersteller veröffentlicht ein Update, und man hat einige Wochen Zeit, es einzuspielen, bis Angreifer die Lücke ausnutzen. Diese Zeit ist weg. Kriminelle nutzen dieselbe Technik, und laut BSI lässt sich aus einem veröffentlichten Update binnen Minuten bis Stunden ableiten, wie ein Angriff aussehen kann. Das Bundesamt für Sicherheit in der Informationstechnik (BSI) spricht von einer neuen Zeitrechnung der Cybersicherheit und schreibt in seiner Sicherheitsinformation vom 22. Juni 2026 wörtlich, „wenige Tage sind dabei keine angemessene Reaktionsgeschwindigkeit“.&lt;/p&gt;
+&lt;p&gt;Bisher galt: Ein Hersteller veröffentlicht ein Update, und man hat einige Wochen Zeit, es einzuspielen, bis Angreifer die Lücke ausnutzen. Erstens ist diese Zeit weg. Kriminelle nutzen dieselbe Technik, und laut BSI lässt sich aus einem veröffentlichten Update binnen Minuten bis Stunden ableiten, wie ein Angriff aussehen kann. Das Bundesamt für Sicherheit in der Informationstechnik (BSI) spricht von einer neuen Zeitrechnung der Cybersicherheit und schreibt in seiner Sicherheitsinformation vom 22. Juni 2026 wörtlich, „wenige Tage sind dabei keine angemessene Reaktionsgeschwindigkeit“.&lt;/p&gt;
 &lt;p&gt;Zweitens trifft es nicht mehr nur große Konzerne. Angriffe laufen automatisiert gegen alles, was im Internet erreichbar ist: Router, VPN-Zugänge (der Fernzugang ins Büro), Mailserver, Online-Shops. Ob dahinter ein Weltkonzern oder ein Fünf-Mann-Betrieb steht, spielt für den Automaten keine Rolle. Deutschland ist das einzige EU-Land unter den zehn Ländern, die in Microsofts Daten am häufigsten angegriffen werden, laut Berichterstattung zum Microsoft-Bericht.&lt;/p&gt;
 &lt;div class="karte hinweis"&gt;
   &lt;p&gt;&lt;strong&gt;Wie lange das so bleibt.&lt;/strong&gt; Oft ist von 18 Monaten die Rede. Die Zahl stammt aus einer Einschätzung des Anbieters vom April 2026: In sechs bis 18 Monaten hätten auch andere Anbieter Modelle mit denselben Fähigkeiten. Inzwischen sagt derselbe Anbieter, dass frei verfügbare Modelle eine kritische Schwelle überschritten haben. Die 18 Monate sind also keine Frist, nach der es vorbei ist. Eine Entwarnung hat bisher niemand ausgesprochen. Unsere Einschätzung: mindestens bis Ende 2027 mit deutlich erhöhter Gefahr rechnen und die Abläufe so einrichten, dass sie dauerhaft tragen.&lt;/p&gt;
@@ -61,7 +61,7 @@
   &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="karte angebot"&gt;
-  &lt;p&gt;&lt;b&gt;Wie S&amp;amp;S Connect unterstützt.&lt;/b&gt; Wer die sieben Punkte nicht allein durchgehen möchte, bekommt bei uns eine Durchsicht von ein bis zwei Stunden. Das ist eine eigene Durchsicht von uns, kein CyberRisikoCheck des BSI. Anfrage per Mail oder Telefon, Kontakt siehe unten. Dieses Blatt ist eine Information, kein Angebot mit Preis.&lt;/p&gt;
+  &lt;p&gt;&lt;b&gt;Wie S&amp;amp;S Connect unterstützt.&lt;/b&gt; Wer die sieben Punkte nicht allein durchgehen möchte, bekommt bei uns eine Durchsicht von ein bis zwei Stunden. Das ist eine eigene Durchsicht von uns, kein CyberRisikoCheck des BSI. Anfrage per Mail oder Telefon, Kontakt siehe unten. Dieser Beitrag ist eine Information, kein Angebot mit Preis.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div&gt;
 &lt;p class="label"&gt;Quellen&lt;/p&gt;

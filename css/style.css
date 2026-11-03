@@ -3266,3 +3266,213 @@ main [id] {
 }
 .hero-product strong { color: var(--clr-teal); font-weight: 600; }
 .trust-bar { display: none !important; }
+
+/* Telefonnummer in Inhalt und Fuß: auf schmalen Bildschirmen mindestens 44 px hoch antippbar */
+@media (max-width: 768px) {
+  main a[href^="tel:"], footer a[href^="tel:"], .nav-menu-contact a[href^="tel:"] { display: inline-flex; align-items: center; min-height: 44px; }
+}
+
+/* ============================================
+   HELLE FASSUNG
+   Greift nur, wenn das Geraet ausdruecklich hell meldet. Ohne Angabe und bei
+   dunklen Geraeten bleibt alles oben unveraendert dunkel.
+   Farbwerte aus css/blog.css (hell): Grund #f4f4f1, Flaeche #fff, Text #1c1f1e,
+   leise #5c625f, Linie #dcdfd9, Teal #0f766e und #0b5d57. Nur Farbe, Linie und
+   Schatten; Layout, Schriften und Abstaende bleiben.
+   Kontrast (WCAG): Text 15,1:1, leise 5,7:1, Teal 5,0:1 auf #f4f4f1;
+   Knopftext #f4f4f1 auf Teal 5,0:1.
+   ============================================ */
+@media (prefers-color-scheme: light) {
+  :root {
+    --clr-bg-deep: #f4f4f1;
+    --clr-bg: #f4f4f1;
+    --clr-bg-card: #ffffff;
+    --clr-bg-card-hover: #ffffff;
+    --clr-surface: #ffffff;
+    --clr-border: #dcdfd9;
+    --clr-border-hover: #8fbfb8;
+
+    --clr-teal: #0f766e;
+    --clr-teal-light: #0b5d57;
+    --clr-teal-dark: #0b5d57;
+    --clr-cyan: #0e7490;
+    --clr-navy: #075985;
+    --clr-accent: #0f766e;
+
+    --clr-text: #1c1f1e;
+    --clr-text-muted: #5c625f;
+    --clr-text-dim: #646a67;
+
+    --gradient-main: linear-gradient(135deg, #0f766e 0%, #075985 100%);
+    --gradient-subtle: linear-gradient(135deg, rgba(15,118,110,0.08) 0%, rgba(7,89,133,0.08) 100%);
+    --gradient-glow: radial-gradient(ellipse at center, rgba(15,118,110,0.08) 0%, transparent 70%);
+
+    --focus-ring: 0 0 0 3px rgba(15,118,110,0.45);
+  }
+
+  /* Formularelemente hell (Auswahllisten); html bleibt ohne color-scheme,
+     sonst wird der 3D-Hero-iframe deckend gerendert. */
+  input, select, textarea { color-scheme: light; }
+
+  ::selection { background: rgba(15,118,110,0.2); color: var(--clr-text); }
+
+  h1, h2, h3, h4, h5, h6,
+  .nav-logo span,
+  .nav-links a:hover,
+  .nav-links a[aria-current="page"],
+  .hacca-product__claim,
+  .hacca-product__features strong,
+  .hero-product:hover, .hero-product:focus-visible,
+  .reference-name { color: var(--clr-text); }
+
+  /* Hintergrundmuster und Toenungen im Teal der hellen Fassung */
+  body::before {
+    background-image: radial-gradient(circle at 1px 1px, rgba(15,118,110,0.07) 1px, transparent 0);
+  }
+  body::after {
+    background: radial-gradient(ellipse at 30% 20%, rgba(15,118,110,0.05) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 80%, rgba(7,89,133,0.04) 0%, transparent 50%);
+  }
+
+  /* Leuchtschatten sind auf hellem Grund nur Schleier: weg */
+  .nav-logo img,
+  .footer-logo img,
+  .hero-words__item { filter: none; }
+  .lang-switch button[aria-pressed="true"] { box-shadow: none; }
+  .btn-primary::after { display: none; }
+  .card:hover .card-icon,
+  .reference-card:hover .reference-logo { box-shadow: none; }
+
+  /* Kopfleiste und Sticky-CTA */
+  .nav.scrolled { background: rgba(244, 244, 241, 0.92); }
+  .sticky-cta { background: rgba(244, 244, 241, 0.95); }
+
+  /* Laschen, Marken, Kennzahlen: Teal-Toenung statt Leuchtgruen */
+  .section-header .label,
+  .lang-switch,
+  .hero-badge,
+  .hacca-inline__badge,
+  .hero-product__tag,
+  .btn-secondary:hover,
+  .btn-secondary:focus-visible { background: rgba(15,118,110,0.06); }
+  .lang-switch button:hover:not([aria-pressed="true"]) { background: rgba(15,118,110,0.1); }
+  .btn-secondary:hover,
+  .btn-secondary:focus-visible { color: var(--clr-teal-dark); }
+  .metric { background: rgba(15,118,110,0.04); border-color: var(--clr-border); }
+  .reference-result { background: rgba(15,118,110,0.06); border-color: rgba(15,118,110,0.2); }
+  .reference-tag { background: rgba(15,118,110,0.05); border-color: rgba(15,118,110,0.25); }
+  .trust-item-icon { background: rgba(15,118,110,0.1); }
+  .feature-note { border-left-color: rgba(15,118,110,0.4); }
+  .webdesign-guarantee { border-color: rgba(15,118,110,0.3); }
+  .pricing-card.featured { border-color: rgba(15,118,110,0.4); }
+  .webdesign-reference-link { border-color: rgba(15,118,110,0.35); }
+  .webdesign-reference-link:hover { background: rgba(15,118,110,0.08); }
+  .webdesign-teaser-inner { border-color: rgba(15,118,110,0.25); }
+
+  /* Schatten: weich und mit Versatz, kein Leuchten */
+  .btn-primary:hover,
+  .btn-primary:focus-visible { box-shadow: 0 8px 24px rgba(15,118,110,0.22); }
+  .card:hover,
+  .card:focus-within,
+  .reference-card:hover,
+  .reference-card:focus-within { box-shadow: 0 12px 32px rgba(28,31,30,0.08); }
+  .project-card:hover,
+  .project-card:focus-within { box-shadow: 0 16px 40px rgba(28,31,30,0.1); }
+  .pricing-card:hover { box-shadow: 0 16px 40px rgba(28,31,30,0.08); }
+  .cookie-banner { background: var(--clr-bg-card); box-shadow: 0 -4px 24px rgba(28,31,30,0.1); }
+  .ads-visual { filter: drop-shadow(0 12px 30px rgba(28,31,30,0.18)); }
+
+  /* Projektkarten: Der Kopf bleibt wie die Leistungsgrafiken eine dunkle
+     Bildflaeche (Bild mit 30 Prozent auf Weiss wirkte grau). Der dunkle
+     Verlauf aus ::before gilt unveraendert; darunter weisse Kartenflaeche. */
+  .project-card-header { background: #0b1a2c; }
+  .project-card-header h2,
+  .project-card-header h3 { color: #ffffff; }
+  .project-card-header p { color: #b8c2d0; }
+  .project-card-header .project-tag { color: #00d4aa; border-color: rgba(0, 210, 170, 0.3); }
+
+  /* Videos auf promo: Schatten steht dort in einem style-Block; main davor
+     hebt die Spezifitaet, damit hell der weiche Kartenschatten gilt. */
+  main .video-buehne video { box-shadow: 0 16px 40px rgba(28,31,30,0.12); }
+
+  /* Grosse Abschnittsnummern auf services: Teal statt grauer Verlauf */
+  .feature-number { background-image: linear-gradient(rgba(15,118,110,0.2), rgba(15,118,110,0.2)); }
+
+  .hacca-product__card {
+    background:
+      radial-gradient(ellipse 60% 70% at 0% 50%, rgba(15,118,110,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 60% at 100% 100%, rgba(7,89,133,0.06) 0%, transparent 60%),
+      var(--clr-bg-card);
+  }
+  .hacca-product__features li { background: var(--clr-bg-deep); }
+
+  /* Leistungsbilder (services): Raster und SVG-Grafiken sind fuer dunklen Grund
+     gezeichnet (halbtransparente Navy-Flaechen, helle Textbalken). Sie behalten
+     ihre dunkle Bildflaeche wie ein Foto, statt auf Hellgrau zu vergrauen. */
+  .feature-visual {
+    background: #0b1a2c;
+    border-color: transparent;
+    color: #e8edf5;
+  }
+
+  /* Karte auf contact: dunkel wird sie per Inline-Filter invertiert; hell im
+     Original. !important ist noetig, weil der Filter im style-Attribut steht. */
+  iframe[src*="google.com/maps"] { filter: none !important; }
+
+  /* Trennlinien, die dunkel mit Weiss-Transparenz arbeiten */
+  .cookie-category + .cookie-category { border-top-color: var(--clr-border); }
+  .pricing-features li { border-bottom-color: var(--clr-border); }
+
+  /* Schalter im Cookie-Banner: Knopf hebt sich vom Teal ab */
+  .cookie-toggle input:checked + .cookie-toggle-slider::before { background: #ffffff; }
+  /* Aus-Zustand: Bahn und Rand sichtbar auf dem weissen Banner (3,4:1) */
+  .cookie-toggle-slider { background: #e4e7e3; border-color: #868c89; }
+  .cookie-toggle input:checked + .cookie-toggle-slider { background: var(--clr-teal-dark); border-color: var(--clr-teal); }
+  /* Gesperrter Schalter "Notwendig": weniger blass */
+  .cookie-toggle input:disabled + .cookie-toggle-slider { opacity: 0.75; }
+
+  /* Bildlaufleiste */
+  ::-webkit-scrollbar-thumb { background: #c9cec8; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(15,118,110,0.5); }
+
+  /* Formular */
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus { box-shadow: 0 0 0 3px rgba(15,118,110,0.18); }
+  /* Feldrand 3,4:1 auf Weiss, 3,1:1 auf Grund (WCAG 1.4.11) */
+  .form-group input,
+  .form-group textarea,
+  .form-group select { border-color: #868c89; }
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus { border-color: var(--clr-teal); }
+  .form-status.success { background: #e3f1ee; color: var(--clr-teal-dark); }
+  .form-status.error { background: #fbeceb; border-color: #b42318; color: #b42318; }
+  .form-group input[aria-invalid="true"],
+  .form-group textarea[aria-invalid="true"],
+  .form-group select[aria-invalid="true"] {
+    border-color: #b42318;
+    box-shadow: 0 0 0 3px rgba(180, 35, 24, 0.15);
+  }
+
+  @media (max-width: 900px) {
+    .nav-menu {
+      background:
+        radial-gradient(ellipse 90% 45% at 100% 0%, rgba(15, 118, 110, 0.08) 0%, transparent 65%),
+        radial-gradient(ellipse 70% 40% at 0% 100%, rgba(7, 89, 133, 0.06) 0%, transparent 65%),
+        var(--clr-bg-deep);
+    }
+    .nav-links a[aria-current="page"] { color: var(--clr-teal); }
+  }
+
+  /* Mobil ohne Blur: deckende helle Flaechen */
+  @media (max-width: 900px), (hover: none) {
+    .nav.scrolled { background: rgb(244, 244, 241); }
+    .sticky-cta { background: rgb(244, 244, 241); }
+  }
+}
+
+/* Schmale Bildschirme: lange deutsche Woerter in Ueberschriften trennen statt abschneiden (Datenschutzerklaerung bei 390 px) */
+@media (max-width: 480px) {
+  h1, h2 { hyphens: auto; -webkit-hyphens: auto; overflow-wrap: break-word; }
+}
