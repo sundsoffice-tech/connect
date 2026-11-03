@@ -10,7 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // --- Language Switcher ---
-  const savedLang = localStorage.getItem('ss-lang') || 'de';
+  // Gesperrter Speicher (strenge Datenschutzeinstellungen) wirft; dann gilt Deutsch und nichts wird gemerkt
+  let savedLang = 'de';
+  try { savedLang = localStorage.getItem('ss-lang') || 'de'; } catch (e) { /* Speicher gesperrt */ }
   setLanguage(savedLang);
 
   document.querySelectorAll('.lang-switch button').forEach(btn => {
@@ -24,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.classList.remove('lang-de', 'lang-en');
     document.body.classList.add(`lang-${lang}`);
     document.documentElement.setAttribute('lang', lang);
-    localStorage.setItem('ss-lang', lang);
+    try { localStorage.setItem('ss-lang', lang); } catch (e) { /* Speicher gesperrt: Wahl gilt nur auf dieser Seite */ }
 
     document.querySelectorAll('.lang-switch').forEach(g => {
       g.setAttribute('aria-label', lang === 'de' ? 'Sprachauswahl' : 'Language selection');
@@ -575,10 +577,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function saveConsent(analytics) {
-    localStorage.setItem(CONSENT_KEY, JSON.stringify({
-      analytics: analytics,
-      timestamp: new Date().toISOString()
-    }));
+    try {
+      localStorage.setItem(CONSENT_KEY, JSON.stringify({
+        analytics: analytics,
+        timestamp: new Date().toISOString()
+      }));
+    } catch (e) { /* Speicher gesperrt: die Wahl gilt nur für diese Seite */ }
   }
 
   function loadGA4() {
