@@ -815,7 +815,9 @@ def klartext(teile: list) -> str:
 
 
 def wortzahl(text: str) -> int:
-    """Wörter für Lesezeit und wordCount: Stücke mit mindestens einem Buchstaben oder einer Ziffer (ein freistehender Pfeil zählt nicht)."""
+    """Wörter für Lesezeit und wordCount: zählt die durch Leerraum getrennten Stücke, in denen mindestens ein Zeichen
+    str.isalnum() erfüllt (Buchstabe oder Ziffer im Unicode-Sinn, auch ² oder ½). Stücke nur aus Satz- oder
+    Sonderzeichen zählen nicht, etwa ein freistehender Pfeil oder Gedankenstrich; "59→222" zählt als ein Wort."""
     return sum(1 for stueck in text.split() if any(z.isalnum() for z in stueck))
 
 
@@ -1297,8 +1299,8 @@ def kontakt_html(b: Beitrag | None, haus: dict) -> str:
     z = ['<p class="label">Kontakt</p>',
          (f'<p>{tx(f["name"])}<br><span class="nb">{tx(f["strasse"])},</span> '
           f'<span class="nb">{tx(f["plz"])} {tx(f["ort"])}</span><br>'
-          f'<a href="mailto:{at(f["mail"])}">{tx(f["mail"])}</a><br>'
-          f'<a href="tel:{at(f["telefon_e164"])}">{tx(f["telefon_anzeige"])}</a></p>')]
+          f'<span class="wege"><a href="mailto:{at(f["mail"])}">{tx(f["mail"])}</a><br>'
+          f'<a href="tel:{at(f["telefon_e164"])}">{tx(f["telefon_anzeige"])}</a></span></p>')]
     if b is not None:
         kurz = b.kopf.get("kurzadressen") or []
         pfad = kurz[0] if kurz else f"/blog/{b.slug}/"

@@ -1864,16 +1864,6 @@ body.lang-en .lang-en-inline { display: inline; }
   text-decoration: none;
   transition: color var(--transition-fast);
 }
-.hero-product__tag {
-  color: var(--clr-teal);
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-size: 0.7rem;
-  padding: 0.25rem 0.6rem;
-  border: 1px solid var(--clr-border);
-  border-radius: var(--radius-pill);
-  background: rgba(0,212,170,0.05);
-}
 .hero-product__arrow { color: var(--clr-teal); transition: transform var(--transition-fast); }
 .hero-product:hover, .hero-product:focus-visible { color: #fff; }
 .hero-product:hover .hero-product__arrow { transform: translateX(4px); }
@@ -3145,6 +3135,21 @@ main [id] {
 @media (max-width: 600px) {
   .cookie-banner-compact p { flex: 0 1 auto; }
 }
+/* Cookie-Hinweis: Knoepfe mindestens 44 px hoch; auf dem Handy enger gesetzt (bei 390 px unter 160 px Hoehe),
+   Wortlaut unveraendert. Ueber dem offenen Mobilmenue liegt er nicht: die Kopfleiste mit Menue hat z-index 1000. */
+.cookie-banner-actions .btn,
+.cookie-settings-link { min-height: 44px; }
+.cookie-settings-link { display: inline-flex; align-items: center; }
+body.menu-open .cookie-banner { z-index: 999; }
+@media (max-width: 600px) {
+  .cookie-banner { padding: 10px 0 calc(10px + env(safe-area-inset-bottom, 0px)); }
+  .cookie-banner-inner { padding: 0 16px; }
+  .cookie-banner-compact { gap: 8px; }
+  .cookie-banner-compact p { font-size: 0.85rem; line-height: 1.45; }
+  .cookie-banner-actions { width: 100%; flex-wrap: nowrap; gap: 6px; }
+  .cookie-banner-actions .btn { flex: 1 1 auto; justify-content: center; padding: 0 0.7rem; font-size: 0.8rem; }
+  .cookie-settings-link { flex: 0 0 auto; padding: 0 0.4rem; }
+}
 /* Banner unsichtbar = nicht fokussierbar; solange er offen ist, bleibt der Sticky-CTA weg */
 .cookie-banner { visibility: hidden; transition: transform var(--transition-smooth), visibility 0s linear var(--transition-smooth); }
 .cookie-banner.visible { visibility: visible; transition: transform var(--transition-smooth), visibility 0s; }
@@ -3269,7 +3274,11 @@ main [id] {
 
 /* Telefonnummer in Inhalt und Fuß: auf schmalen Bildschirmen mindestens 44 px hoch antippbar */
 @media (max-width: 768px) {
-  main a[href^="tel:"], footer a[href^="tel:"], .nav-menu-contact a[href^="tel:"] { display: inline-flex; align-items: center; min-height: 44px; }
+  main a[href^="tel:"], footer a[href^="tel:"] { display: inline-flex; align-items: center; min-height: 44px; }
+}
+/* Im Mobilmenue: so weit, wie das Menue gilt (max-width 900px, siehe Mobile Nav) */
+@media (max-width: 900px) {
+  .nav-menu-contact a[href^="tel:"] { display: inline-flex; align-items: center; min-height: 44px; }
 }
 
 /* ============================================
@@ -3279,8 +3288,8 @@ main [id] {
    Farbwerte aus css/blog.css (hell): Grund #f4f4f1, Flaeche #fff, Text #1c1f1e,
    leise #5c625f, Linie #dcdfd9, Teal #0f766e und #0b5d57. Nur Farbe, Linie und
    Schatten; Layout, Schriften und Abstaende bleiben.
-   Kontrast (WCAG): Text 15,1:1, leise 5,7:1, Teal 5,0:1 auf #f4f4f1;
-   Knopftext #f4f4f1 auf Teal 5,0:1.
+   Kontrast (WCAG): Text 15,1:1, leise 5,7:1, Teal 4,97:1 auf #f4f4f1;
+   Knopftext #f4f4f1 auf Teal 4,97:1.
    ============================================ */
 @media (prefers-color-scheme: light) {
   :root {
@@ -3352,7 +3361,6 @@ main [id] {
   .lang-switch,
   .hero-badge,
   .hacca-inline__badge,
-  .hero-product__tag,
   .btn-secondary:hover,
   .btn-secondary:focus-visible { background: rgba(15,118,110,0.06); }
   .lang-switch button:hover:not([aria-pressed="true"]) { background: rgba(15,118,110,0.1); }

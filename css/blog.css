@@ -43,10 +43,11 @@ a:focus-visible,.knopf:focus-visible{outline:2px solid var(--teal);outline-offse
 .logo:hover{color:var(--teal-dunkel)}
 .logo svg{width:28px;height:28px;flex:none;color:var(--teal)}
 .meta{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.78rem;color:var(--leise);text-align:right;line-height:1.5}
-h1{font-family:"Source Serif 4",Georgia,serif;font-weight:600;font-size:2rem;line-height:1.15;margin:0 0 10px;letter-spacing:-.01em}
+h1{font-family:"Source Serif 4",Georgia,serif;font-weight:600;font-size:2rem;line-height:1.15;margin:0 0 18px;letter-spacing:-.01em}
 h2{font-family:"Source Serif 4",Georgia,serif;font-weight:600;font-size:1.3rem;line-height:1.25;margin:34px 0 10px;
-  display:flex;align-items:center;gap:10px;scroll-margin-top:16px}
-h2::before{content:"";display:inline-block;width:10px;height:10px;background:var(--teal);flex:none}
+  display:flex;align-items:flex-start;gap:10px;scroll-margin-top:16px}
+/* Quadrat mittig zur ersten Zeile (Zeilenhöhe 1.25em), auch wenn die Überschrift umbricht */
+h2::before{content:"";display:inline-block;width:10px;height:10px;margin-top:calc(.625em - 5px);background:var(--teal);flex:none}
 p{margin:0 0 12px}
 .lead{font-size:1.08rem;color:var(--text);margin-bottom:18px}
 .werkzeuge{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px;margin:0 0 22px}
@@ -90,6 +91,11 @@ footer p{margin:0 0 8px;max-width:75ch}
 @media screen{
   .nur-druck{display:none}
   .kontakt a[href^="mailto:"],.kontakt a[href^="tel:"]{display:inline-flex;align-items:center;min-height:44px}
+  /* Mail und Telefon nebeneinander in einer 44-px-Zeile statt zwei gestapelter (die zweite wirkte wie eine Leerzeile);
+     die Quellen stehen am Bildschirm unter dem Kontakt über die volle Breite, im Druck bleiben beide Spalten */
+  .kontakt{grid-template-columns:1fr}
+  .kontakt .wege{display:flex;flex-wrap:wrap;column-gap:24px}
+  .kontakt .wege br{display:none}
 }
 @media (max-width:720px){
   .kennzahlen{grid-template-columns:1fr}
