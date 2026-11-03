@@ -310,7 +310,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Vertrag: SCHNITTSTELLE-LEADS.md im Repo.
   // Der Endpunkt speichert zuerst, versendet dann und sendet alle 5 min nach.
   const LEAD_ENDPUNKT = 'https://leads.sundsconnect.de/lead';
-  const SUBJECT_LABELS = { general: 'Allgemeine Anfrage', vertrieb: 'Vertrieb & Sales', automation: 'Automation', ai: 'KI-Infrastruktur', ads: 'Google Ads & AI Ads', webdesign: 'Webdesign', project: 'Projektanfrage' };
+  const SUBJECT_LABELS = { general: 'Allgemeine Anfrage', vertrieb: 'Vertrieb', automation: 'Automatisierung', ai: 'KI-Infrastruktur', ads: 'Google Ads und KI-Suche', webdesign: 'Webdesign', project: 'Projektanfrage' };
 
   function buildLeadPayload(fd) {
     const get = (k) => String(fd.get(k) || '').trim();

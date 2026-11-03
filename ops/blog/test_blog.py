@@ -324,6 +324,17 @@ class Gruen(Baum):
         lauf = self.lauf("pruefen")
         self.assertEqual(lauf.returncode, 0, lauf.stdout)
 
+    def test_stempel_laesst_arbeitsbaeume_in_versteckten_ordnern_aus(self) -> None:
+        """Unter .claude/worktrees liegen Arbeitsbäume anderer Sitzungen; der Deploy darf dort nichts schreiben."""
+        shutil.copy2(REPO / "ops/stempel.py", self.w / "ops/stempel.py")
+        fremd = '<link rel="stylesheet" href="../css/style.css?v=fremd">\n'
+        self.schreib(".claude/worktrees/probe/seite/index.html", fremd)
+        lauf = subprocess.run([sys.executable, str(self.w / "ops/stempel.py"), "probe123"], cwd=self.w, capture_output=True, encoding="utf-8", timeout=60, check=False)
+        self.assertEqual(lauf.returncode, 0, lauf.stderr)
+        self.assertIn("?v=probe123", self.lies("index.html"), "Gegenprobe: der Stempel hat die Startseite wirklich geändert")
+        self.assertIn("?v=probe123", self.lies("services/index.html"), "Gegenprobe: gewöhnliche Unterordner stempelt er weiter")
+        self.assertEqual(self.lies(".claude/worktrees/probe/seite/index.html"), fremd)
+
     def test_telefon_gewaehlt_handseiten_stimmen(self) -> None:
         lauf = self.lauf("pruefen")
         self.assertEqual(lauf.returncode, 0, lauf.stdout)

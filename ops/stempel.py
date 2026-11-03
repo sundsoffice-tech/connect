@@ -15,7 +15,9 @@ stempel = sys.argv[1] if len(sys.argv) > 1 else datetime.datetime.now().strftime
 muster = re.compile(r'((?:\.\./|\./)?(?:css/style\.css|js/main\.js))(?:\?v=[\w.-]+)?')
 geaendert = 0
 for ordner, unter, dateien in os.walk(WURZEL):
-    unter[:] = [u for u in unter if u not in (".git", "node_modules", "ops")]
+    # Versteckte Ordner auslassen: unter .claude/worktrees liegen Arbeitsbäume anderer Sitzungen,
+    # ein Deploy aus dem Hauptordner schrieb dort Stempel hinein (gemessen 03.11.2026).
+    unter[:] = [u for u in unter if not u.startswith(".") and u not in ("node_modules", "ops")]
     for name in dateien:
         if not name.endswith(".html"):
             continue

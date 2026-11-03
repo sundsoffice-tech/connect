@@ -1,7 +1,7 @@
 # S&S Connect
 <!-- erzeugt von ops/blog/blog.py, nicht von Hand ändern -->
 
-> S&S Connect GbR aus Mönchengladbach verbindet Vertrieb, Automation und KI-Infrastruktur. Das Blog erklärt kleinen Unternehmen aktuelle Themen mit Quellen.
+> S&S Connect GbR aus Mönchengladbach verbindet Vertrieb, Automatisierung und KI-Infrastruktur. Das Blog erklärt kleinen Unternehmen aktuelle Themen mit Quellen.
 
 ## Beiträge
 
